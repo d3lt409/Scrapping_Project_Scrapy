@@ -1,0 +1,133 @@
+import re
+import scrapy
+from scrapy_playwright.page import PageMethod
+from scraper.items import ScraperItem
+from scraper.spiders.constants import jumbo
+import scrapy_playwright
+from scrapy.http import Response
+from playwright.async_api import Page
+
+
+class JumboSpider(scrapy.Spider):
+    name = "jumbo"
+    allowed_domains = ["www.jumbocolombia.com"]
+    # + jumbo.START_URLS_ELECTRO + jumbo.START_URLS_PHARMACY
+    start_urls = jumbo.START_URLS_SUPERMARKET[0:2]
+
+    def start_requests(self):
+        for url in self.start_urls:
+            yield scrapy.Request(
+                url,
+                meta=dict(playwright=True, playwright_include_page=True,
+                          playwright_page_methods=[
+                              PageMethod(
+                                  "wait_for_selector", jumbo.SELECTOR_LOAD_PRODUCTS),
+                              PageMethod(
+                                  "evaluate", "window.scrollBy(0, document.body.scrollHeight)")
+                          ],
+                          playwright_page_goto_kwargs={
+                              "wait_until": "domcontentloaded",
+                              "timeout": 60000
+                          }
+                          ),
+
+                callback=self.parse_category
+            )
+
+    def take_products_fields(self, product_card: scrapy.Selector, category, sub_category):
+
+        item = ScraperItem()  # Instanciamos el item aquí
+
+        name = product_card.xpath('.//h3/span//text()').get().strip()
+        item['name'] = name
+        matches = re.findall(
+            r'(\d+[\.,]?\d*)\s?((?:g|gr|ml|l|kg|unidades|un|cm|m|u|grs|und|unds)\b)', name, re.IGNORECASE)
+        if matches:
+            value = matches[-1]
+            item['total_unit_quantity'] = float(value[0].replace(
+                '.', '').replace(',', '.'))
+            item['unit_type'] = value[1]
+        else:
+            item["total_unit_quantity"] = 1
+            item['unit_type'] = 'un'
+        item['category'] = category
+        item['sub_category'] = sub_category
+        item['comercial_name'] = jumbo.NAME
+
+        item['comercial_id'] = jumbo.ID
+
+        price_text = product_card.xpath(jumbo.XPATH_GET_PRICE).getall()[-1]
+        item['price'] = float(price_text.strip().replace(
+            '$', '').replace('.', '').replace(",", ".").strip())
+
+        unit_price_text = product_card.xpath(
+            jumbo.XPATH_UNIT_PRICE).get()
+        if unit_price_text:
+            # 1. Busca el patrón de número (puede tener comas o puntos) en el texto
+            price_match = re.search(r'(\d+[\.,]\d*)', unit_price_text.strip())
+            if price_match:
+                item['unit_price'] = float(
+                    price_match.group(1).replace(',', '.'))
+            else:
+                item['unit_price'] = float(
+                    item.get("price")) / float(item["total_unit_quantity"])
+        else:
+            item['unit_price'] = float(
+                item.get("price")) / float(item["total_unit_quantity"])
+
+        return item
+
+    async def parse_category(self, response: Response):
+        page: Page = response.meta["playwright_page"]
+        page_number = 1
+        while True:
+            print(f"Scrapeando página {page_number} de '{response.url}'...")
+            await self.await_products_loaded(page)
+            html_content = await page.content()
+            scrapy_selector = scrapy.Selector(text=html_content)
+            breadcrumbs = scrapy_selector.xpath(
+                jumbo.XPATH_GET_BREADCRUMBS).getall()
+            category = breadcrumbs[0]
+            sub_category = breadcrumbs[1]
+            for product_card in scrapy_selector.xpath(jumbo.XPATH_GET_ALL_PRODUCTS):
+                yield self.take_products_fields(product_card, category, sub_category)
+
+            next_page_button = page.locator(
+                f'xpath={jumbo.XPATH_CLICK_BUTTON}')
+
+            count = await next_page_button.count()
+
+            if count > 0:
+                await next_page_button.first.click()
+                await page.wait_for_selector(jumbo.SELECTOR_LOAD_PRODUCTS, timeout=60000)
+                page_number += 1
+            else:
+                print("No se encontró el botón 'Siguiente'. Fin de la categoría.")
+                break
+        await page.close()
+
+    async def await_products_loaded(self, page: Page):
+        await page.wait_for_selector(jumbo.SELECTOR_LOAD_PRODUCTS, timeout=15000)
+        previous_product_count = 0
+        while True:
+            await page.evaluate("window.scrollBy(0, document.body.scrollHeight)")
+            try:
+                # ESPERA CRUCIAL: Esperamos a que la red se calme.
+                print("Esperando a que la actividad de red finalice...")
+                await page.wait_for_load_state("networkidle", timeout=5000)
+            except Exception:
+                # Si la red nunca se calma (por scripts de tracking), continuamos después de 5s.
+                print("La red no se calmó completamente, continuando de todas formas.")
+            html_content = await page.content()
+            current_product_count = len(scrapy.Selector(
+                text=html_content).xpath(jumbo.XPATH_GET_ALL_PRODUCTS).getall())
+
+            print(f"Productos encontrados: {current_product_count}")
+
+            if current_product_count == previous_product_count:
+                print("Scroll finalizado para esta página.")
+                break
+
+            previous_product_count = current_product_count
+            await page.evaluate("window.scrollBy(0, document.body.scrollHeight)")
+            await page.wait_for_timeout(5000)
