@@ -44,7 +44,12 @@ NAME = 'Jumbo'
 XPATH_GET_ALL_PRODUCTS = "//div[@id='gallery-layout-container']//article[contains(@class, 'vtex-product-summary-2-x-element')]/div"
 XPATH_GET_PRICE = ".//div[contains(@class, 'selling-price')]//text()"
 XPATH_GET_BREADCRUMBS = "//div[@data-testid = 'breadcrumb']/span/a//text()"
-XPATH_CLICK_BUTTON = "//button[@class='tiendasjumboqaio-jumbo-fetch-more-paginator-0-x-arrowNext ml2']"
+XPATH_CLICK_BUTTON = "//li[button/@id='active']/following-sibling::li[1]/button"
 XPATH_UNIT_PRICE = ".//div[contains(@class, 'calculate-pum-2-x-main')]"
 
+SELECTOR_CONTAINER_PRODUCTS = "#gallery-layout-container"
+
 SELECTOR_LOAD_PRODUCTS = "#gallery-layout-container > div > section > a > article > div"
+SELECTOR_CLICK_BUTTON = "button#noActive"
+SELECTOR_BREADCRUMBS = "div[data-testid='breadcrumb'] > span > a"
+SELECTOR_PRODUCT_CARDS = "div#gallery-layout-container article.vtex-product-summary-2-x-element > div"
