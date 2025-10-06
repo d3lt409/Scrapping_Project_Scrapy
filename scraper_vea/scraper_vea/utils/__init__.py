@@ -1,0 +1,1 @@
+# Utilities para el scraper de PlazaVea

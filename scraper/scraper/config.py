@@ -1,8 +1,10 @@
-import dotenv
-import os
-dotenv.load_dotenv()
+"""
+Configuración específica para proyecto scraper (Jumbo)
+Solo contiene variables específicas del proyecto
+Las variables de DB están en .env compartido
+"""
 
-DB_HOST = os.getenv('db_hostname')
-DB_USER = os.getenv('db_username')
-DB_PASSWORD = os.getenv('db_password')
-DB_NAME = os.getenv('db_name')
+# Configuración específica para Jumbo
+TABLE_NAME = 'colombia'
+COMERCIAL_NAME = 'Jumbo'
+COMERCIAL_ID = 'jumbo_colombia'

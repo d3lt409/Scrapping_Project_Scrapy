@@ -1,0 +1,1 @@
+# Constants para el scraper de PlazaVea
