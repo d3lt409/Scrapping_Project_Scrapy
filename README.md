@@ -27,7 +27,7 @@ Los datos recolectados se almacenan de forma estructurada en una base de datos *
 
 ## 3. Arañas (Spiders) Implementadas
 
-### a) `jumbo_spider.py`
+### a) `jumbo.py`
 * **Sitio:** Jumbocolombia.com
 * **Retos Superados:**
     * Implementa un "director de orquesta" que primero determina si una categoría tiene demasiados productos (ej: >1400).
@@ -36,7 +36,7 @@ Los datos recolectados se almacenan de forma estructurada en una base de datos *
     * Maneja una lógica de **paginación por "hermano siguiente" (following-sibling)**, identificando el botón de página activa y haciendo clic en el siguiente.
     * Utiliza el **scroll inteligente por medición de contenedor** para cargar todos los productos.
 
-### b) `cruzverde_spider.py`
+### b) `cruzverde.py`
 * **Sitio:** Cruzverde.com.co
 * **Retos Superados:**
     * Maneja pop-ups y modales iniciales de selección de ubicación.
@@ -59,5 +59,5 @@ Asegúrate de tener instalado el siguiente software en tu sistema (ya sea local 
 
 **1. Clonar el Repositorio:**
 ```bash
-git clone <url-de-tu-repositorio>
-cd <nombre-del-repositorio>
+git clone https://github.com/d3lt409/Scrapping_Project_Scrapy.git
+cd Scrapping_Project_Scrapy
