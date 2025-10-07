@@ -47,6 +47,7 @@ class PostgresPipeline:
                         category, sub_category, comercial_name, comercial_id,
                         result_date, result_time
                     ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (name,category,result_date,comercial_id ) DO NOTHING
                 """
 
                 self.cur.execute(insert_sql, (
