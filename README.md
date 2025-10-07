@@ -49,8 +49,8 @@ Los datos recolectados se almacenan de forma estructurada en una base de datos *
 
 Asegúrate de tener instalado el siguiente software en tu sistema (ya sea local o en WSL):
 
-* Python (versión 3.9 o superior)
-* PostgreSQL (versión 12 o superior)
+* Python (versión 3.12 o superior)
+* PostgreSQL (versión 16 o superior)
 * Git
 
 ---
