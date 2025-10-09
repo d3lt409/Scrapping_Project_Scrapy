@@ -39,10 +39,11 @@ class UnifiedPostgresPipeline:
         dotenv.load_dotenv(env_path)
         
         # Cargar variables de base de datos desde .env
-        self.hostname = os.getenv('db_hostname', 'localhost')
-        self.username = os.getenv('db_username', 'postgres')
-        self.password = os.getenv('db_password', 'root')
-        self.database = os.getenv('db_name', 'scrapy_supermercado')
+        self.hostname = os.getenv('db_hostname')
+        self.username = os.getenv('db_username')
+        self.password = os.getenv('db_password')
+        self.database = os.getenv('db_name')
+        self.port = os.getenv('db_port', '11514')  
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -60,7 +61,10 @@ class UnifiedPostgresPipeline:
                 host=self.hostname,
                 user=self.username,
                 password=self.password,
-                database=self.database
+                database=self.database,
+                port=self.port,
+                sslmode='verify-ca',
+                sslrootcert='./ca.pem'
             )
             self.cur = self.connection.cursor()
             
@@ -68,6 +72,7 @@ class UnifiedPostgresPipeline:
             self.cur.execute("SET search_path TO db_scrapy, public;")
             
             spider.logger.info(f"Pipeline PostgreSQL iniciado - Tabla: {self.table_name}")
+            spider.logger.info(f"Conectado a: {self.hostname}:{self.port}/{self.database}")
             
         except Exception as e:
             spider.logger.error(f"Error conectando a PostgreSQL: {e}")

@@ -11,10 +11,11 @@ from dotenv import load_dotenv
 # Cargar variables de entorno
 load_dotenv()
 
-DB_HOST = os.getenv('db_hostname', 'localhost')
-DB_USER = os.getenv('db_username', 'postgres')
-DB_PASSWORD = os.getenv('db_password', 'root')
-DB_NAME = os.getenv('db_name', 'scrapy_supermercado')
+DB_HOST = os.getenv('db_hostname')
+DB_USER = os.getenv('db_username')
+DB_PASSWORD = os.getenv('db_password')
+DB_NAME = os.getenv('db_name')
+DB_PORT = os.getenv('db_port', '11514') 
 
 
 class DatabaseSetup:
@@ -34,6 +35,9 @@ class DatabaseSetup:
             user=username,
             password=password,
             dbname=database,
+            port=DB_PORT,
+            sslmode='verify-ca',
+            sslrootcert='./ca.pem'
         )
         
         self.connection.autocommit = True
@@ -49,7 +53,9 @@ class DatabaseSetup:
                 host=hostname,
                 user=username,
                 password=password,
-                dbname='postgres'
+                dbname=DB_NAME,
+                port=DB_PORT,
+                sslmode='require'
             )
             temp_conn.autocommit = True
             temp_cur = temp_conn.cursor()
@@ -62,9 +68,9 @@ class DatabaseSetup:
             
             if not temp_cur.fetchone():
                 temp_cur.execute(f'CREATE DATABASE "{database}"')
-                print(f"✅ Base de datos '{database}' creada")
+                print(f"Base de datos '{database}' creada")
             else:
-                print(f"✅ Base de datos '{database}' ya existe")
+                print(f"Base de datos '{database}' ya existe")
             
             temp_cur.close()
             temp_conn.close()
@@ -78,7 +84,7 @@ class DatabaseSetup:
         try:
             # Crear esquema db_scrapy
             self.cur.execute("CREATE SCHEMA IF NOT EXISTS db_scrapy;")
-            print("✅ Esquema db_scrapy creado")
+            print("Esquema db_scrapy creado")
             
             # Configurar search_path
             self.cur.execute("SET search_path TO db_scrapy, public;")
@@ -145,7 +151,7 @@ class DatabaseSetup:
             print("✅ Índices creados")
             
         except Exception as e:
-            print(f"❌ Error configurando esquema y tablas: {e}")
+            print(f"Error configurando esquema y tablas: {e}")
             raise
     
     def verify_setup(self):
@@ -160,7 +166,7 @@ class DatabaseSetup:
             """)
             
             tables = self.cur.fetchall()
-            print("\n📊 Tablas en esquema db_scrapy:")
+            print("\nTablas en esquema db_scrapy:")
             for table in tables:
                 print(f"   - {table[0]}")
             
@@ -169,12 +175,12 @@ class DatabaseSetup:
                 table_name = table[0]
                 self.cur.execute(f"SELECT COUNT(*) FROM db_scrapy.{table_name};")
                 count = self.cur.fetchone()[0]
-                print(f"📈 Registros en {table_name}: {count}")
+                print(f"Registros en {table_name}: {count}")
             
             return True
             
         except Exception as e:
-            print(f"❌ Error verificando configuración: {e}")
+            print(f"Error verificando configuración: {e}")
             return False
     
     def close(self):
@@ -188,7 +194,7 @@ class DatabaseSetup:
 
 def main():
     """Función principal para configurar la base de datos"""
-    print("🗄️ CONFIGURADOR DE BASE DE DATOS - scrapy_supermercado")
+    print("CONFIGURADOR DE BASE DE DATOS - scrapy_supermercado")
     print("=" * 60)
     
     try:
@@ -200,17 +206,17 @@ def main():
         
         # Verificar configuración
         if db_setup.verify_setup():
-            print("\n🎉 ¡Base de datos configurada correctamente!")
-            print("🚀 El scraper está listo para ejecutarse")
+            print("\n¡Base de datos configurada correctamente!")
+            print("El scraper está listo para ejecutarse")
         else:
-            print("\n❌ Hubo problemas en la verificación")
+            print("\nHubo problemas en la verificación")
         
         # Cerrar conexión
         db_setup.close()
         
     except Exception as e:
-        print(f"\n❌ Error general: {e}")
-        print("\n🔧 Verifica las credenciales en el archivo .env")
+        print(f"\nError general: {e}")
+        print("\nVerifica las credenciales en el archivo .env")
 
 
 if __name__ == "__main__":

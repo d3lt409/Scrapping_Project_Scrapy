@@ -25,10 +25,10 @@ ADDONS = {}
 ROBOTSTXT_OBEY = False
 
 # Concurrency and throttling settings
-CONCURRENT_REQUESTS = 4
+CONCURRENT_REQUESTS = 1  # Forzar 1 request a la vez para evitar conflictos de Playwright
 CONCURRENT_REQUESTS_PER_DOMAIN = 1
-DOWNLOAD_DELAY = 3
-RANDOMIZE_DOWNLOAD_DELAY = 0.5
+DOWNLOAD_DELAY = 5  # Incrementado para evitar conflictos de Playwright
+RANDOMIZE_DOWNLOAD_DELAY = 0.3  # Reducido para menos variabilidad
 
 # Cookies and sessions
 COOKIES_ENABLED = True
@@ -39,10 +39,20 @@ DNSCACHE_SIZE = 10000
 
 # Auto throttling settings
 AUTOTHROTTLE_ENABLED = True
-AUTOTHROTTLE_START_DELAY = 1
+AUTOTHROTTLE_START_DELAY = 2  # Incrementado
 AUTOTHROTTLE_MAX_DELAY = 60
 AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 AUTOTHROTTLE_DEBUG = False
+
+# CONFIGURACIÓN PARA PROCESAMIENTO SECUENCIAL DE MÚLTIPLES CATEGORÍAS
+SCHEDULER_PRIORITY_QUEUE = 'scrapy.pqueues.ScrapyPriorityQueue'
+REACTOR_THREADPOOL_MAXSIZE = 1
+
+# Configuración específica de Playwright para estabilidad
+PLAYWRIGHT_LAUNCH_OPTIONS = {
+    "headless": True,
+    "args": ["--no-sandbox", "--disable-dev-shm-usage", "--disable-web-security"]
+}
 
 # Request fingerprinting
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"

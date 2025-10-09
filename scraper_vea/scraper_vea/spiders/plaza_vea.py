@@ -42,12 +42,14 @@ class PlazaVeaSpider(scrapy.Spider):
             self.logger.info(f"   ... y {len(self.start_urls) - 5} URLs más")
 
     def start_requests(self):
-        for url in self.start_urls:
+        for i, url in enumerate(self.start_urls):
+            # Añadir parámetro único para forzar requests distintos
+            unique_url = f"{url}?scrapy_index={i}&ts={int(time.time())}"
             yield scrapy.Request(
-                url,
+                unique_url,
                 meta=dict(
                     playwright=True, 
-                    playwright_include_page=True,
+                    playwright_include_page=True,  # Necesario para obtener la página
                     playwright_page_methods=[
                         PageMethod("wait_for_selector", plaza_vea.SELECTOR_PRODUCTS_CONTAINER, timeout=20000),
                         PageMethod("evaluate", "window.scrollBy(0, document.body.scrollHeight)")
@@ -55,29 +57,41 @@ class PlazaVeaSpider(scrapy.Spider):
                     playwright_page_goto_kwargs={
                         "wait_until": "domcontentloaded",
                         "timeout": 60000
-                    }
+                    },
+                    category_index=i,  # Añadir índice único para evitar duplicados
+                    original_url=url   # Guardar URL original para navegación
                 ),
-                callback=self.parse_category
+                callback=self.parse_category,
+                dont_filter=True,  # Permitir múltiples requests a la misma categoría
+                headers={'X-Category-Index': str(i)}  # Header único para cada request
             )
 
     async def parse_category(self, response: Response):
         """Parsear una categoría completa con paginación"""
         page: Page = response.meta["playwright_page"]
+        category_index = response.meta.get("category_index", "unknown")
+        original_url = response.meta.get("original_url", response.url)
         
-        # Extraer categoria y subcategoria de la URL
-        url_parts = response.url.split('/')
+        # Extraer categoria y subcategoria de la URL original
+        url_parts = original_url.split('/')
         categoria = url_parts[-2].replace('-', ' ').title()
         subcategoria = url_parts[-1].replace('-', ' ').title()
         
-        # Asegurar que estamos en la URL correcta (importante para múltiples categorías)
-        if page.url != response.url:
-            self.logger.info(f"🔄 Navegando explícitamente a: {response.url}")
+        self.logger.info(f"🚀 INICIANDO Request #{category_index} para: {categoria} > {subcategoria}")
+        self.logger.info(f"🔗 URL original: {original_url}")
+        self.logger.info(f"🔗 URL con parámetros: {response.url}")
+        
+        # Navegar a la URL original (sin parámetros) para el scraping real
+        if page.url != original_url:
+            self.logger.info(f"🔄 Navegando explícitamente a URL original: {original_url}")
             try:
-                await page.goto(response.url, wait_until="domcontentloaded", timeout=60000)
-                await page.wait_for_timeout(2000)  # Esperar un poco para que cargue
+                await page.goto(original_url, wait_until="domcontentloaded", timeout=60000)
+                await page.wait_for_timeout(3000)  # Esperar un poco más para que cargue completamente
             except Exception as e:
-                self.logger.error(f"❌ Error navegando a {response.url}: {e}")
+                self.logger.error(f"❌ Error navegando a {original_url}: {e}")
                 return
+        
+        self.logger.info(f"🎯 Procesando categoría: {categoria} > {subcategoria}")
         
         page_number = 1
         max_pages = 50  # Límite de seguridad para evitar loops infinitos
@@ -134,9 +148,8 @@ class PlazaVeaSpider(scrapy.Spider):
         
         self.logger.info(f"🎯 RESUMEN '{categoria} > {subcategoria}': {total_products_scraped} productos en {page_number} páginas")
         
-        # NO cerrar página - reutilizar para siguiente categoría
-        # La página se cerrará automáticamente al final del spider
-        self.logger.info(f"🔄 Categoría '{categoria} > {subcategoria}' completada - Página lista para siguiente categoría")
+        # Página lista para siguiente categoría 
+        self.logger.info(f"✅ Request #{category_index} COMPLETADO: '{categoria} > {subcategoria}' - Lista para siguiente")
 
     def extract_product_data(self, product_element, categoria, subcategoria):
         """Extraer datos de un producto individual"""
@@ -191,42 +204,53 @@ class PlazaVeaSpider(scrapy.Spider):
             # Buscar unidades en el nombre o referencia
             text_to_analyze = f"{name} {unit_reference}".lower()
             
-            # Patrones para detectar unidades
-            kg_pattern = r'(\d+(?:\.\d+)?)\s*kg'
-            g_pattern = r'(\d+(?:\.\d+)?)\s*g(?!\s*kg)'  # gramos pero no kilogramos
-            l_pattern = r'(\d+(?:\.\d+)?)\s*l'
-            ml_pattern = r'(\d+(?:\.\d+)?)\s*ml'
-            unidad_pattern = r'(\d+)\s*(?:unidad|un|u\b)'
-            pack_pattern = r'pack\s*(?:de\s*)?(\d+)'
+            # Patrón general que captura número + unidad en una sola búsqueda
+            pattern = r'(\d+(?:\.\d+)?)\s*(kg|g|gr|grs|l|litro|litros|ml|mililitro|mililitros|pack|paquete|unidad|unidades|un|u|und|unds)\b'
+            matches = re.findall(pattern, text_to_analyze, re.IGNORECASE)
             
-            # Buscar coincidencias
-            kg_match = re.search(kg_pattern, text_to_analyze)
-            g_match = re.search(g_pattern, text_to_analyze)
-            l_match = re.search(l_pattern, text_to_analyze)
-            ml_match = re.search(ml_pattern, text_to_analyze)
-            unidad_match = re.search(unidad_pattern, text_to_analyze)
-            pack_match = re.search(pack_pattern, text_to_analyze)
+            if matches:
+                quantity_str, unit_str = matches[-1]
+                quantity = float(quantity_str.replace(',', '.'))
+                
+                unit_normalized = unit_str.lower()
+
+                unit_mapping = {
+                    'kg': ('kg', quantity, quantity),
+                    'g': ('g', quantity, quantity / 1000),  # para unit_price en kg
+                    'gr': ('g', quantity, quantity / 1000),
+                    'grs': ('g', quantity, quantity / 1000),
+                    'l': ('l', quantity, quantity),
+                    'litro': ('l', quantity, quantity),
+                    'litros': ('l', quantity, quantity),
+                    'ml': ('ml', quantity, quantity / 1000), 
+                    'mililitro': ('ml', quantity, quantity / 1000),
+                    'mililitros': ('ml', quantity, quantity / 1000),
+                    'pack': ('pack', quantity, quantity),
+                    'paquete': ('pack', quantity, quantity),
+                    'unidad': ('unidad', quantity, quantity),
+                    'unidades': ('unidad', quantity, quantity),
+                    'un': ('unidad', quantity, quantity),
+                    'u': ('unidad', quantity, quantity),
+                    'und': ('unidad', quantity, quantity),
+                    'unds': ('unidad', quantity, quantity)
+                }
+                
+                # Obtener datos de la unidad o usar unidad por defecto
+                unit_type, total_quantity, calc_quantity = unit_mapping.get(
+                    unit_normalized, ('unidad', quantity, quantity)
+                )
+                
+                return price / calc_quantity, total_quantity, unit_type
             
-            if kg_match:
-                quantity = float(kg_match.group(1))
-                return price / quantity, quantity, 'kg'
-            elif g_match:
-                quantity = float(g_match.group(1)) / 1000  # convertir a kg
-                return price / quantity, quantity * 1000, 'g'
-            elif l_match:
-                quantity = float(l_match.group(1))
-                return price / quantity, quantity, 'l'
-            elif ml_match:
-                quantity = float(ml_match.group(1)) / 1000  # convertir a litros
-                return price / quantity, quantity * 1000, 'ml'
-            elif pack_match:
-                quantity = int(pack_match.group(1))
-                return price / quantity, quantity, 'pack'
-            elif unidad_match:
-                quantity = int(unidad_match.group(1))
-                return price / quantity, quantity, 'unidad'
             else:
-                # Si no se encuentra unidad específica, asumir 1 unidad
+                # Caso especial: buscar "pack de N" sin número antes de pack
+                pack_pattern = r'pack\s*(?:de\s*)?(\d+)'
+                pack_match = re.search(pack_pattern, text_to_analyze, re.IGNORECASE)
+                if pack_match:
+                    quantity = int(pack_match.group(1))
+                    return price / quantity, quantity, 'pack'
+                
+                # Si no se encuentra ninguna unidad, asumir 1 unidad
                 return price, 1.0, 'unidad'
                 
         except Exception as e:
@@ -238,7 +262,7 @@ class PlazaVeaSpider(scrapy.Spider):
         try:
             # Verificar si la página sigue activa
             if page.is_closed():
-                self.logger.error("❌ Página cerrada prematuramente")
+                self.logger.error("Página cerrada prematuramente")
                 return
             
             # Esperar a que aparezcan los productos con timeout más largo
@@ -260,47 +284,44 @@ class PlazaVeaSpider(scrapy.Spider):
         try:
             # Verificar si la página sigue activa
             if page.is_closed():
-                self.logger.error("❌ Página cerrada, no se puede navegar")
+                self.logger.error("Página cerrada, no se puede navegar")
                 return False
             
             # Buscar paginación usando los XPaths corregidos
             pagination_element = scrapy_selector.xpath(plaza_vea.XPATH_PAGINATION).get()
             if not pagination_element:
-                self.logger.info("📄 No se encontró elemento de paginación")
+                self.logger.info("No se encontró elemento de paginación")
                 return False
             
             # Encontrar página activa con el XPath corregido
             active_page_list = scrapy_selector.xpath(plaza_vea.XPATH_ACTIVE_PAGE).getall()
             if not active_page_list:
-                self.logger.info("📄 No se encontró página activa")
+                self.logger.info("No se encontró página activa")
                 return False
             
             current_page = int(active_page_list[0])
-            self.logger.info(f"📄 Página actual: {current_page}")
+            self.logger.info(f"Página actual: {current_page}")
             
             # Obtener todas las páginas disponibles
             all_pages = scrapy_selector.xpath(plaza_vea.XPATH_ALL_PAGES).getall()
             all_page_numbers = [int(p) for p in all_pages if p.isdigit()]
             max_page = max(all_page_numbers) if all_page_numbers else current_page
             
-            self.logger.info(f"📄 Páginas disponibles: {sorted(all_page_numbers)}, Máxima: {max_page}")
+            self.logger.info(f"Páginas disponibles: {sorted(all_page_numbers)}, Máxima: {max_page}")
             
             # Verificar si hay siguiente página
             if current_page >= max_page:
-                self.logger.info(f"📄 Ya estamos en la última página ({current_page}/{max_page})")
+                self.logger.info(f"Ya estamos en la última página ({current_page}/{max_page})")
                 return False
             
             next_page_number = current_page + 1
             
             # Buscar el botón de la siguiente página usando múltiples estrategias
             next_page_selectors = [
-                # Estrategia 1: Buscar span con el número específico de la página siguiente
                 f'//div[@class="pagination"]//span[contains(@class, "pagination__item") and contains(@class, "page-number") and not(contains(@class, "active")) and text()="{next_page_number}"]',
                 
-                # Estrategia 2: Buscar cualquier página mayor a la actual
                 f'//div[@class="pagination"]//span[contains(@class, "pagination__item") and contains(@class, "page-number") and not(contains(@class, "active"))][1]',
                 
-                # Estrategia 3: Buscar botón "Siguiente" genérico
                 '//div[@class="pagination"]//a[contains(@class, "next") or contains(text(), "Siguiente")]',
                 '//div[@class="pagination"]//button[contains(@class, "next") or contains(text(), "Siguiente")]'
             ]
@@ -310,23 +331,23 @@ class PlazaVeaSpider(scrapy.Spider):
             
             for selector in next_page_selectors:
                 try:
-                    self.logger.debug(f"🔍 Probando selector: {selector}")
+                    self.logger.debug(f"Probando selector: {selector}")
                     next_page_element = await page.query_selector(f'xpath={selector}')
                     if next_page_element:
                         used_selector = selector
-                        self.logger.info(f"✅ Encontrado botón siguiente con selector: {selector}")
+                        self.logger.info(f"Encontrado botón siguiente con selector: {selector}")
                         break
                 except Exception as e:
-                    self.logger.debug(f"❌ Selector falló: {selector} - {e}")
+                    self.logger.debug(f"Selector falló: {selector} - {e}")
                     continue
             
             if next_page_element:
                 # Hacer scroll para asegurar que el elemento esté visible
                 await next_page_element.scroll_into_view_if_needed()
-                await page.wait_for_timeout(1000)  # Esperar que termine el scroll
+                await page.wait_for_timeout(1000) 
                 
                 # Hacer clic en la siguiente página
-                self.logger.info(f"🔄 Haciendo clic para navegar a página {next_page_number}")
+                self.logger.info(f"Haciendo clic para navegar a página {next_page_number}")
                 await next_page_element.click()
                 
                 # Esperar a que se cargue la nueva página
@@ -339,18 +360,18 @@ class PlazaVeaSpider(scrapy.Spider):
                 new_active_page = new_selector.xpath(plaza_vea.XPATH_ACTIVE_PAGE).getall()
                 
                 if new_active_page and int(new_active_page[0]) == next_page_number:
-                    self.logger.info(f"✅ Navegación exitosa a página {new_active_page[0]}")
+                    self.logger.info(f"Navegación exitosa a página {new_active_page[0]}")
                     return True
                 else:
-                    self.logger.warning(f"⚠️ No se detectó cambio correcto de página. Esperado: {next_page_number}, Obtenido: {new_active_page}")
+                    self.logger.warning(f"No se detectó cambio correcto de página. Esperado: {next_page_number}, Obtenido: {new_active_page}")
                     return False
                 
             else:
-                self.logger.info("📄 No se encontró botón para la siguiente página")
+                self.logger.info("No se encontró botón para la siguiente página")
                 return False
                 
         except Exception as e:
-            self.logger.error(f"❌ Error navegando a siguiente página: {e}")
+            self.logger.error(f"Error navegando a siguiente página: {e}")
             import traceback
             traceback.print_exc()
             return False
