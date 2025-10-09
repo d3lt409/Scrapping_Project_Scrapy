@@ -49,7 +49,7 @@ class PlazaVeaSpider(scrapy.Spider):
                     playwright=True, 
                     playwright_include_page=True,
                     playwright_page_methods=[
-                        PageMethod("wait_for_selector", plaza_vea.SELECTOR_PRODUCTS_CONTAINER, timeout=30000),
+                        PageMethod("wait_for_selector", plaza_vea.SELECTOR_PRODUCTS_CONTAINER, timeout=20000),
                         PageMethod("evaluate", "window.scrollBy(0, document.body.scrollHeight)")
                     ],
                     playwright_page_goto_kwargs={
@@ -68,6 +68,16 @@ class PlazaVeaSpider(scrapy.Spider):
         url_parts = response.url.split('/')
         categoria = url_parts[-2].replace('-', ' ').title()
         subcategoria = url_parts[-1].replace('-', ' ').title()
+        
+        # Asegurar que estamos en la URL correcta (importante para múltiples categorías)
+        if page.url != response.url:
+            self.logger.info(f"🔄 Navegando explícitamente a: {response.url}")
+            try:
+                await page.goto(response.url, wait_until="domcontentloaded", timeout=60000)
+                await page.wait_for_timeout(2000)  # Esperar un poco para que cargue
+            except Exception as e:
+                self.logger.error(f"❌ Error navegando a {response.url}: {e}")
+                return
         
         page_number = 1
         max_pages = 50  # Límite de seguridad para evitar loops infinitos
@@ -117,12 +127,16 @@ class PlazaVeaSpider(scrapy.Spider):
             page_number += 1
             
             # Pausa entre páginas para no saturar el servidor
-            await page.wait_for_timeout(2000)
+            await page.wait_for_timeout(1000)
         
         if page_number > max_pages:
             self.logger.warning(f"⚠️ Alcanzado límite máximo de páginas ({max_pages}) para '{categoria} > {subcategoria}'")
         
         self.logger.info(f"🎯 RESUMEN '{categoria} > {subcategoria}': {total_products_scraped} productos en {page_number} páginas")
+        
+        # NO cerrar página - reutilizar para siguiente categoría
+        # La página se cerrará automáticamente al final del spider
+        self.logger.info(f"🔄 Categoría '{categoria} > {subcategoria}' completada - Página lista para siguiente categoría")
 
     def extract_product_data(self, product_element, categoria, subcategoria):
         """Extraer datos de un producto individual"""
@@ -160,7 +174,10 @@ class PlazaVeaSpider(scrapy.Spider):
             item['unit_type'] = unit_type
             item['category'] = categoria
             item['sub_category'] = subcategoria
-            # comercial_name y comercial_id se establecen automáticamente en el item
+            
+            # Forzar configuración correcta para PlazaVea (sobrescribir detección automática)
+            item['comercial_name'] = 'PlazaVea'
+            item['comercial_id'] = 'plazavea_peru'
             
             return item
             
@@ -225,14 +242,14 @@ class PlazaVeaSpider(scrapy.Spider):
                 return
             
             # Esperar a que aparezcan los productos con timeout más largo
-            await page.wait_for_selector(plaza_vea.SELECTOR_PRODUCTS_CONTAINER, timeout=30000)
+            await page.wait_for_selector(plaza_vea.SELECTOR_PRODUCTS_CONTAINER, timeout=20000)
             
             # Hacer scroll para cargar productos dinámicos
             await page.evaluate("window.scrollBy(0, document.body.scrollHeight)")
-            await page.wait_for_timeout(3000)
+            await page.wait_for_timeout(2000)
             
             # Esperar un poco más para asegurar carga completa
-            await page.wait_for_timeout(2000)
+            await page.wait_for_timeout(1000)
             
         except Exception as e:
             self.logger.warning(f"⚠️ Timeout o error esperando productos: {e}")
@@ -306,16 +323,14 @@ class PlazaVeaSpider(scrapy.Spider):
             if next_page_element:
                 # Hacer scroll para asegurar que el elemento esté visible
                 await next_page_element.scroll_into_view_if_needed()
-                await page.wait_for_timeout(2000)  # Esperar que termine el scroll
+                await page.wait_for_timeout(1000)  # Esperar que termine el scroll
                 
                 # Hacer clic en la siguiente página
                 self.logger.info(f"🔄 Haciendo clic para navegar a página {next_page_number}")
                 await next_page_element.click()
                 
                 # Esperar a que se cargue la nueva página
-                await page.wait_for_timeout(4000)  # Tiempo más generoso para carga
-                
-                # Verificar que efectivamente cambió de página
+                await page.wait_for_timeout(3000)  
                 await self.await_products_loaded(page)
                 
                 # Obtener contenido actualizado para verificar cambio
