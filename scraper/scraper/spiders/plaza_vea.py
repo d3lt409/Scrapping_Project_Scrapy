@@ -127,6 +127,7 @@ class PlazaVeaSpider(scrapy.Spider):
         total_products_scraped = 0
         consecutive_empty_pages = 0
         max_consecutive_empty = 3 
+        max_consecutive_empty = 3 
         
         while page_number <= max_pages:
             self.logger.info(f"Scrapeando página {page_number} de '{categoria} > {subcategoria}'...")
@@ -166,7 +167,7 @@ class PlazaVeaSpider(scrapy.Spider):
                 if len(products_elements) == 0 and consecutive_empty_pages == 1:
                     self.logger.info("Reintentando página actual una vez más...")
                     await page.wait_for_timeout(2000)
-                    consecutive_empty_pages = 0  # Reset para dar una segunda oportunidad
+                    consecutive_empty_pages = 0  
                     continue
             else:
                 # Reset contador si encontramos productos
@@ -220,6 +221,7 @@ class PlazaVeaSpider(scrapy.Spider):
                 price, name, unit_reference
             )
             
+            item = ScraperItem()
             item = ScraperItem()
             item['name'] = name
             item['price'] = price
