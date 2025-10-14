@@ -1,12 +1,11 @@
 import re
 import scrapy
 from scrapy_playwright.page import PageMethod
-from shared_items import SharedSupermercadoItem
+from scraper.items import ScraperItem
 from .constants import plaza_vea
 from scrapy.http import Response
 from playwright.async_api import Page
 import time
-
 
 class PlazaVeaSpider(scrapy.Spider):
     name = "plaza_vea"
@@ -44,20 +43,61 @@ class PlazaVeaSpider(scrapy.Spider):
                     playwright=True, 
                     playwright_include_page=True,  
                     playwright_page_methods=[
-                        PageMethod("wait_for_selector", plaza_vea.SELECTOR_PRODUCTS_CONTAINER, timeout=8000),
+                        PageMethod("wait_for_selector", plaza_vea.SELECTOR_PRODUCTS_CONTAINER, timeout=30000),
                         PageMethod("evaluate", "window.scrollBy(0, document.body.scrollHeight)")
                     ],
                     playwright_page_goto_kwargs={
                         "wait_until": "domcontentloaded",
-                        "timeout": 15000
+                        "timeout": 20000
                     },
                     category_index=i,  
-                    original_url=url   
+                    original_url=url,
+                    max_retry_times=3   # Permitir hasta 3 reintentos por página
                 ),
                 callback=self.parse_category,
                 dont_filter=True,  
-                headers={'X-Category-Index': str(i)} 
+                headers={'X-Category-Index': str(i)},
+                errback=self.handle_error
             )
+
+    def handle_error(self, failure):
+        """Manejar errores de requests incluyendo timeouts"""
+        request = failure.request
+        category_index = request.meta.get("category_index", "unknown")
+        original_url = request.meta.get("original_url", request.url)
+        
+        # Obtener información de la URL
+        url_parts = original_url.split('/')
+        if len(url_parts) >= 2:
+            categoria = url_parts[-2].replace('-', ' ').title()
+            subcategoria = url_parts[-1].replace('-', ' ').title()
+        else:
+            categoria = "Unknown"
+            subcategoria = "Unknown"
+        
+        if "TimeoutError" in str(failure.type):
+            self.logger.warning(f"Timeout en Request #{category_index}: {categoria} > {subcategoria}")
+            self.logger.warning(f"URL afectada: {original_url}")
+            
+            # Intentar un reintento con timeout más largo
+            retry_count = request.meta.get('retry_count', 0)
+            if retry_count < 2:  # Máximo 2 reintentos
+                self.logger.info(f"Reintentando Request #{category_index} (intento {retry_count + 1})")
+                retry_request = request.replace(
+                    meta={
+                        **request.meta,
+                        'retry_count': retry_count + 1,
+                        'playwright_page_goto_kwargs': {
+                            "wait_until": "domcontentloaded",
+                            "timeout": 45000  # Timeout más largo para reintentos
+                        }
+                    }
+                )
+                return retry_request
+            else:
+                self.logger.error(f"Máximo de reintentos alcanzado para Request #{category_index}: {categoria} > {subcategoria}")
+        else:
+            self.logger.error(f"Error en Request #{category_index}: {categoria} > {subcategoria} - {failure}")
 
     async def parse_category(self, response: Response):
         """Parsear una categoría completa con paginación"""
@@ -74,8 +114,8 @@ class PlazaVeaSpider(scrapy.Spider):
         if page.url != original_url:
             self.logger.info(f"Navegando explícitamente a URL original: {original_url}")
             try:
-                await page.goto(original_url, wait_until="domcontentloaded", timeout=15000)
-                await page.wait_for_timeout(1000)  
+                await page.goto(original_url, wait_until="domcontentloaded", timeout=30000)
+                await page.wait_for_timeout(3000)  # Mayor tiempo de espera después de navegar
             except Exception as e:
                 self.logger.error(f"Error navegando a {original_url}: {e}")
                 return
@@ -86,7 +126,7 @@ class PlazaVeaSpider(scrapy.Spider):
         max_pages = 200
         total_products_scraped = 0
         consecutive_empty_pages = 0
-        max_consecutive_empty = 3  # Máximo 3 páginas vacías consecutivas antes de pasar a siguiente categoría
+        max_consecutive_empty = 3 
         
         while page_number <= max_pages:
             self.logger.info(f"Scrapeando página {page_number} de '{categoria} > {subcategoria}'...")
@@ -115,11 +155,11 @@ class PlazaVeaSpider(scrapy.Spider):
             # Manejar páginas vacías o sin productos válidos
             if products_found == 0:
                 consecutive_empty_pages += 1
-                self.logger.warning(f"⚠️ Página {page_number} sin productos válidos. Páginas vacías consecutivas: {consecutive_empty_pages}/{max_consecutive_empty}")
+                self.logger.warning(f"Página {page_number} sin productos válidos. Páginas vacías consecutivas: {consecutive_empty_pages}/{max_consecutive_empty}")
                 
                 # Si hay demasiadas páginas vacías consecutivas, terminar esta categoría
                 if consecutive_empty_pages >= max_consecutive_empty:
-                    self.logger.info(f"🛑 Demasiadas páginas vacías consecutivas ({consecutive_empty_pages}). Terminando categoría '{categoria} > {subcategoria}'")
+                    self.logger.info(f"Demasiadas páginas vacías consecutivas ({consecutive_empty_pages}). Terminando categoría '{categoria} > {subcategoria}'")
                     break
                     
                 # Si no hay elementos de producto, esperar y reintentar la misma página una vez
@@ -180,7 +220,7 @@ class PlazaVeaSpider(scrapy.Spider):
                 price, name, unit_reference
             )
             
-            item = SharedSupermercadoItem()
+            item = ScraperItem()
             item['name'] = name
             item['price'] = price
             item['unit_price'] = unit_price
@@ -189,8 +229,8 @@ class PlazaVeaSpider(scrapy.Spider):
             item['category'] = categoria
             item['sub_category'] = subcategoria
             
-            item['comercial_name'] = 'PlazaVea'
-            item['comercial_id'] = 'plazavea_peru'
+            item['comercial_name'] = plaza_vea.COMMERCIAL_NAME
+            item['comercial_id'] = plaza_vea.COMMERCIAL_ID
             
             return item
             
@@ -245,9 +285,31 @@ class PlazaVeaSpider(scrapy.Spider):
                 self.logger.error("Página cerrada prematuramente")
                 return
             
-            await page.wait_for_selector(plaza_vea.SELECTOR_PRODUCTS_CONTAINER, timeout=4000)
+            # Intentar múltiples selectores si el primero falla
+            selectors_to_try = [
+                plaza_vea.SELECTOR_PRODUCTS_CONTAINER,
+                "div[class*='Showcase']",
+                "div[class*='product']",
+                ".product",
+                "[data-testid*='product']"
+            ]
+            
+            success = False
+            for selector in selectors_to_try:
+                try:
+                    await page.wait_for_selector(selector, timeout=30000)
+                    self.logger.info(f"Productos encontrados con selector: {selector}")
+                    success = True
+                    break
+                except Exception as e:
+                    self.logger.debug(f"Selector {selector} falló: {e}")
+                    continue
+            
+            if not success:
+                self.logger.warning("Ningún selector de productos funcionó, continuando sin esperar")
+                
             await page.evaluate("window.scrollBy(0, document.body.scrollHeight)")
-            await page.wait_for_timeout(1000)    
+            await page.wait_for_timeout(3000)    
             
         except Exception as e:
             self.logger.warning(f"Timeout o error esperando productos: {e}")

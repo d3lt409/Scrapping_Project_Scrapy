@@ -30,6 +30,23 @@ CONCURRENT_REQUESTS = 4
 CONCURRENT_REQUESTS_PER_DOMAIN = 1
 DOWNLOAD_DELAY = 3
 
+# Timeout settings
+DOWNLOAD_TIMEOUT = 60  # 60 segundos para descargas
+PLAYWRIGHT_BROWSER_TYPE = 'chromium'
+PLAYWRIGHT_TIMEOUT = 60000  # 60 segundos para Playwright
+
+# Retry settings
+RETRY_ENABLED = True
+RETRY_TIMES = 3
+RETRY_HTTP_CODES = [500, 502, 503, 504, 522, 524, 408, 429]
+
+# AutoThrottle settings
+AUTOTHROTTLE_ENABLED = True
+AUTOTHROTTLE_START_DELAY = 1
+AUTOTHROTTLE_MAX_DELAY = 10
+AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
+AUTOTHROTTLE_DEBUG = False
+
 # Disable cookies (enabled by default)
 # COOKIES_ENABLED = False
 
@@ -103,6 +120,9 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 ITEM_PIPELINES = {
     'scraper.pipelines.PostgresPipeline': 300,
 }
+
+# País para la tabla de base de datos
+DATABASE_COUNTRY = 'peru'
 
 if sys.platform == 'win32':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
