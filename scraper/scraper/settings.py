@@ -113,6 +113,23 @@ DOWNLOAD_HANDLERS = {
     "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler"
 }
 
+# Configuraciones de Playwright para manejar timeout
+PLAYWRIGHT_BROWSER_TYPE = "chromium"
+PLAYWRIGHT_LAUNCH_OPTIONS = {
+    "headless": True,
+    "args": [
+        "--no-sandbox",
+        "--disable-setuid-sandbox", 
+        "--disable-dev-shm-usage",
+        "--disable-web-security",
+        "--disable-features=VizDisplayCompositor"
+    ]
+}
+
+# Configuración de timeouts
+DOWNLOAD_TIMEOUT = 90 
+PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 90000  
+
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
