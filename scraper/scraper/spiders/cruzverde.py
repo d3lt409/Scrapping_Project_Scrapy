@@ -21,7 +21,7 @@ class CruzverdeSpider(scrapy.Spider):
                 meta=dict(playwright=True, playwright_include_page=True,
                           playwright_page_methods=[
                               PageMethod(
-                                  "wait_for_selector", cruzverde.SELECTOR_CITY_ACEPTAR),
+                                  "wait_for_selector", cruzverde.SELECTOR_CITY_ACEPTAR, timeout = '60000'),
                           ],
                           playwright_page_goto_kwargs={
                               "wait_until": "domcontentloaded",
@@ -46,14 +46,14 @@ class CruzverdeSpider(scrapy.Spider):
         except Exception as e:
             self.logger.warning(f"No se pudo aceptar la ciudad para {response.url}. Procediendo con scrapeo directo. Error: {e}")
             await page.wait_for_timeout(2000)
-        await page.wait_for_selector(cruzverde.SELECTOR_GET_ALL_CATEGORIES, timeout=15000)
+        await page.wait_for_selector(cruzverde.SELECTOR_GET_ALL_CATEGORIES, timeout=20000)
         get_all_categories = await page.query_selector_all(cruzverde.SELECTOR_GET_ALL_CATEGORIES)
         for category in get_all_categories:
             category_name = await category.inner_text()
             if category_name in cruzverde.LIST_CATEGORIES:
                 await category.click()
                 await page.wait_for_timeout(2000)  # Espera adicional para asegurarse de que la acción se complete
-                await page.wait_for_selector(cruzverde.SELECTOR_SEARCH_SUBCATEGORY, timeout=15000)
+                await page.wait_for_selector(cruzverde.SELECTOR_SEARCH_SUBCATEGORY, timeout=20000)
                 subcategories = await page.query_selector_all(cruzverde.SELECTOR_SEARCH_SUBCATEGORY)
                 for subcategory in subcategories:
                     category_link = await subcategory.get_attribute('href')
@@ -68,7 +68,7 @@ class CruzverdeSpider(scrapy.Spider):
                         meta=dict(playwright=True, playwright_include_page=True,
                                     playwright_page_methods=[
                                         PageMethod(
-                                            "wait_for_selector", cruzverde.SELECTOR_CONTAINER_PRODUCTS),
+                                            "wait_for_selector", cruzverde.SELECTOR_CONTAINER_PRODUCTS, timeout = '60000'),
                                     ],
                                     playwright_page_goto_kwargs={
                                         "wait_until": "domcontentloaded",
@@ -85,8 +85,12 @@ class CruzverdeSpider(scrapy.Spider):
             async for item in self.save_products_count(page, page_number, response, category_name, sub_category_name):
                 yield item
             await page.wait_for_timeout(2000) 
-            next_page_button = page.locator(
-                f"xpath={cruzverde.XPATH_CLICK_NEXT_PAGE}")
+            if page_number == 1:
+                next_page_button = page.locator(
+                    f"xpath={cruzverde.XPATH_CLICK_NEXT_PAGE_FIRST}")
+            else:
+                next_page_button = page.locator(
+                    f"xpath={cruzverde.XPATH_CLICK_NEXT_PAGE}")
 
             if await next_page_button.count() > 0:
                 print("Botón 'Siguiente' encontrado. Navegando a la siguiente página...")
@@ -105,7 +109,7 @@ class CruzverdeSpider(scrapy.Spider):
         previous_height = -1
         while True:
             try:
-                await page.wait_for_selector(cruzverde.SELECTOR_CONTAINER_PRODUCTS, timeout=6000)
+                await page.wait_for_selector(cruzverde.SELECTOR_CONTAINER_PRODUCTS, timeout=15000)
             except Exception:
                 self.logger.warning("El contenedor de productos no apareció. Saltando el scroll.")
                 break
@@ -138,16 +142,21 @@ class CruzverdeSpider(scrapy.Spider):
 
         name = product_card.xpath(cruzverde.XPATH_GET_NAME).get().strip()
         item['name'] = name
-        matches = re.findall(
-            r'(\d+[\.,]?\d*)\s?((?:g|gr|ml|l|kg|unidades|un|cm|m|u|grs|und|unds|tabletas|tableta|mg)\b)', name.lower(), re.IGNORECASE)
+        matches = re.findall(cruzverde.REGULAR_EXPRESSION_UNITS
+            , name.lower(), re.IGNORECASE)
         if matches:
             value = matches[-1]
-            item['total_unit_quantity'] = float(value[0].replace(
-                '.', '').replace(',', '.'))
+            item['total_unit_quantity'] = float(value[0].replace(',', '.'))
             item['unit_type'] = value[1]
         else:
-            item["total_unit_quantity"] = 1
-            item['unit_type'] = 'un'
+            matches = re.findall(cruzverde.REGULAR_EXPRESSION_UNITS_SIMPLE, name.lower(), re.IGNORECASE)
+            if matches:
+                value = matches[-1]
+                item['total_unit_quantity'] = float(value.replace('.', '').replace(',', '.')) if type(value) == str else float(value[0].replace('.', '').replace(',', '.'))
+                item['unit_type'] = 'un'
+            else:
+                item["total_unit_quantity"] = 1
+                item['unit_type'] = 'un'
         item['category'] = category
         item['sub_category'] = sub_category
         item['comercial_name'] = cruzverde.NAME
