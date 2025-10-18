@@ -8,7 +8,7 @@
 from itemadapter import ItemAdapter
 import psycopg2
 from scraper.items import ScraperItem
-from scraper.config import DB_HOST, DB_PORT, DB_SSL_PATH, DB_USER, DB_PASSWORD, DB_NAME
+from scraper.config import DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME
 
 
 class PostgresPipeline:
@@ -19,20 +19,18 @@ class PostgresPipeline:
         password = DB_PASSWORD
         database = DB_NAME
         port = DB_PORT
-        ssl_mode = 'verify-ca'
 
         self.connection = psycopg2.connect(
             host=hostname,
             user=username,
             password=password,
             dbname=database,
-            port=port,
-            sslmode=ssl_mode,
-            sslrootcert=DB_SSL_PATH
+            port=port
         )
+        print("--------------------Conexión a PostgreSQL establecida.--------------------")
 
         self.cur = self.connection.cursor()
-        self.cur.execute("SET search_path TO db_scrapy, public;")
+        
 
     def open_spider(self, spider):
         spider.logger.info("Pipeline de PostgreSQL iniciado.")
