@@ -1,0 +1,6 @@
+
+playwright
+Scrapy
+scrapy-playwright
+psycopg2-binary
+dotenv
