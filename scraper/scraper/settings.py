@@ -141,5 +141,18 @@ ITEM_PIPELINES = {
 # País para la tabla de base de datos
 DATABASE_COUNTRY = 'peru'
 
+# Logging configuration to suppress DEBUG logs from scrapy-playwright
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'loggers': {
+        'scrapy-playwright': {
+            'level': 'INFO',
+        },
+    },
+}
+
+LOG_LEVEL = 'INFO'
+
 if sys.platform == 'win32':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())

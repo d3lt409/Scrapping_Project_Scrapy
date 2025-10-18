@@ -34,8 +34,8 @@ COMERCIAL_NAME = "InkaFarma"
 # Selector para total de productos (buscar en header/título de la página)
 SELECTOR_TOTAL_PRODUCTOS = "fp-categories-landing h1, fp-categories-landing h2, fp-product-view-component h1, fp-product-view-component h2"
 
-# Contenedor principal de productos
-SELECTOR_PRODUCTOS_CONTAINER = "fp-product-view-component, fp-filtered-product-list, #bussiness-content"
+# Contenedor principal de productos (el card real que contiene toda la información)
+SELECTOR_PRODUCTOS_CONTAINER = "fp-filtered-product-list > fp-product-large"
 
 # Selector de cada producto individual - CORREGIDO basado en estructura real
 SELECTOR_PRODUCTO_CARD = "fp-product-small-category"  # Este es el contenedor real de cada producto

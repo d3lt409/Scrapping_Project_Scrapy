@@ -6,14 +6,7 @@ from scrapy.http import Response
 from playwright.async_api import Page
 import time
 
-# Importar todas las constantes
-from .constants.inkafarma import (
-    CATEGORIAS, CATEGORIA_URL_TEMPLATE, COMERCIAL_NAME, COMERCIAL_ID,
-    SELECTOR_TOTAL_PRODUCTOS, SELECTOR_PRODUCTOS_CONTAINER, SELECTOR_PRODUCTO_CARD,
-    SELECTOR_PRODUCTO_NOMBRE, SELECTOR_PRODUCTO_PRESENTACION, SELECTOR_PRODUCTO_PRECIO,
-    REGEX_TOTAL_PRODUCTOS, REGEX_CANTIDAD_PRESENTACION, REGEX_SOLO_NUMEROS,
-    TIMEOUT_SELECTOR, MAX_SCROLL_ATTEMPTS, SCROLL_HEIGHT_STEP, SCROLL_PAUSE_TIME
-)
+from .constants import inkafarma
 
 class InkafarmaSpider(scrapy.Spider):
     name = "inkafarma"
@@ -21,29 +14,33 @@ class InkafarmaSpider(scrapy.Spider):
     
     def __init__(self, custom_urls=None, *args, **kwargs):
         super(InkafarmaSpider, self).__init__(*args, **kwargs)
-        
+        self.custom_urls = custom_urls  # Initialize custom_urls
+
         # Procesar URLs de entrada
-        self.start_urls = self._process_input_urls(custom_urls)
+        self.start_urls, self.subcategories = self._process_input_urls(custom_urls)
     
     def _process_input_urls(self, custom_urls):
         if custom_urls:
             urls = custom_urls.split(',') if isinstance(custom_urls, str) else custom_urls
             cleaned_urls = [url.strip() for url in urls]
             self.logger.info(f"Usando URLs personalizadas: {len(cleaned_urls)} URLs")
-            return cleaned_urls
+            return cleaned_urls, [None] * len(cleaned_urls)  # Return None for subcategories
         else:
-            urls = [
-                CATEGORIA_URL_TEMPLATE.format(categoria=categoria)
-                for categoria in CATEGORIAS
-            ]
+            urls = []
+            subcategories = []
+            for categoria in inkafarma.CATEGORIAS:
+                url = inkafarma.CATEGORIA_URL_TEMPLATE.format(categoria=categoria)
+                urls.append(url)
+                subcategories.append(categoria)
             self.logger.info(f"URLs generadas automáticamente: {len(urls)} URLs")
-            return urls
+            return urls, subcategories
 
     def start_requests(self):
         """Generar requests iniciales con configuración de Playwright"""
         self.logger.info("🚀 Iniciando scraping de InkaFarma con Playwright...")
-        
-        for i, url in enumerate(self.start_urls):
+
+        urls, subcategories = self._process_input_urls(self.custom_urls)
+        for i, (url, subcategory) in enumerate(zip(urls, subcategories)):
             unique_url = f"{url}?scrapy_index={i}&ts={int(time.time())}"
             yield scrapy.Request(
                 url=unique_url,
@@ -51,15 +48,15 @@ class InkafarmaSpider(scrapy.Spider):
                 meta={
                     "playwright": True,
                     "playwright_include_page": True,
+                    "subcategory": subcategory,  # Pass subcategory in meta
                     "playwright_page_goto_kwargs": {
                         "wait_until": "domcontentloaded",  # Solo esperar DOM, no todos los recursos
-                        "timeout": 90000,  # Aumentar timeout a 90 segundos
+                        "timeout": 30000,
                     },
                     "playwright_page_methods": [
                         PageMethod("wait_for_load_state", "domcontentloaded"),
-                        PageMethod("wait_for_timeout", 5000),  # Esperar 5 segundos adicionales
-                        PageMethod("evaluate", "window.scrollTo(0, 0)"),  # Reset scroll position
-                    ]
+                        PageMethod("wait_for_timeout", 5000),
+                    ],
                 },
                 dont_filter=True
             )
@@ -104,35 +101,31 @@ class InkafarmaSpider(scrapy.Spider):
                 await page.close()
 
     async def await_products_loaded(self, page):
-        """Espera a que los productos se carguen completamente, similar a la lógica de Jumbo"""
         try:
-            # Esperar a que aparezcan los productos iniciales
-            await page.wait_for_selector(SELECTOR_PRODUCTO_CARD, timeout=15000)
+            # Esperar a que aparezcan los productos iniciales con timeout mínimo
+            await page.wait_for_selector(inkafarma.SELECTOR_PRODUCTO_CARD, timeout=8000)
             self.logger.info("✅ Productos iniciales cargados")
             
-            # Esperar un poco más para asegurar renderizado completo
-            await page.wait_for_timeout(3000)
+            # Esperar tiempo mínimo para asegurar renderizado completo
+            await page.wait_for_timeout(1500)
             
         except Exception as e:
             self.logger.warning(f"⚠️ No se pudieron cargar productos iniciales: {e}")
             # Esperar tiempo mínimo y continuar
-            await page.wait_for_timeout(5000)
+            await page.wait_for_timeout(2000)
 
     async def scroll_to_load_all_products(self, page):
-        """Hace scroll infinito basado en la lógica de Jumbo para cargar todos los productos"""
-        self.logger.info(f"🔄 Iniciando scroll infinito estilo Jumbo...")
-        
         previous_height = -1
         scroll_attempts = 0
         max_attempts = 50
         
         while scroll_attempts < max_attempts:
             try:
-                # Esperar a que el contenedor de productos esté presente
-                await page.wait_for_selector(SELECTOR_PRODUCTOS_CONTAINER, timeout=10000)
+                # Esperar a que el contenedor de productos esté completamente renderizado (timeout mínimo)
+                await page.wait_for_selector(inkafarma.SELECTOR_PRODUCTOS_CONTAINER, timeout=5000)
                 
                 # Obtener la altura actual del contenedor de productos
-                current_height = await page.evaluate(f"document.querySelector('{SELECTOR_PRODUCTOS_CONTAINER}').scrollHeight")
+                current_height = await page.evaluate(f"document.querySelector('{inkafarma.SELECTOR_PRODUCTOS_CONTAINER}').scrollHeight")
                 
                 self.logger.info(f"📏 Scroll {scroll_attempts + 1}: Altura del contenedor: {current_height}px")
                 
@@ -146,42 +139,42 @@ class InkafarmaSpider(scrapy.Spider):
                 # Hacer scroll hasta el final de la página actual
                 self.logger.info("📜 Haciendo scroll hasta el final...")
                 await page.evaluate(f"window.scrollTo(0, {current_height})")
-                
-                # Espera crucial para que se carguen y rendericen los nuevos productos
-                # Usar time.sleep como en Jumbo para bloquear completamente y dar tiempo al renderizado
-                time.sleep(3)  # 3 segundos como en Jumbo
-                
+                # Reducir tiempo de espera entre scrolls (mínimo necesario)
+                await page.wait_for_timeout(1500)
                 scroll_attempts += 1
                 
             except Exception as e:
                 self.logger.warning(f"⚠️ Error durante scroll {scroll_attempts + 1}: {e}")
                 # Si falla el contenedor, intentar scroll básico
                 await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-                await page.wait_for_timeout(2000)
+                await page.wait_for_timeout(1000)
                 scroll_attempts += 1
         
         # Obtener el conteo final de productos
-        productos_finales = await page.locator(SELECTOR_PRODUCTO_CARD).count()
+        productos_finales = await page.locator(inkafarma.SELECTOR_PRODUCTO_CARD).count()
         self.logger.info(f"🏁 Scroll finalizado después de {scroll_attempts} intentos: {productos_finales} productos cargados")
         return productos_finales
 
     def parse_products(self, response):
-        """Parsea todos los productos de la página usando los selectores de constantes"""
-        # Buscar productos usando el selector de constantes
-        productos = response.css(SELECTOR_PRODUCTO_CARD)
+        """
+        Extrae productos ÚNICAMENTE después de que el scroll se haya completado y la página esté estable.
+        Utiliza el selector correcto: //fp-filtered-product-list//fp-product-large (Card de producto)
+        """
+        # Usar XPath para seleccionar todos los fp-product-large dentro de fp-filtered-product-list
+        productos = response.xpath("//fp-filtered-product-list//fp-product-large")
         
-        self.logger.info(f"🔍 Procesando {len(productos)} productos encontrados")
+        self.logger.info(f"🔍 Procesando {len(productos)} productos encontrados (DESPUÉS del scroll completo)")
         
         for i, producto in enumerate(productos):
             try:
                 item = ScraperItem()
                 
                 # Extraer nombre del producto
-                nombre_elem = producto.css(SELECTOR_PRODUCTO_NOMBRE + "::text").get()
+                nombre_elem = producto.css(inkafarma.SELECTOR_PRODUCTO_NOMBRE + "::text").get()
                 nombre = nombre_elem.strip() if nombre_elem else ""
                 
                 # Extraer presentación/cantidad  
-                presentacion_elem = producto.css(SELECTOR_PRODUCTO_PRESENTACION + "::text").get()
+                presentacion_elem = producto.css(inkafarma.SELECTOR_PRODUCTO_PRESENTACION + "::text").get()
                 presentacion = presentacion_elem.strip() if presentacion_elem else ""
                 
                 # Crear nombre completo como solicita el usuario: "Nombre - Presentación"
@@ -193,7 +186,7 @@ class InkafarmaSpider(scrapy.Spider):
                 item['name'] = nombre_completo
                 
                 # Extraer precio
-                precio_elem = producto.css(SELECTOR_PRODUCTO_PRECIO + "::text").get()
+                precio_elem = producto.css(inkafarma.SELECTOR_PRODUCTO_PRECIO + "::text").get()
                 precio_text = precio_elem.strip() if precio_elem else "0"
                 
                 # Limpiar y procesar precio (puede venir como "S/ 5.20S/ 2.20")
@@ -205,7 +198,7 @@ class InkafarmaSpider(scrapy.Spider):
                     for parte in partes:
                         if parte.strip():
                             # Remover todo excepto números y punto decimal
-                            precio_limpio = REGEX_SOLO_NUMEROS.sub('', parte.strip())
+                            precio_limpio = inkafarma.REGEX_SOLO_NUMEROS.sub('', parte.strip())
                             try:
                                 if precio_limpio:
                                     precios.append(float(precio_limpio))
@@ -226,14 +219,11 @@ class InkafarmaSpider(scrapy.Spider):
                 item['total_unit_quantity'] = quantity
                 item['unit_type'] = unit_type
                 
-                # Obtener categoría desde la URL o breadcrumbs
-                categoria = self.extract_category_from_url(response.url)
-                item['category'] = categoria
-                item['sub_category'] = categoria  # Por ahora usar la misma
+                item['category'] = "Farmacia"
                 
                 # Información comercial
-                item['comercial_name'] = COMERCIAL_NAME
-                item['comercial_id'] = COMERCIAL_ID
+                item['comercial_name'] = inkafarma.COMERCIAL_NAME
+                item['comercial_id'] = inkafarma.COMERCIAL_ID
                 
                 yield item
                 
@@ -241,12 +231,11 @@ class InkafarmaSpider(scrapy.Spider):
                 self.logger.error(f"❌ Error procesando producto {i+1}: {e}")
                 continue
         
-        self.logger.info(f"✅ Scraping completado: {len(productos)} productos extraídos")
+        self.logger.info(f"✅ Scraping completado: {len(productos)} productos extraídos (después del scroll completo)")
     
     def calculate_unit_price(self, precio_total, presentacion):
-        """Calcula el precio unitario basado en la presentación"""
         try:
-            match = REGEX_CANTIDAD_PRESENTACION.search(presentacion)
+            match = inkafarma.REGEX_CANTIDAD_PRESENTACION.search(presentacion)
             if match:
                 cantidad = float(match.group(1))
                 if cantidad > 0:
@@ -258,7 +247,7 @@ class InkafarmaSpider(scrapy.Spider):
     def extract_quantity_and_unit(self, presentacion):
         """Extrae cantidad y unidad de la presentación"""
         try:
-            match = REGEX_CANTIDAD_PRESENTACION.search(presentacion)
+            match = inkafarma.REGEX_CANTIDAD_PRESENTACION.search(presentacion)
             if match:
                 cantidad = float(match.group(1))
                 unidad = match.group(2).lower()
