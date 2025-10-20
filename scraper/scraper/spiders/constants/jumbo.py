@@ -1,13 +1,17 @@
-START_URLS_SUPERMARKET = ["https://www.jumbocolombia.com/supermercado/despensa",
-                          "https://www.jumbocolombia.com/supermercado/lacteos-huevos-y-refrigerados",
-                          "https://www.jumbocolombia.com/supermercado/frutas-y-verduras",
-                          "https://www.jumbocolombia.com/supermercado/pescados-y-mariscos",
-                          "https://www.jumbocolombia.com/supermercado/carne-y-pollo",
-                          "https://www.jumbocolombia.com/supermercado/panaderia-y-pasteleria",
-                          "https://www.jumbocolombia.com/supermercado/dulces-y-postres",
-                          "https://www.jumbocolombia.com/supermercado/pasabocas",
-                          "https://www.jumbocolombia.com/supermercado/charcuteria",
-                          "https://www.jumbocolombia.com/supermercado/vinos-y-licores",
+START_URLS_SUPERMARKET_1 = [
+                        "https://www.jumbocolombia.com/supermercado/despensa",
+                        "https://www.jumbocolombia.com/supermercado/lacteos-huevos-y-refrigerados",
+                        "https://www.jumbocolombia.com/supermercado/frutas-y-verduras",
+                        "https://www.jumbocolombia.com/supermercado/pescados-y-mariscos",
+                        "https://www.jumbocolombia.com/supermercado/carne-y-pollo",
+                        "https://www.jumbocolombia.com/supermercado/panaderia-y-pasteleria",
+                        "https://www.jumbocolombia.com/supermercado/dulces-y-postres",
+                        "https://www.jumbocolombia.com/supermercado/pasabocas",
+                        "https://www.jumbocolombia.com/supermercado/charcuteria",
+                        "https://www.jumbocolombia.com/supermercado/vinos-y-licores"
+                          ]
+
+START_URLS_SUPERMARKET_2 = [
                           "https://www.jumbocolombia.com/supermercado/bebidas",
                           "https://www.jumbocolombia.com/supermercado/aseo-de-hogar",
                           "https://www.jumbocolombia.com/supermercado/cuidado-personal",
@@ -17,8 +21,8 @@ START_URLS_SUPERMARKET = ["https://www.jumbocolombia.com/supermercado/despensa",
                           "https://www.jumbocolombia.com/supermercado/platos-preparados",
                           "https://www.jumbocolombia.com/supermercado/cuidado-del-bebe",
                           "https://www.jumbocolombia.com/supermercado/bolsas",
-                          "https://www.jumbocolombia.com/supermercado/cigarrillos-y-tabacos",
-                          ]
+                          "https://www.jumbocolombia.com/supermercado/cigarrillos-y-tabacos"
+]
 
 XPATH_HOVER_MAIN_CATEGORY_SUPERMERCADO = "//a[@href='/supermercado' and contains(@class,'jumbo-main-menu-2-x-link--header-submenu-item')]"
 
@@ -39,9 +43,7 @@ START_URLS_ELECTRO = ["https://www.jumbocolombia.com/tecnologia/informatica",
 XPATH_HOVER_MAIN_CATEGORY_TECNOLOGIA = "//a[@href='/tecnologia' and contains(@class,'jumbo-main-menu-2-x-link--header-submenu-item')]"
 XPATH_HOVER_MAIN_CATEGORY_ELECTRODOMESICOS = "//a[@href='/electrodomesticos' and contains(@class,'jumbo-main-menu-2-x-link--header-submenu-item')]"
 
-START_URLS_PHARMACY = ["https://www.jumbocolombia.com/salud-y-bienestar/drogueria",
-                       "https://www.jumbocolombia.com/salud-y-bienestar/equipos-de-cuidado-en-casa",
-                       "https://www.jumbocolombia.com/salud-y-bienestar/ortopedia-y-fisioterapia"]
+REGULAR_EXPRESSION_UNITS_SIMPLE = r'(?:x|por)\s*(\d+[\.,]?\d*)\b'
 
 XPATH_HOVER_MAIN_CATEGORY_SALUD = "//a[@href='/salud-y-bienestar' and contains(@class,'jumbo-main-menu-2-x-link--header-submenu-item')]"
 
@@ -65,3 +67,5 @@ SELECTOR_CLICK_BUTTON = "button#noActive"
 SELECTOR_BREADCRUMBS = "div[data-testid='breadcrumb'] > span > a"
 SELECTOR_PRODUCT_CARDS = "div#gallery-layout-container article.vtex-product-summary-2-x-element > div"
 SELECTOR_TOTAL_COUNT_PRODUCTS = "div[class*='totalProducts--layout'] > span"
+
+SELECTOR_OLDER_AGE= "button[class='tiendasjumboqaio-delivery-modal-3-x-ofAgebutton']"
