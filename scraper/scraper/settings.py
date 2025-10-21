@@ -119,7 +119,7 @@ PLAYWRIGHT_LAUNCH_OPTIONS = {
     "headless": True,
     "args": [
         "--no-sandbox",
-        "--disable-setuid-sandbox", 
+        "--disable-setuid-sandbox",
         "--disable-dev-shm-usage",
         "--disable-web-security",
         "--disable-features=VizDisplayCompositor"
@@ -127,8 +127,8 @@ PLAYWRIGHT_LAUNCH_OPTIONS = {
 }
 
 # Configuración de timeouts
-DOWNLOAD_TIMEOUT = 90 
-PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 90000  
+DOWNLOAD_TIMEOUT = 90
+PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 90000
 
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 

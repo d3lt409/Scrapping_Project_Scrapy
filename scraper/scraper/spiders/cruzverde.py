@@ -8,20 +8,25 @@ from scraper.spiders.constants import cruzverde
 from scrapy.http import Response
 from playwright.async_api import Page
 
+
 class CruzverdeSpider(scrapy.Spider):
     name = "cruzverde"
+    pais = "colombia"
     allowed_domains = ["www.cruzverde.com.co"]
     start_urls = ["https://www.cruzverde.com.co/"]
-    
+    custom_settings = {
+        'pais': 'colombia'
+    }
+
     def start_requests(self):
         for url in self.start_urls:
-            
+
             yield scrapy.Request(
                 url,
                 meta=dict(playwright=True, playwright_include_page=True,
                           playwright_page_methods=[
                               PageMethod(
-                                  "wait_for_selector", cruzverde.SELECTOR_CITY_ACEPTAR, timeout = '60000'),
+                                  "wait_for_selector", cruzverde.SELECTOR_CITY_ACEPTAR, timeout='60000'),
                           ],
                           playwright_page_goto_kwargs={
                               "wait_until": "domcontentloaded",
@@ -32,19 +37,21 @@ class CruzverdeSpider(scrapy.Spider):
                 callback=self.orchestrator,
                 cb_kwargs={}
             )
-            
+
     async def orchestrator(self, response: Response):
         page: Page = response.meta["playwright_page"]
-        
+
         try:
             button_city = await page.wait_for_selector(cruzverde.SELECTOR_CITY_ACEPTAR, timeout=15000)
             await button_city.click()
-            await page.wait_for_timeout(2000)  # Espera adicional para asegurarse de que la acción se complete
+            # Espera adicional para asegurarse de que la acción se complete
+            await page.wait_for_timeout(2000)
             list_category_button = await page.wait_for_selector(cruzverde.SELECTOR_CLICK_CATEGORIES, timeout=15000)
             await list_category_button.click()
             await page.wait_for_timeout(2000)
         except Exception as e:
-            self.logger.warning(f"No se pudo aceptar la ciudad para {response.url}. Procediendo con scrapeo directo. Error: {e}")
+            self.logger.warning(
+                f"No se pudo aceptar la ciudad para {response.url}. Procediendo con scrapeo directo. Error: {e}")
             await page.wait_for_timeout(2000)
         await page.wait_for_selector(cruzverde.SELECTOR_GET_ALL_CATEGORIES, timeout=20000)
         get_all_categories = await page.query_selector_all(cruzverde.SELECTOR_GET_ALL_CATEGORIES)
@@ -52,39 +59,43 @@ class CruzverdeSpider(scrapy.Spider):
             category_name = await category.inner_text()
             if category_name in cruzverde.LIST_CATEGORIES:
                 await category.click()
-                await page.wait_for_timeout(2000)  # Espera adicional para asegurarse de que la acción se complete
+                # Espera adicional para asegurarse de que la acción se complete
+                await page.wait_for_timeout(2000)
                 await page.wait_for_selector(cruzverde.SELECTOR_SEARCH_SUBCATEGORY, timeout=20000)
                 subcategories = await page.query_selector_all(cruzverde.SELECTOR_SEARCH_SUBCATEGORY)
                 for subcategory in subcategories:
                     category_link = await subcategory.get_attribute('href')
                     if category_link and category_link.startswith('http'):
-                        category_link = category_link # Asegurarse de que el enlace es absoluto
+                        category_link = category_link  # Asegurarse de que el enlace es absoluto
                     elif category_link and not category_link.startswith('http'):
                         category_link = response.urljoin(category_link)
                     sub_category_name = await subcategory.inner_text()
-                    print(f"Navegando a la subcategoría: {sub_category_name} ({category_name})")
+                    print(
+                        f"Navegando a la subcategoría: {sub_category_name} ({category_name})")
                     yield scrapy.Request(
                         url=category_link,
                         meta=dict(playwright=True, playwright_include_page=True,
-                                    playwright_page_methods=[
-                                        PageMethod(
-                                            "wait_for_selector", cruzverde.SELECTOR_CONTAINER_PRODUCTS, timeout = '60000'),
-                                    ],
-                                    playwright_page_goto_kwargs={
-                                        "wait_until": "domcontentloaded",
-                                        "timeout": 60000
-                                    }
-                                    ),
+                                  playwright_page_methods=[
+                                      PageMethod(
+                                          "wait_for_selector", cruzverde.SELECTOR_CONTAINER_PRODUCTS, timeout='60000'),
+                                  ],
+                                  playwright_page_goto_kwargs={
+                                      "wait_until": "domcontentloaded",
+                                      "timeout": 60000
+                                  }
+                                  ),
                         callback=self.parse_category,
-                        cb_kwargs={'category_name': category_name, 'sub_category_name': sub_category_name}
+                        cb_kwargs={'category_name': category_name,
+                                   'sub_category_name': sub_category_name}
                     )
+
     async def parse_category(self, response: Response, category_name, sub_category_name):
         page: Page = response.meta["playwright_page"]
         page_number = 1
         while True:
             async for item in self.save_products_count(page, page_number, response, category_name, sub_category_name):
                 yield item
-            await page.wait_for_timeout(2000) 
+            await page.wait_for_timeout(2000)
             if page_number == 1:
                 next_page_button = page.locator(
                     f"xpath={cruzverde.XPATH_CLICK_NEXT_PAGE_FIRST}")
@@ -94,7 +105,7 @@ class CruzverdeSpider(scrapy.Spider):
 
             if await next_page_button.count() > 0:
                 print("Botón 'Siguiente' encontrado. Navegando a la siguiente página...")
-                await page.wait_for_timeout(2000) 
+                await page.wait_for_timeout(2000)
                 await next_page_button.first.click()
                 print("Clic en el botón 'Siguiente' realizado.")
                 await page.wait_for_selector(cruzverde.SELECTOR_GET_ALL_PRODUCTS, timeout=60000)
@@ -103,7 +114,7 @@ class CruzverdeSpider(scrapy.Spider):
                 print("No se encontró el botón 'Siguiente'. Fin de la categoría.")
                 break
         await page.close()
-        
+
     async def await_products_loaded(self, page: Page):
         await page.wait_for_selector(cruzverde.SELECTOR_GET_ALL_PRODUCTS, timeout=15000)
         previous_height = -1
@@ -111,9 +122,10 @@ class CruzverdeSpider(scrapy.Spider):
             try:
                 await page.wait_for_selector(cruzverde.SELECTOR_CONTAINER_PRODUCTS, timeout=15000)
             except Exception:
-                self.logger.warning("El contenedor de productos no apareció. Saltando el scroll.")
+                self.logger.warning(
+                    "El contenedor de productos no apareció. Saltando el scroll.")
                 break
-            current_height = await page.evaluate(f"selector => document.querySelector(selector).scrollHeight",cruzverde.SELECTOR_CONTAINER_PRODUCTS)
+            current_height = await page.evaluate(f"selector => document.querySelector(selector).scrollHeight", cruzverde.SELECTOR_CONTAINER_PRODUCTS)
 
             print(f"Altura del contenedor: {current_height}px")
 
@@ -127,8 +139,8 @@ class CruzverdeSpider(scrapy.Spider):
             print("Haciendo scroll hasta el final...")
             await page.evaluate(f"window.scrollTo(0, {current_height})")
             await page.wait_for_timeout(2000)
-            
-    async def save_products_count(self, page:Page, page_number, response: Response, category, sub_category):
+
+    async def save_products_count(self, page: Page, page_number, response: Response, category, sub_category):
         print(f"Scrapeando página {page_number} de '{response.url}'...")
         await self.await_products_loaded(page)
         html_content = await page.content()
@@ -142,17 +154,19 @@ class CruzverdeSpider(scrapy.Spider):
 
         name = product_card.xpath(cruzverde.XPATH_GET_NAME).get().strip()
         item['name'] = name
-        matches = re.findall(cruzverde.REGULAR_EXPRESSION_UNITS
-            , name.lower(), re.IGNORECASE)
+        matches = re.findall(
+            cruzverde.REGULAR_EXPRESSION_UNITS, name.lower(), re.IGNORECASE)
         if matches:
             value = matches[-1]
             item['total_unit_quantity'] = float(value[0].replace(',', '.'))
             item['unit_type'] = value[1]
         else:
-            matches = re.findall(cruzverde.REGULAR_EXPRESSION_UNITS_SIMPLE, name.lower(), re.IGNORECASE)
+            matches = re.findall(
+                cruzverde.REGULAR_EXPRESSION_UNITS_SIMPLE, name.lower(), re.IGNORECASE)
             if matches:
                 value = matches[-1]
-                item['total_unit_quantity'] = float(value.replace('.', '').replace(',', '.')) if type(value) == str else float(value[0].replace('.', '').replace(',', '.'))
+                item['total_unit_quantity'] = float(value.replace('.', '').replace(',', '.')) if type(
+                    value) == str else float(value[0].replace('.', '').replace(',', '.'))
                 item['unit_type'] = 'un'
             else:
                 item["total_unit_quantity"] = 1
@@ -165,11 +179,12 @@ class CruzverdeSpider(scrapy.Spider):
 
         price_text = product_card.xpath(cruzverde.XPATH_GET_PRICE).get()
         if not price_text:
-            print(f"Precio no encontrado para el producto: {name}, sub_categoria {sub_category}. Asignando precio 0.")
+            print(
+                f"Precio no encontrado para el producto: {name}, sub_categoria {sub_category}. Asignando precio 0.")
             exit()
         price = price_text.strip().replace(
             '$', '').replace('.', '').replace(",", ".").strip()
-        price = re.sub(r'[^\d.]', '', price)  
+        price = re.sub(r'[^\d.]', '', price)
         item['price'] = float(price)
 
         unit_price_text = product_card.xpath(

@@ -1,5 +1,5 @@
 # Categorías del mercado con sus URLs base
-CATEGORIAS_MERCADO = {
+CATEGORIAS_MERCADO1 = {
     "frutas-y-verduras": [
         "frutas",
         "verduras"
@@ -71,9 +71,12 @@ CATEGORIAS_MERCADO = {
         "cremas-salsas-y-condimentos-a-granel",
         "pizzas-y-pastas-frescas",
         "tamales-y-humitas"
-        
-    ],
-    "bebidas" : [
+
+    ]
+
+}
+CATEGORIAS_MERCADO2 = {
+    "bebidas": [
         "gaseosas",
         "aguas",
         "jugos-y-otras-bebidas",
@@ -87,7 +90,7 @@ CATEGORIAS_MERCADO = {
         "cigarros",
         "hielo"
     ],
-    "limpieza" : [
+    "limpieza": [
         "cuidado-de-la-ropa",
         "cuidado-del-hogar",
         "papel-para-el-hogar",
@@ -96,7 +99,7 @@ CATEGORIAS_MERCADO = {
         "limpieza-de-calzado",
         "accesorios-de-limpieza"
     ],
-    "cuidado-personal-y-salud" : [
+    "cuidado-personal-y-salud": [
         "cuidado-del-cabello",
         "higiene-personal",
         "cuidado-bucal",
@@ -109,7 +112,7 @@ CATEGORIAS_MERCADO = {
         "salud",
         "vitaminas-y-nutricion"
     ],
-    "belleza" : [
+    "belleza": [
         "proteccion-solar",
         "cuidado-facial",
         "cuidado-de-la-piel-corporal",
@@ -150,7 +153,10 @@ CATEGORIAS_MERCADO = {
         "desayunos-organicos",
         "snacks-organicos",
         "vitaminas-y-suplementos-organicos"
-    ],
+    ]
+}
+CATEGORIA_ELECTRONICA = {
+
     "tecnologia": [
         "televisores",
         "computo",
