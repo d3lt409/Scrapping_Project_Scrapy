@@ -138,3 +138,215 @@ FALLBACK_CATEGORY_LINKS = [
     "/categoria/limpieza-y-cuidado-para-el-hogar"
 ]
 
+
+CATEGORIAS_CON_SUBCATEGORIAS = {
+    "cupones-promocionales": [
+        "cupon-inka30",
+        "cupon-inka15"
+    ],
+    "inka-packs": [
+        "packs-de-adulto-mayor",
+        "packs-de-farmacia",
+        "packs-de-nutricion-y-bienestar",
+        "packs-de-dermatologia-cosmetica",
+        "packs-para-el-cuidado-infantil",
+        "packs-de-cuidado-personal",
+        "packs-de-nutricion-infantil",
+        "packs-de-belleza"
+    ],
+    "precios-mas-bajos": [
+        "tu-sonrisa-merece-totaldent"
+    ],
+    "farmacia": [
+        "nos-preocupamos-por-tu-salud",
+        "consulta-medica",
+        "malestar-de-la-tos-con-flema",
+        "dolor-generalizado",
+        "resfriado-comun",
+        "cuidado-respiratorio",
+        "colicos-menstruales",
+        "malestar-estomacal",
+        "malestar-general-y-fiebre",
+        "herbolario",
+        "oidos",
+        "cuidado-muscular-y-articular",
+        "lo-mejor-de-pg-health"
+    ],
+    "salud": [
+        "vitaminas-y-complementos",
+        "soluciones-fisiologicas",
+        "sistema-urinario",
+        "sistema-sanguineo",
+        "sistema-oseo-y-articulaciones",
+        "sistema-nervioso",
+        "sistema-digestivo",
+        "sistema-respiratorio",
+        "sistema-cardiovascular",
+        "productos-galenicos",
+        "problemas-generales",
+        "preparados-estomatologicos",
+        "otologicos",
+        "optica",
+        "oftalmologicos",
+        "nutricion",
+        "infecciones-y-otros",
+        "dispositivos-quirurgicos",
+        "hormonas",
+        "cuidado-muscular-y-articular",
+        "cuidado-dermatologico",
+        "cuidado-de-la-mujer",
+        "antineoplasicos-e-inmunomoduladores",
+        "antibacterianos-para-uso-sistemico"
+    ],
+    "mama-y-bebe": [
+        "vitaminas-y-suplementos",
+        "todo-en-ninet",
+        "promociones-en-nutricion-infantil",
+        "toallitas-humedas",
+        "soporte-para-embarazo",
+        "panales-para-bebe",
+        "maquillaje-para-ninas",
+        "formula-para-bebes",
+        "dormitorio",
+        "cuidado-de-bebes-y-perfumeria",
+        "cuidado-corporal-para-mama",
+        "accesorios-de-lactancia",
+        "actividades",
+        "accesorios-de-cuidado-infantil",
+        "vestimenta",
+        "promociones-para-el-cuidado-infantil",
+        "jugueteria"
+    ],
+    "nutricion-para-todos": [
+        "promociones-en-suplementos-y-vitaminas",
+        "vitaminas",
+        "suplementos-nutricionales",
+        "snacks-y-piqueos",
+        "minerales",
+        "multivitaminicos",
+        "nutricion-pensada-en-ti-y-tu-familia",
+        "fitness-y-deportivos"
+    ],
+    "dermatologia-cosmetica": [
+        "promociones-en-dermocosmetica",
+        "cuidado-capilar",
+        "fotoprotector",
+        "dermatologia-pediatrica",
+        "tratamientos-corporales",
+        "otros-productos",
+        "tratamiento-facial"
+    ],
+    "cuidado-personal": [
+        "promociones-en-cuidado-e-higiene-personal",
+        "cuidado-intimo",
+        "bano",
+        "cuidado-de-la-piel",
+        "jabones",
+        "cuidado-del-cabello",
+        "cuidado-de-manos-y-pies",
+        "cuidado-bucal",
+        "afeitado",
+        "bienestar-sexual"
+    ],
+    "belleza": [
+        "promociones-en-belleza",
+        "electrobelleza",
+        "cosmeticos",
+        "cuidado-facial",
+        "cremas-hidratantes",
+        "fragancias",
+        "tintes-para-cabello",
+        "accesorios",
+        "depilacion",
+        "bloqueadores-solares"
+    ],
+    "limpieza-y-cuidado-para-el-hogar": [
+        "limpieza-del-hogar",
+        "papel-higienico-y-toallas",
+        "insecticidas",
+        "aromatizantes",
+        "accesorios-de-cocina",
+        "baterias-y-pilas"
+    ],
+    "cuidado-del-cabello": [
+        "cuidado-y-belleza-superior",
+        "cuidado-masculino",
+        "tintes",
+        "accesorios",
+        "cuidado-profesional",
+        "shampoo-y-acondicionador",
+        "tratamientos"
+    ],
+    "adulto-mayor": [
+        "promociones-para-el-adulto-mayor",
+        "incontinencia",
+        "cuidado-bucal",
+        "nutricion-adulto",
+        "vitaminas-para-adultos"
+    ],
+    "dispositivos-medicos": [
+        "vaporizador",
+        "test-covid-pruebas-rapidas",
+        "test-de-embarazo",
+        "termometros",
+        "tensiometros",
+        "respirometro",
+        "ortopedia",
+        "oximetros",
+        "nebulizadores",
+        "lampara-infrarroja",
+        "glucometros",
+        "botiquin",
+        "articulos-de-proteccion",
+        "equipos-medicos",
+        "sistema-cardiovascular",
+        "problemas-generales"
+    ],
+    "productos-naturales": [
+        "sistema-renal-reproductor",
+        "sistema-locomotor",
+        "sistema-digestivo",
+        "sistema-circulatorio",
+        "productos-naturales",
+        "infusiones-naturales",
+        "dietas",
+        "antioxidantes",
+        "alimentos-naturales"
+    ],
+    "deportes": [
+        "nutricion-deportiva",
+        "zona-fitness",
+        "maquinas-deportivas",
+        "accesorios-deportivos",
+        "natacion",
+        "equipos-de-box",
+        "scooter",
+        "bicicletas",
+        "ropa-derpotiva-para-mujer",
+        "crossfit"
+    ],
+    "peru-pasion": [
+        "nutricion",
+        "higiene-y-cuidado-personal",
+        "dispositivos-ortopedicos",
+        "belleza-y-estetica"
+    ],
+    "nuevas-categorias": [
+        "promociones-marketplace",
+        "tecnologia-y-accesorios",
+        "nutricion-adultos",
+        "mundo-infantil",
+        "moda-mujer",
+        "mascotas",
+        "limpieza-para-tu-hogar",
+        "hogar-y-decoracion",
+        "electrohogar",
+        "dormitorio",
+        "belleza-y-accesorios",
+        "accesorios-para-autos",
+        "videojuegos-y-consolas"
+    ]
+}
+
+# Template de URL para categorías con subcategorías
+CATEGORIA_SUBCATEGORIA_URL_TEMPLATE = "https://inkafarma.pe/categoria/{categoria}/{subcategoria}"

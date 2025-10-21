@@ -16,6 +16,12 @@ class InkafarmaSpider(scrapy.Spider):
         super(InkafarmaSpider, self).__init__(*args, **kwargs)
         self.custom_urls = custom_urls  # Initialize custom_urls
 
+        # Verificar que las constantes estén disponibles
+        if not hasattr(inkafarma, 'CATEGORIAS_CON_SUBCATEGORIAS'):
+            self.logger.error("❌ CATEGORIAS_CON_SUBCATEGORIAS no encontrada. Fallback estará limitado.")
+        else:
+            self.logger.info(f"✅ CATEGORIAS_CON_SUBCATEGORIAS cargada con {len(inkafarma.CATEGORIAS_CON_SUBCATEGORIAS)} categorías")
+
         # Procesar URLs de entrada
         self.start_urls, self.subcategories = self._process_input_urls(custom_urls)
     
@@ -34,6 +40,28 @@ class InkafarmaSpider(scrapy.Spider):
                 subcategories.append(categoria)
             self.logger.info(f"URLs generadas automáticamente: {len(urls)} URLs")
             return urls, subcategories
+
+    def generate_all_subcategory_urls(self):
+        """
+        Genera todas las URLs de subcategorías usando CATEGORIAS_CON_SUBCATEGORIAS
+        Útil para scraping exhaustivo por subcategorías
+        """
+        all_urls = []
+        
+        for categoria, subcategorias in inkafarma.CATEGORIAS_CON_SUBCATEGORIAS.items():
+            for subcategoria in subcategorias:
+                url = inkafarma.CATEGORIA_SUBCATEGORIA_URL_TEMPLATE.format(
+                    categoria=categoria, 
+                    subcategoria=subcategoria
+                )
+                all_urls.append({
+                    'url': url,
+                    'categoria': categoria,
+                    'subcategoria': subcategoria
+                })
+        
+        self.logger.info(f"📋 Generadas {len(all_urls)} URLs de subcategorías")
+        return all_urls
 
     def start_requests(self):
         """Generar requests iniciales con configuración de Playwright"""
@@ -170,7 +198,9 @@ class InkafarmaSpider(scrapy.Spider):
                     body=content,
                     encoding='utf-8'
                 )
-                for item in self.parse_products(updated_response):
+                # Extraer categoría de la URL para usar como subcategoría
+                category_name = self.extract_category_from_url(response.url)
+                for item in self.parse_products(updated_response, category_name):
                     yield item
             else:
                 # Si hay >= 250 productos, extraer URLs del menú y navegar a subcategorías
@@ -184,21 +214,80 @@ class InkafarmaSpider(scrapy.Spider):
                 menu_structure = await self.extract_menu_structure(page, category_prefix)
                 
                 if not menu_structure or not menu_structure.get('categorias'):
-                    self.logger.warning("⚠️ No se encontró estructura del menú o departamentos. Haciendo fallback a scraping directo...")
+                    self.logger.warning("⚠️ No se encontró estructura del menú o departamentos. Activando fallback con subcategorías predefinidas...")
                     
-                    # FALLBACK: Volver a la URL original y hacer scraping directo
+                    # NUEVO FALLBACK: Usar estructura predefinida de categorías y subcategorías
+                    category_raw = self.extract_category_raw_from_url(current_url)
+                    self.logger.info(f"🔍 Buscando categoria '{category_raw}' en estructura predefinida...")
+                    
+                    # Buscar la categoría en CATEGORIAS_CON_SUBCATEGORIAS
+                    if hasattr(inkafarma, 'CATEGORIAS_CON_SUBCATEGORIAS') and category_raw in inkafarma.CATEGORIAS_CON_SUBCATEGORIAS:
+                        subcategorias = inkafarma.CATEGORIAS_CON_SUBCATEGORIAS[category_raw]
+                        self.logger.info(f"✅ Encontrada categoria '{category_raw}' con {len(subcategorias)} subcategorías")
+                        
+                        # Procesar cada subcategoría usando el template
+                        for subcategoria in subcategorias:
+                            try:
+                                subcategoria_url = inkafarma.CATEGORIA_SUBCATEGORIA_URL_TEMPLATE.format(
+                                    categoria=category_raw, 
+                                    subcategoria=subcategoria
+                                )
+                                self.logger.info(f"🔄 Fallback: Procesando subcategoría '{subcategoria}' → {subcategoria_url}")
+                                
+                                # Navegar a la subcategoría
+                                await page.goto(subcategoria_url, wait_until="domcontentloaded", timeout=30000)
+                                await page.wait_for_timeout(3000)
+                                
+                                # Verificar si la subcategoría existe y tiene productos
+                                page_title = await page.title()
+                                if "404" not in page_title and "Not Found" not in page_title:
+                                    subcat_count = await self.get_product_count(page)
+                                    self.logger.info(f"  📊 Productos en subcategoría '{subcategoria}': {subcat_count}")
+                                    
+                                    if subcat_count > 0:
+                                        # Extraer productos de la subcategoría
+                                        await self.await_products_loaded(page)
+                                        productos_cargados = await self.scroll_to_load_all_products(page)
+                                        self.logger.info(f"  ✅ Productos extraídos de '{subcategoria}': {productos_cargados}")
+                                        
+                                        content = await page.content()
+                                        from scrapy.http import HtmlResponse
+                                        updated_response = HtmlResponse(
+                                            url=subcategoria_url,
+                                            body=content,
+                                            encoding='utf-8'
+                                        )
+                                        for item in self.parse_products(updated_response, subcategoria):
+                                            yield item
+                                    else:
+                                        self.logger.info(f"  ⚠️ Subcategoría '{subcategoria}' sin productos")
+                                else:
+                                    self.logger.warning(f"  ⚠️ Subcategoría no encontrada: {subcategoria_url}")
+                                    
+                            except Exception as subcat_error:
+                                self.logger.error(f"  ❌ Error procesando subcategoría '{subcategoria}': {subcat_error}")
+                                continue
+                        
+                        await page.close()
+                        return
+                    else:
+                        self.logger.warning(f"⚠️ Categoría '{category_raw}' no encontrada en estructura predefinida")
+                        if not hasattr(inkafarma, 'CATEGORIAS_CON_SUBCATEGORIAS'):
+                            self.logger.error("❌ CATEGORIAS_CON_SUBCATEGORIAS no está disponible en el módulo inkafarma")
+                    
+                    # FALLBACK FINAL: Si no se encuentra en la estructura, scraping directo
                     original_url = response.url.split('?')[0]  # Remover parámetros de scrapy
-                    self.logger.info(f"🔄 Fallback: Navegando de vuelta a la URL original: {original_url}")
+                    self.logger.info(f"🔄 Fallback final: Navegando de vuelta a la URL original: {original_url}")
                     
                     try:
                         await page.goto(original_url, wait_until="domcontentloaded", timeout=30000)
                         await page.wait_for_timeout(3000)
                         
                         # Hacer scraping directo con scroll infinito
-                        self.logger.info("📜 Fallback: Iniciando scraping directo con scroll infinito...")
+                        self.logger.info("📜 Fallback final: Iniciando scraping directo con scroll infinito...")
                         await self.await_products_loaded(page)
                         productos_cargados = await self.scroll_to_load_all_products(page)
-                        self.logger.info(f"✅ Fallback completado: {productos_cargados} productos extraídos")
+                        self.logger.info(f"✅ Fallback final completado: {productos_cargados} productos extraídos")
                         
                         content = await page.content()
                         from scrapy.http import HtmlResponse
@@ -207,11 +296,13 @@ class InkafarmaSpider(scrapy.Spider):
                             body=content,
                             encoding='utf-8'
                         )
-                        for item in self.parse_products(updated_response):
+                        # Extraer categoría de la URL para usar como subcategoría
+                        category_name = self.extract_category_from_url(original_url)
+                        for item in self.parse_products(updated_response, category_name):
                             yield item
                             
                     except Exception as fallback_error:
-                        self.logger.error(f"❌ Error en fallback: {fallback_error}")
+                        self.logger.error(f"❌ Error en fallback final: {fallback_error}")
                     
                     await page.close()
                     return
@@ -388,7 +479,9 @@ class InkafarmaSpider(scrapy.Spider):
                 body=content,
                 encoding='utf-8'
             )
-            for item in self.parse_products(updated_response, None):
+            # Extraer categoría de la URL para usar como subcategoría
+            category_name = self.extract_category_from_url(str(page.url))
+            for item in self.parse_products(updated_response, category_name):
                 yield item
 
     async def process_subcategory_products(self, page, subcategory_name):
@@ -563,8 +656,16 @@ class InkafarmaSpider(scrapy.Spider):
                 item['total_unit_quantity'] = quantity
                 item['unit_type'] = unit_type
                 
-                # Usar subcategoría si está disponible, sino categoría general
-                item['category'] = subcategory_name if subcategory_name else "Farmacia"
+                # Asignar categoría y subcategoría correctamente
+                if subcategory_name:
+                    # Extraer categoría principal de la subcategoría
+                    category_principal = self.extract_category_from_subcategory(subcategory_name)
+                    item['category'] = category_principal
+                    item['sub_category'] = subcategory_name
+                else:
+                    # Si no hay subcategoría, usar categoría genérica
+                    item['category'] = "Farmacia"
+                    item['sub_category'] = None
                 
                 # Información comercial
                 item['comercial_name'] = inkafarma.COMERCIAL_NAME
@@ -577,6 +678,31 @@ class InkafarmaSpider(scrapy.Spider):
                 continue
         
         self.logger.info(f"✅ Scraping completado: {len(productos)} productos extraídos{context} (después del scroll completo)")
+    
+    def extract_category_from_subcategory(self, subcategory_name):
+        """
+        Extrae la categoría principal de una subcategoría usando CATEGORIAS_CON_SUBCATEGORIAS
+        """
+        try:
+            for categoria, subcategorias in inkafarma.CATEGORIAS_CON_SUBCATEGORIAS.items():
+                if subcategory_name in subcategorias:
+                    return categoria
+            
+            # Si no se encuentra, intentar extraer de la URL o usar lógica de fallback
+            if 'packs' in subcategory_name.lower():
+                return 'packs'
+            elif 'bebe' in subcategory_name.lower():
+                return 'bebe-y-mama'
+            elif 'dermocosmetica' in subcategory_name.lower():
+                return 'dermocosmetica'
+            elif 'suplementos' in subcategory_name.lower():
+                return 'suplementos-deportivos'
+            else:
+                return 'Farmacia'  # Categoría por defecto
+                
+        except Exception as e:
+            self.logger.warning(f"⚠️ No se pudo extraer categoría de '{subcategory_name}': {e}")
+            return 'Farmacia'
     
     def calculate_unit_price(self, precio_total, presentacion):
         try:
@@ -612,3 +738,19 @@ class InkafarmaSpider(scrapy.Spider):
             return "General"
         except Exception:
             return "General"
+    
+    def extract_category_raw_from_url(self, url):
+        """Extrae la categoría desde la URL en formato raw (sin conversión) para buscar en diccionarios"""
+        try:
+            # URL format: https://inkafarma.pe/categoria/categoria-nombre?params
+            if '/categoria/' in url:
+                # Obtener parte después de /categoria/
+                categoria_part = url.split('/categoria/')[-1]
+                # Limpiar parámetros de query (?param=value)
+                categoria = categoria_part.split('?')[0]
+                # Limpiar fragmentos (#fragment)
+                categoria = categoria.split('#')[0]
+                return categoria.strip()
+            return "general"
+        except Exception:
+            return "general"
