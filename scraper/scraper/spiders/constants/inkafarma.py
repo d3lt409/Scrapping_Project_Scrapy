@@ -79,10 +79,6 @@ TIMEOUT_PAGE_LOAD = 30000  # 30 segundos
 TIMEOUT_SELECTOR = 15000   # 15 segundos
 TIMEOUT_SCROLL = 5000      # 5 segundos
 
-# ============================================================================
-# EXPRESIONES REGULARES PARA PARSING
-# ============================================================================
-
 import re
 
 # Regex para extraer números del total de productos
@@ -94,4 +90,51 @@ REGEX_SOLO_NUMEROS = re.compile(r'[^\d\.]')
 
 # Regex para extraer cantidad de presentación
 REGEX_CANTIDAD_PRESENTACION = re.compile(r'(\d+(?:\.\d+)?)\s*(ml|mg|g|kg|l|un|unidades?|caps?|comp|tab)', re.IGNORECASE)
+
+# Selector para el h3 que muestra el conteo de productos
+SELECTOR_PRODUCT_COUNT_H3 = "h3.m-0.heading-1"
+# Selector para el menú de categorías
+SELECTOR_CATEGORIES_MENU_BUTTON = "div.content-category"
+# Selector para los elementos de subcategoría
+SELECTOR_SUBCATEGORIES = "div.list-option.label.ng-star-inserted"
+# Selector para el span dentro de subcategoría (para texto)
+SELECTOR_SUBCATEGORY_SPAN = "div.list-option.label.ng-star-inserted span"
+
+# ============================================================================
+# SELECTORES PARA MENÚ DESPLEGABLE CON 3 COLUMNAS (CORREGIDOS CON ESTRUCTURA REAL)
+# ============================================================================
+
+# Selector para hacer hover al header de categorías
+SELECTOR_MENU_HOVER = "div.content-category"
+
+# Selectores reales basados en la estructura encontrada en el HTML
+# InkaFarma usa un sistema de enlaces con href="/categoria/" para navegación
+SELECTOR_CATEGORIA_LINKS = "a[href*='/categoria/']"
+
+# Selectores alternativos para encontrar el menú de navegación
+SELECTOR_NAV_CONTAINER = "fp-navigation-header-responsive nav, nav.navigation-header"
+SELECTOR_SWIPER_CONTAINER = "swiper-container"
+SELECTOR_SWIPER_SLIDES = "swiper-slide"
+
+# Selectores para elementos de categoría en el swiper
+SELECTOR_CATEGORY_SLIDES = "swiper-slide .category-swiper-item"
+SELECTOR_CATEGORY_LINKS_IN_SLIDES = "swiper-slide a.router-link"
+
+# Selectores para el menú lateral (sidenav)
+SELECTOR_SIDENAV = "fp-categories-of-menu-responsive"
+SELECTOR_SIDENAV_CONTAINER = "mat-sidenav-container"
+
+# Ya que el menú hover no funciona como esperábamos, usaremos los enlaces directos
+# que encontramos en la estructura real de la página
+FALLBACK_CATEGORY_LINKS = [
+    "/categoria/inka-packs",
+    "/categoria/farmacia", 
+    "/categoria/salud",
+    "/categoria/mama-y-bebe",
+    "/categoria/nutricion-para-todos",
+    "/categoria/dermatologia-cosmetica",
+    "/categoria/cuidado-personal",
+    "/categoria/belleza",
+    "/categoria/limpieza-y-cuidado-para-el-hogar"
+]
 

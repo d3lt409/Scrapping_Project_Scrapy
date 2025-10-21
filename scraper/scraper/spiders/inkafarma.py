@@ -61,44 +61,375 @@ class InkafarmaSpider(scrapy.Spider):
                 dont_filter=True
             )
 
+    async def extract_menu_structure(self, page, category_prefix):
+        """
+        Extrae la estructura del menú de InkaFarma usando una estrategia directa.
+        En lugar de depender del hover, usa las categorías conocidas de InkaFarma.
+        """
+        menu_structure = {}
+
+        try:
+            # Usar categorías directas ya que el hover no funciona como esperábamos
+            target_dept_url = f"https://inkafarma.pe/categoria/{category_prefix}"
+            
+            self.logger.info(f"🚀 Navegando directamente al departamento: {target_dept_url}")
+            await page.goto(target_dept_url, wait_until="domcontentloaded", timeout=30000)
+            await page.wait_for_timeout(3000)
+            
+            # Verificar si la página cargó correctamente
+            page_title = await page.title()
+            if "404" in page_title or "Not Found" in page_title:
+                self.logger.warning(f"⚠️ Categoría no encontrada: {target_dept_url}")
+                return {}
+            
+            # Verificar si esta página tiene subcategorías o productos directamente
+            product_count = await self.get_product_count(page)
+            self.logger.info(f"📊 Productos en departamento '{category_prefix}': {product_count}")
+            
+            if product_count >= 250:
+                # Buscar subcategorías en filtros laterales o en la página
+                self.logger.info("🔍 Buscando subcategorías...")
+                
+                # Estrategia 1: Buscar enlaces de subcategorías en filtros
+                subcategory_links = await page.query_selector_all("a[href*='/categoria/']")
+                categorias_data = []
+                seen_urls = set()
+                
+                for subcat_link in subcategory_links:
+                    href = await subcat_link.get_attribute("href")
+                    text = await subcat_link.text_content()
+                    
+                    if href and href != f"/categoria/{category_prefix}" and category_prefix in href:
+                        # Evitar duplicados
+                        if href not in seen_urls:
+                            seen_urls.add(href)
+                            full_url = f"https://inkafarma.pe{href}" if href.startswith('/') else href
+                            categorias_data.append({
+                                "nombre": text.strip() if text else f"Subcategoría {len(categorias_data)+1}",
+                                "href": full_url,
+                                "subcategorias": []
+                            })
+                
+                # Estrategia 2: Si no hay subcategorías, generar URLs comunes
+                if not categorias_data:
+                    self.logger.info("⚠️ No se encontraron subcategorías específicas. Usando estrategia de URLs comunes...")
+                    
+                    # Subcategorías comunes para cada departamento
+                    common_subcats = {
+                        "inka-packs": ["packs-de-farmacia", "packs-de-cuidado-personal", "packs-de-belleza"],
+                        "farmacia": ["analgesicos", "antibioticos", "vitaminas", "medicamentos-receta"],
+                        "salud": ["salud-sexual", "salud-digestiva", "salud-respiratoria"],
+                        "mama-y-bebe": ["alimentacion-bebe", "cuidado-bebe", "embarazo"],
+                        "nutricion-para-todos": ["proteinas", "vitaminas-minerales", "suplementos"],
+                        "dermatologia-cosmetica": ["proteccion-solar", "tratamiento-facial", "cuidado-corporal"],
+                        "cuidado-personal": ["higiene-oral", "desodorantes", "cuidado-intimo"],
+                        "belleza": ["maquillaje", "perfumes", "cuidado-cabello"]
+                    }
+                    
+                    if category_prefix in common_subcats:
+                        for subcat in common_subcats[category_prefix]:
+                            subcategory_url = f"https://inkafarma.pe/categoria/{category_prefix}/{subcat}"
+                            categorias_data.append({
+                                "nombre": subcat.replace("-", " ").title(),
+                                "href": subcategory_url,
+                                "subcategorias": []
+                            })
+                
+                self.logger.info(f"📋 Encontradas {len(categorias_data)} subcategorías para '{category_prefix}'")
+                
+                menu_structure = {
+                    "departamento": {
+                        "nombre": category_prefix.replace("-", " ").title(),
+                        "href": target_dept_url
+                    },
+                    "categorias": categorias_data
+                }
+            else:
+                # Si tiene pocos productos, extraer directamente
+                self.logger.info(f"✅ Departamento '{category_prefix}' tiene {product_count} productos. Extrayendo directamente...")
+                menu_structure = {
+                    "departamento": {
+                        "nombre": category_prefix.replace("-", " ").title(),
+                        "href": target_dept_url
+                    },
+                    "categorias": [],
+                    "extract_direct": True
+                }
+
+        except Exception as e:
+            self.logger.error(f"❌ Error extrayendo estructura del menú para '{category_prefix}': {e}")
+            import traceback
+            self.logger.error(f"🔍 Traceback: {traceback.format_exc()}")
+
+        return menu_structure
+
     async def parse_category(self, response):
-        """Parsea una categoría específica con scroll infinito"""
+        """Parsea una categoría específica - si >= 250 productos, extrae del menú y navega directamente"""
         page = response.meta["playwright_page"]
         
         try:
-            # Obtener la URL actual
             current_url = page.url
             self.logger.info(f"🚀 Procesando categoría: {current_url}")
             
-            # Esperar a que se carguen los productos iniciales
+            # Esperar a que se cargue la página inicial
+            await page.wait_for_timeout(3000)
+
+            # Verificar el número de productos en la página
+            product_count = await self.get_product_count(page)
+            self.logger.info(f"📊 Productos encontrados en la categoría: {product_count}")
+
+            if product_count < 250:
+                # Si hay menos de 250 productos, hacer scroll e extraer
+                self.logger.info(f"✅ {product_count} productos (<250). Extrayendo directamente...")
+                await self.await_products_loaded(page)
+                productos_cargados = await self.scroll_to_load_all_products(page)
+                self.logger.info(f"✅ Total productos cargados: {productos_cargados}")
+                content = await page.content()
+                await page.close()
+                from scrapy.http import HtmlResponse
+                updated_response = HtmlResponse(
+                    url=response.url,
+                    body=content,
+                    encoding='utf-8'
+                )
+                for item in self.parse_products(updated_response):
+                    yield item
+            else:
+                # Si hay >= 250 productos, extraer URLs del menú y navegar a subcategorías
+                self.logger.info(f"🔄 Detectados {product_count} productos (>=250). Buscando subcategorías en el menú...")
+                
+                category_name = self.extract_category_from_url(current_url)
+                category_prefix = category_name[:4].lower()
+                self.logger.info(f"🔍 Buscando departamento que empiece con: '{category_prefix}'")
+                
+                # Extraer toda la estructura del menú
+                menu_structure = await self.extract_menu_structure(page, category_prefix)
+                
+                if not menu_structure:
+                    self.logger.warning("⚠️ No se encontró estructura del menú. Extrayendo de la página actual...")
+                    await self.await_products_loaded(page)
+                    productos_cargados = await self.scroll_to_load_all_products(page)
+                    content = await page.content()
+                    from scrapy.http import HtmlResponse
+                    updated_response = HtmlResponse(
+                        url=response.url,
+                        body=content,
+                        encoding='utf-8'
+                    )
+                    for item in self.parse_products(updated_response):
+                        yield item
+                    await page.close()
+                    return
+                
+                # Procesar cada categoría del array temporal
+                categorias = menu_structure.get('categorias', [])
+                self.logger.info(f"📋 Procesando {len(categorias)} categorías del menú...")
+                
+                for cat_info in categorias:
+                    cat_nombre = cat_info.get('nombre', 'Sin nombre')
+                    cat_href = cat_info.get('href', '')
+                    subcategorias = cat_info.get('subcategorias', [])
+                    
+                    self.logger.info(f"🔄 Procesando categoría: '{cat_nombre}'")
+                    
+                    if subcategorias:
+                        # Si hay subcategorías, procesar cada una
+                        self.logger.info(f"  📊 Encontradas {len(subcategorias)} subcategorías")
+                        
+                        for subcat_info in subcategorias:
+                            subcat_nombre = subcat_info.get('nombre', 'Sin nombre')
+                            subcat_href = subcat_info.get('href', '')
+                            
+                            if not subcat_href:
+                                self.logger.warning(f"  ⚠️ Subcategoría sin href: {subcat_nombre}")
+                                continue
+                            
+                            # Navegar a la subcategoría
+                            full_url = f"https://inkafarma.pe{subcat_href}" if subcat_href.startswith('/') else subcat_href
+                            self.logger.info(f"  ➡️ Navegando a subcategoría: '{subcat_nombre}' → {full_url}")
+                            
+                            try:
+                                await page.goto(full_url, wait_until="domcontentloaded", timeout=30000)
+                                await page.wait_for_timeout(2000)
+                                
+                                # Verificar productos en esta subcategoría
+                                subcat_count = await self.get_product_count(page)
+                                self.logger.info(f"  📊 Productos en '{subcat_nombre}': {subcat_count}")
+                                
+                                if subcat_count > 0:
+                                    # Extraer productos
+                                    await self.await_products_loaded(page)
+                                    productos_cargados = await self.scroll_to_load_all_products(page)
+                                    self.logger.info(f"  ✅ Productos extraídos: {productos_cargados}")
+                                    
+                                    content = await page.content()
+                                    from scrapy.http import HtmlResponse
+                                    updated_response = HtmlResponse(
+                                        url=page.url,
+                                        body=content,
+                                        encoding='utf-8'
+                                    )
+                                    for item in self.parse_products(updated_response, subcat_nombre):
+                                        yield item
+                                
+                            except Exception as e:
+                                self.logger.error(f"  ❌ Error procesando subcategoría '{subcat_nombre}': {e}")
+                                continue
+                    else:
+                        # Si no hay subcategorías, procesar la categoría directamente
+                        if not cat_href:
+                            self.logger.warning(f"  ⚠️ Categoría sin href: {cat_nombre}")
+                            continue
+                        
+                        full_url = f"https://inkafarma.pe{cat_href}" if cat_href.startswith('/') else cat_href
+                        self.logger.info(f"  ➡️ Navegando a categoría: '{cat_nombre}' → {full_url}")
+                        
+                        try:
+                            await page.goto(full_url, wait_until="domcontentloaded", timeout=30000)
+                            await page.wait_for_timeout(2000)
+                            
+                            cat_count = await self.get_product_count(page)
+                            self.logger.info(f"  📊 Productos en '{cat_nombre}': {cat_count}")
+                            
+                            if cat_count > 0:
+                                await self.await_products_loaded(page)
+                                productos_cargados = await self.scroll_to_load_all_products(page)
+                                self.logger.info(f"  ✅ Productos extraídos: {productos_cargados}")
+                                
+                                content = await page.content()
+                                from scrapy.http import HtmlResponse
+                                updated_response = HtmlResponse(
+                                    url=page.url,
+                                    body=content,
+                                    encoding='utf-8'
+                                )
+                                for item in self.parse_products(updated_response, cat_nombre):
+                                    yield item
+                        
+                        except Exception as e:
+                            self.logger.error(f"  ❌ Error procesando categoría '{cat_nombre}': {e}")
+                            continue
+                
+                await page.close()
+
+        except Exception as e:
+            self.logger.error(f"❌ Error al procesar categoría: {e}")
+            if 'page' in locals():
+                await page.close()
+
+    async def get_product_count(self, page):
+        """Obtener el número de productos de la página usando el selector h3"""
+        import re
+        try:
+            await page.wait_for_selector(inkafarma.SELECTOR_PRODUCT_COUNT_H3, timeout=3000)
+            count_text = await page.text_content(inkafarma.SELECTOR_PRODUCT_COUNT_H3)
+            match = re.search(r'(\d+)', count_text)
+            if match:
+                count = int(match.group(1))
+                self.logger.info(f"📝 Encontrado en h3: {count} productos")
+                return count
+        except Exception as e:
+            self.logger.warning(f"⚠️ No se encontró h3 de conteo: {e}")
+        self.logger.warning("⚠️ No se pudo obtener el conteo de productos")
+        return 0
+
+    async def navigate_subcategories(self, page, current_url):
+        """Navegar por subcategorías cuando hay >= 250 productos usando los selectores actualizados"""
+        try:
+            category_name = self.extract_category_from_url(current_url)
+            category_prefix = category_name[:4].lower()
+            self.logger.info(f"🔍 Buscando subcategorías que contengan: {category_prefix}")
+
+            # Hacer clic en el menú de categorías
+            await page.click(inkafarma.SELECTOR_CATEGORIES_MENU_BUTTON)
+            await page.wait_for_timeout(2000)
+
+            # Buscar subcategorías
+            subcategory_elements = await page.query_selector_all(inkafarma.SELECTOR_SUBCATEGORIES)
+            self.logger.info(f"📂 Encontradas {len(subcategory_elements)} subcategorías")
+
+            for i, subcat in enumerate(subcategory_elements):
+                # Obtener el texto del span dentro de la subcategoría
+                span = await subcat.query_selector(inkafarma.SELECTOR_SUBCATEGORY_SPAN)
+                subcat_text = await span.text_content() if span else ""
+                self.logger.info(f"🔄 Subcategoría {i+1}: {subcat_text}")
+                # Verificar si el texto contiene el prefijo de la categoría
+                if category_prefix in subcat_text.lower():
+                    self.logger.info(f"✅ Subcategoría relevante encontrada: {subcat_text}")
+                    # Hacer clic en la subcategoría
+                    await subcat.click()
+                    await page.wait_for_timeout(2000)
+                    # Esperar a que se carguen los productos iniciales
+                    await self.await_products_loaded(page)
+                    # Realizar scroll infinito para cargar TODOS los productos
+                    productos_cargados = await self.scroll_to_load_all_products(page)
+                    self.logger.info(f"✅ Total productos cargados en subcategoría '{subcat_text}': {productos_cargados}")
+                    # Obtener el HTML actualizado después del scroll
+                    content = await page.content()
+                    from scrapy.http import HtmlResponse
+                    updated_response = HtmlResponse(
+                        url=page.url,
+                        body=content,
+                        encoding='utf-8'
+                    )
+                    # Parsear todos los productos
+                    for item in self.parse_products(updated_response, subcat_text):
+                        yield item
+                    # Volver al menú para la siguiente subcategoría
+                    await page.click(inkafarma.SELECTOR_CATEGORIES_MENU_BUTTON)
+                    await page.wait_for_timeout(1000)
+            # Si no se encuentra ninguna subcategoría relevante, loggear
+            self.logger.info("🔍 Procesamiento de subcategorías completado")
+        except Exception as e:
+            self.logger.error(f"❌ Error navegando subcategorías: {e}")
+            self.logger.info("🔄 Navegación de subcategorías falló, continuando con scraping normal...")
             await self.await_products_loaded(page)
-            
-            # Realizar scroll infinito para cargar TODOS los productos
             productos_cargados = await self.scroll_to_load_all_products(page)
-            self.logger.info(f"✅ Total productos cargados: {productos_cargados}")
-            
-            # Obtener el HTML actualizado después del scroll
+            self.logger.info(f"✅ Scraping normal completado: {productos_cargados} productos cargados")
             content = await page.content()
-            
-            # Cerrar la página
-            await page.close()
-            
-            # Crear una nueva response con el contenido completo
             from scrapy.http import HtmlResponse
             updated_response = HtmlResponse(
-                url=response.url,
+                url=str(page.url),
+                body=content,
+                encoding='utf-8'
+            )
+            for item in self.parse_products(updated_response, None):
+                yield item
+
+    async def process_subcategory_products(self, page, subcategory_name):
+        """Procesar productos de una subcategoría específica"""
+        try:
+            # Verificar si esta subcategoría también tiene >= 250 productos
+            subcategory_count = await self.get_product_count(page)
+            self.logger.info(f"📊 Subcategoría '{subcategory_name}': {subcategory_count} productos")
+            
+            if subcategory_count >= 250:
+                # Si la subcategoría también tiene muchos productos, podría tener sub-subcategorías
+                # Por ahora, procesamos normalmente pero se puede extender recursivamente
+                self.logger.warning(f"⚠️ Subcategoría '{subcategory_name}' tiene {subcategory_count} productos (>=250)")
+            
+            # Esperar a que se carguen los productos
+            await self.await_products_loaded(page)
+            
+            # Realizar scroll para cargar todos los productos
+            productos_cargados = await self.scroll_to_load_all_products(page)
+            self.logger.info(f"✅ Subcategoría '{subcategory_name}': {productos_cargados} productos cargados")
+            
+            # Obtener el HTML y procesar productos
+            content = await page.content()
+            from scrapy.http import HtmlResponse
+            updated_response = HtmlResponse(
+                url=page.url,
                 body=content,
                 encoding='utf-8'
             )
             
-            # Parsear todos los productos
-            for item in self.parse_products(updated_response):
+            # Parsear productos con la subcategoría como contexto
+            for item in self.parse_products(updated_response, subcategory_name):
                 yield item
                 
         except Exception as e:
-            self.logger.error(f"❌ Error al procesar categoría {current_url}: {e}")
-            if 'page' in locals():
-                await page.close()
+            self.logger.error(f"❌ Error procesando productos de subcategoría '{subcategory_name}': {e}")
 
     async def await_products_loaded(self, page):
         try:
@@ -115,47 +446,56 @@ class InkafarmaSpider(scrapy.Spider):
             await page.wait_for_timeout(2000)
 
     async def scroll_to_load_all_products(self, page):
-        previous_height = -1
+        """
+        Realiza scroll infinito hasta cargar todos los productos.
+        Monitorea el conteo de productos y detiene cuando se estabiliza.
+        Selector de productos: fp-product-small-category
+        """
+        previous_product_count = 0
         scroll_attempts = 0
         max_attempts = 50
-        
+        stable_count = 0
+        stable_threshold = 3
+
+        self.logger.info("🔄 Iniciando scroll infinito para cargar todos los productos...")
+
         while scroll_attempts < max_attempts:
             try:
-                # Esperar a que el contenedor de productos esté completamente renderizado (timeout mínimo)
-                await page.wait_for_selector(inkafarma.SELECTOR_PRODUCTOS_CONTAINER, timeout=5000)
-                
-                # Obtener la altura actual del contenedor de productos
-                current_height = await page.evaluate(f"document.querySelector('{inkafarma.SELECTOR_PRODUCTOS_CONTAINER}').scrollHeight")
-                
-                self.logger.info(f"📏 Scroll {scroll_attempts + 1}: Altura del contenedor: {current_height}px")
-                
-                # Si la altura no cambió, significa que no hay más productos que cargar
-                if current_height == previous_height:
-                    self.logger.info("🛑 La altura del contenedor se estabilizó. Scroll finalizado.")
-                    break
-                
-                previous_height = current_height
-                
-                # Hacer scroll hasta el final de la página actual
+                # Contar productos actuales en la página
+                current_product_count = await page.locator(inkafarma.SELECTOR_PRODUCTO_CARD).count()
+                self.logger.info(f"� Scroll {scroll_attempts + 1}: {current_product_count} productos cargados")
+
+                # Si el conteo no cambió, incrementar contador de estabilidad
+                if current_product_count == previous_product_count:
+                    stable_count += 1
+                    self.logger.info(f"⏸️ Conteo estable {stable_count}/{stable_threshold}")
+                    
+                    if stable_count >= stable_threshold:
+                        self.logger.info(f"✅ Conteo de productos se estabilizó en {current_product_count}. Scroll finalizado.")
+                        break
+                else:
+                    # El conteo cambió, resetear contador de estabilidad
+                    stable_count = 0
+                    previous_product_count = current_product_count
+                    self.logger.info(f"✨ Nuevos productos detectados, total: {current_product_count}")
+
+                # Realizar scroll hasta el final
                 self.logger.info("📜 Haciendo scroll hasta el final...")
-                await page.evaluate(f"window.scrollTo(0, {current_height})")
-                # Reducir tiempo de espera entre scrolls (mínimo necesario)
-                await page.wait_for_timeout(1500)
+                await page.evaluate("window.scrollTo(0, document.documentElement.scrollHeight);")
+                await page.wait_for_timeout(2000)  # Esperar a que carguen nuevos productos
                 scroll_attempts += 1
-                
+
             except Exception as e:
-                self.logger.warning(f"⚠️ Error durante scroll {scroll_attempts + 1}: {e}")
-                # Si falla el contenedor, intentar scroll básico
-                await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                self.logger.error(f"❌ Error durante scroll {scroll_attempts + 1}: {e}")
                 await page.wait_for_timeout(1000)
                 scroll_attempts += 1
-        
-        # Obtener el conteo final de productos
+
+        # Contar productos finales cargados
         productos_finales = await page.locator(inkafarma.SELECTOR_PRODUCTO_CARD).count()
         self.logger.info(f"🏁 Scroll finalizado después de {scroll_attempts} intentos: {productos_finales} productos cargados")
         return productos_finales
 
-    def parse_products(self, response):
+    def parse_products(self, response, subcategory_name=None):
         """
         Extrae productos ÚNICAMENTE después de que el scroll se haya completado y la página esté estable.
         Utiliza el selector correcto: //fp-filtered-product-list//fp-product-large (Card de producto)
@@ -163,7 +503,8 @@ class InkafarmaSpider(scrapy.Spider):
         # Usar XPath para seleccionar todos los fp-product-large dentro de fp-filtered-product-list
         productos = response.xpath("//fp-filtered-product-list//fp-product-large")
         
-        self.logger.info(f"🔍 Procesando {len(productos)} productos encontrados (DESPUÉS del scroll completo)")
+        context = f" en subcategoría '{subcategory_name}'" if subcategory_name else ""
+        self.logger.info(f"🔍 Procesando {len(productos)} productos encontrados{context} (DESPUÉS del scroll completo)")
         
         for i, producto in enumerate(productos):
             try:
@@ -219,7 +560,8 @@ class InkafarmaSpider(scrapy.Spider):
                 item['total_unit_quantity'] = quantity
                 item['unit_type'] = unit_type
                 
-                item['category'] = "Farmacia"
+                # Usar subcategoría si está disponible, sino categoría general
+                item['category'] = subcategory_name if subcategory_name else "Farmacia"
                 
                 # Información comercial
                 item['comercial_name'] = inkafarma.COMERCIAL_NAME
@@ -231,7 +573,7 @@ class InkafarmaSpider(scrapy.Spider):
                 self.logger.error(f"❌ Error procesando producto {i+1}: {e}")
                 continue
         
-        self.logger.info(f"✅ Scraping completado: {len(productos)} productos extraídos (después del scroll completo)")
+        self.logger.info(f"✅ Scraping completado: {len(productos)} productos extraídos{context} (después del scroll completo)")
     
     def calculate_unit_price(self, precio_total, presentacion):
         try:
