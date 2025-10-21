@@ -109,33 +109,11 @@ class InkafarmaSpider(scrapy.Spider):
                                 "href": full_url,
                                 "subcategorias": []
                             })
-                
-                # Estrategia 2: Si no hay subcategorías, generar URLs comunes
-                if not categorias_data:
-                    self.logger.info("⚠️ No se encontraron subcategorías específicas. Usando estrategia de URLs comunes...")
-                    
-                    # Subcategorías comunes para cada departamento
-                    common_subcats = {
-                        "inka-packs": ["packs-de-farmacia", "packs-de-cuidado-personal", "packs-de-belleza"],
-                        "farmacia": ["analgesicos", "antibioticos", "vitaminas", "medicamentos-receta"],
-                        "salud": ["salud-sexual", "salud-digestiva", "salud-respiratoria"],
-                        "mama-y-bebe": ["alimentacion-bebe", "cuidado-bebe", "embarazo"],
-                        "nutricion-para-todos": ["proteinas", "vitaminas-minerales", "suplementos"],
-                        "dermatologia-cosmetica": ["proteccion-solar", "tratamiento-facial", "cuidado-corporal"],
-                        "cuidado-personal": ["higiene-oral", "desodorantes", "cuidado-intimo"],
-                        "belleza": ["maquillaje", "perfumes", "cuidado-cabello"]
-                    }
-                    
-                    if category_prefix in common_subcats:
-                        for subcat in common_subcats[category_prefix]:
-                            subcategory_url = f"https://inkafarma.pe/categoria/{category_prefix}/{subcat}"
-                            categorias_data.append({
-                                "nombre": subcat.replace("-", " ").title(),
-                                "href": subcategory_url,
-                                "subcategorias": []
-                            })
-                
                 self.logger.info(f"📋 Encontradas {len(categorias_data)} subcategorías para '{category_prefix}'")
+                
+                if len(categorias_data) == 0:
+                    self.logger.warning(f"⚠️ No se encontraron subcategorías válidas para '{category_prefix}'. Activando fallback...")
+                    return {}  # Estructura vacía para activar fallback
                 
                 menu_structure = {
                     "departamento": {
@@ -205,19 +183,36 @@ class InkafarmaSpider(scrapy.Spider):
                 # Extraer toda la estructura del menú
                 menu_structure = await self.extract_menu_structure(page, category_prefix)
                 
-                if not menu_structure:
-                    self.logger.warning("⚠️ No se encontró estructura del menú. Extrayendo de la página actual...")
-                    await self.await_products_loaded(page)
-                    productos_cargados = await self.scroll_to_load_all_products(page)
-                    content = await page.content()
-                    from scrapy.http import HtmlResponse
-                    updated_response = HtmlResponse(
-                        url=response.url,
-                        body=content,
-                        encoding='utf-8'
-                    )
-                    for item in self.parse_products(updated_response):
-                        yield item
+                if not menu_structure or not menu_structure.get('categorias'):
+                    self.logger.warning("⚠️ No se encontró estructura del menú o departamentos. Haciendo fallback a scraping directo...")
+                    
+                    # FALLBACK: Volver a la URL original y hacer scraping directo
+                    original_url = response.url.split('?')[0]  # Remover parámetros de scrapy
+                    self.logger.info(f"🔄 Fallback: Navegando de vuelta a la URL original: {original_url}")
+                    
+                    try:
+                        await page.goto(original_url, wait_until="domcontentloaded", timeout=30000)
+                        await page.wait_for_timeout(3000)
+                        
+                        # Hacer scraping directo con scroll infinito
+                        self.logger.info("📜 Fallback: Iniciando scraping directo con scroll infinito...")
+                        await self.await_products_loaded(page)
+                        productos_cargados = await self.scroll_to_load_all_products(page)
+                        self.logger.info(f"✅ Fallback completado: {productos_cargados} productos extraídos")
+                        
+                        content = await page.content()
+                        from scrapy.http import HtmlResponse
+                        updated_response = HtmlResponse(
+                            url=original_url,
+                            body=content,
+                            encoding='utf-8'
+                        )
+                        for item in self.parse_products(updated_response):
+                            yield item
+                            
+                    except Exception as fallback_error:
+                        self.logger.error(f"❌ Error en fallback: {fallback_error}")
+                    
                     await page.close()
                     return
                 
@@ -446,53 +441,61 @@ class InkafarmaSpider(scrapy.Spider):
             await page.wait_for_timeout(2000)
 
     async def scroll_to_load_all_products(self, page):
-        """
-        Realiza scroll infinito hasta cargar todos los productos.
-        Monitorea el conteo de productos y detiene cuando se estabiliza.
-        Selector de productos: fp-product-small-category
-        """
-        previous_product_count = 0
+        previous_height = -1
         scroll_attempts = 0
-        max_attempts = 50
-        stable_count = 0
-        stable_threshold = 3
-
-        self.logger.info("🔄 Iniciando scroll infinito para cargar todos los productos...")
-
+        max_attempts = 55
+        stable_attempts = 0
+        max_stable_attempts = 3
+        
         while scroll_attempts < max_attempts:
             try:
-                # Contar productos actuales en la página
-                current_product_count = await page.locator(inkafarma.SELECTOR_PRODUCTO_CARD).count()
-                self.logger.info(f"� Scroll {scroll_attempts + 1}: {current_product_count} productos cargados")
-
-                # Si el conteo no cambió, incrementar contador de estabilidad
-                if current_product_count == previous_product_count:
-                    stable_count += 1
-                    self.logger.info(f"⏸️ Conteo estable {stable_count}/{stable_threshold}")
+                # Obtener la altura actual del contenedor de productos (sin esperar al selector)
+                current_height = await page.evaluate(f"""
+                    (() => {{
+                        const container = document.querySelector('{inkafarma.SELECTOR_PRODUCTOS_CONTAINER}');
+                        return container ? container.scrollHeight : document.body.scrollHeight;
+                    }})()
+                """)
+                
+                self.logger.info(f"📏 Scroll {scroll_attempts + 1}: Altura del contenedor: {current_height}px")
+                
+                # Si la altura no cambió, verificar estabilidad
+                if current_height == previous_height:
+                    stable_attempts += 1
+                    self.logger.info(f"🔄 Altura estable {stable_attempts}/{max_stable_attempts}")
                     
-                    if stable_count >= stable_threshold:
-                        self.logger.info(f"✅ Conteo de productos se estabilizó en {current_product_count}. Scroll finalizado.")
+                    if stable_attempts >= max_stable_attempts:
+                        self.logger.info("🛑 La altura del contenedor se estabilizó completamente. Scroll finalizado.")
                         break
                 else:
-                    # El conteo cambió, resetear contador de estabilidad
-                    stable_count = 0
-                    previous_product_count = current_product_count
-                    self.logger.info(f"✨ Nuevos productos detectados, total: {current_product_count}")
-
-                # Realizar scroll hasta el final
+                    # Si cambió la altura, resetear contador de estabilidad
+                    stable_attempts = 0
+                
+                previous_height = current_height
+                
+                # Hacer scroll hasta el final de la página actual
                 self.logger.info("📜 Haciendo scroll hasta el final...")
-                await page.evaluate("window.scrollTo(0, document.documentElement.scrollHeight);")
-                await page.wait_for_timeout(2000)  # Esperar a que carguen nuevos productos
-                scroll_attempts += 1
-
-            except Exception as e:
-                self.logger.error(f"❌ Error durante scroll {scroll_attempts + 1}: {e}")
+                await page.evaluate(f"window.scrollTo(0, {current_height})")
+                
+                # Esperar tiempo reducido entre scrolls
                 await page.wait_for_timeout(1000)
                 scroll_attempts += 1
-
-        # Contar productos finales cargados
-        productos_finales = await page.locator(inkafarma.SELECTOR_PRODUCTO_CARD).count()
-        self.logger.info(f"🏁 Scroll finalizado después de {scroll_attempts} intentos: {productos_finales} productos cargados")
+                
+            except Exception as e:
+                self.logger.warning(f"⚠️ Error durante scroll {scroll_attempts + 1}: {e}")
+                # Si falla el contenedor, intentar scroll básico
+                await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                await page.wait_for_timeout(1000)
+                scroll_attempts += 1
+        
+        # Obtener el conteo final de productos solo después de que el tamaño se estabilice
+        try:
+            productos_finales = await page.locator(inkafarma.SELECTOR_PRODUCTO_CARD).count()
+            self.logger.info(f"🏁 Scroll finalizado después de {scroll_attempts} intentos: {productos_finales} productos cargados")
+        except Exception as e:
+            self.logger.warning(f"⚠️ Error obteniendo conteo final de productos: {e}")
+            productos_finales = 0
+        
         return productos_finales
 
     def parse_products(self, response, subcategory_name=None):
