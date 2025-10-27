@@ -184,7 +184,8 @@ COMMERCIAL_NAME = "plaza_vea"
 # XPaths para extraer datos
 XPATH_CONTAINER = '//*[@id="undefined-60"]/div/div[10]/div/div[2]/div[1]'
 XPATH_PRODUCTS = '//div[@class="Showcase__details"]'
-XPATH_PRODUCT_NAME = './/button[@class="Showcase__name"]/text()'
+XPATH_PRODUCT_NAME = './/button[@class="Showcase__name"]/@title'
+XPATH_PRODUCT_NAME_FALLBACK = './/button[@class="Showcase__name"]/text()'
 XPATH_PRODUCT_PRICE = './/div[@class="Showcase__salePrice"]/@data-price'
 XPATH_PRODUCT_UNIT_REFERENCE = './/div[@class="Showcase__units-reference"]/text()'
 

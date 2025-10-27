@@ -1,0 +1,4322 @@
+{
+  "metadata": {
+    "extracted_date": "2025-10-22",
+    "total_categories": 19,
+    "total_subcategories": 180,
+    "total_subsubcategories": 791,
+    "extraction_notes": "Estructura completa de categorías InkaFarma extraída dinámicamente"
+  },
+  "categories": {
+    "cupones-promocionales": {
+      "name": "Cupones Promocionales",
+      "href": "/categoria/cupones-promocionales",
+      "subcategories": {
+        "cupon-inka15": {
+          "name": "Cupón INKA15",
+          "href": "/categoria/cupones-promocionales/cupon-inka15",
+          "subsubcategories": {}
+        },
+        "cupon-inka30": {
+          "name": "Cupón INKA30",
+          "href": "/categoria/cupones-promocionales/cupon-inka30",
+          "subsubcategories": {}
+        }
+      }
+    },
+    "precios-mas-bajos": {
+      "name": "Precios más Bajos",
+      "href": "/categoria/precios-mas-bajos",
+      "subcategories": {
+        "tu-sonrisa-merece-totaldent": {
+          "name": "Tu Sonrisa Merece Totaldent",
+          "href": "/categoria/precios-mas-bajos/tu-sonrisa-merece-totaldent",
+          "subsubcategories": {}
+        }
+      }
+    },
+    "inka-packs": {
+      "name": "Inka Packs",
+      "href": "/categoria/inka-packs",
+      "subcategories": {
+        "packs-de-farmacia": {
+          "name": "Packs de Farmacia",
+          "href": "/categoria/inka-packs/packs-de-farmacia",
+          "subsubcategories": {}
+        },
+        "packs-de-adulto-mayor": {
+          "name": "Packs de Adulto Mayor",
+          "href": "/categoria/inka-packs/packs-de-adulto-mayor",
+          "subsubcategories": {}
+        },
+        "packs-de-nutricion-y-bienestar": {
+          "name": "Packs de Nutrición y Bienestar",
+          "href": "/categoria/inka-packs/packs-de-nutricion-y-bienestar",
+          "subsubcategories": {}
+        },
+        "packs-para-el-cuidado-infantil": {
+          "name": "Packs para el Cuidado Infantil",
+          "href": "/categoria/inka-packs/packs-para-el-cuidado-infantil",
+          "subsubcategories": {}
+        },
+        "packs-de-dermatologia-cosmetica": {
+          "name": "Packs de Dermatología Cosmética",
+          "href": "/categoria/inka-packs/packs-de-dermatologia-cosmetica",
+          "subsubcategories": {}
+        },
+        "packs-de-cuidado-personal": {
+          "name": "Packs de Cuidado Personal",
+          "href": "/categoria/inka-packs/packs-de-cuidado-personal",
+          "subsubcategories": {}
+        },
+        "packs-de-nutricion-infantil": {
+          "name": "Packs de Nutrición Infantil",
+          "href": "/categoria/inka-packs/packs-de-nutricion-infantil",
+          "subsubcategories": {}
+        },
+        "packs-de-belleza": {
+          "name": "Packs de Belleza",
+          "href": "/categoria/inka-packs/packs-de-belleza",
+          "subsubcategories": {}
+        }
+      }
+    },
+    "farmacia": {
+      "name": "Farmacia",
+      "href": "/categoria/farmacia",
+      "subcategories": {
+        "nos-preocupamos-por-tu-salud": {
+          "name": "Nos Preocupamos por tu Salud",
+          "href": "/categoria/farmacia/nos-preocupamos-por-tu-salud",
+          "subsubcategories": {
+            "piel-para-cuidado-inteligente": {
+              "name": "Piel para Cuidado inteligente",
+              "href": "/categoria/farmacia/nos-preocupamos-por-tu-salud/piel-para-cuidado-inteligente"
+            },
+            "protege-tu-piel-con-los-packs-de-umbrella": {
+              "name": "Protege tu Piel con los packs de Umbrella",
+              "href": "/categoria/farmacia/nos-preocupamos-por-tu-salud/protege-tu-piel-con-los-packs-de-umbrella"
+            },
+            "packs-antigripales": {
+              "name": "Packs Antigripales",
+              "href": "/categoria/farmacia/nos-preocupamos-por-tu-salud/packs-antigripales"
+            },
+            "tu-piel-necesita-lactibon": {
+              "name": "tu Piel Necesita Lactibón",
+              "href": "/categoria/farmacia/nos-preocupamos-por-tu-salud/tu-piel-necesita-lactibon"
+            },
+            "no-mas-dolor-de-garganta": {
+              "name": "No más Dolor de Garganta",
+              "href": "/categoria/farmacia/nos-preocupamos-por-tu-salud/no-mas-dolor-de-garganta"
+            },
+            "%C2%A1despidete-del-sudor-con-perspirex!": {
+              "name": "¡Despídete del sudor con Perspirex!",
+              "href": "/categoria/farmacia/nos-preocupamos-por-tu-salud/%C2%A1despidete-del-sudor-con-perspirex!"
+            }
+          }
+        },
+        "consulta-medica": {
+          "name": "Consulta Médica",
+          "href": "/categoria/farmacia/consulta-medica",
+          "subsubcategories": {
+            "aliviamed": {
+              "name": "Aliviamed",
+              "href": "/categoria/farmacia/consulta-medica/aliviamed"
+            }
+          }
+        },
+        "malestar-de-la-tos-con-flema": {
+          "name": "Malestar de la Tos con Flema",
+          "href": "/categoria/farmacia/malestar-de-la-tos-con-flema",
+          "subsubcategories": {}
+        },
+        "dolor-generalizado": {
+          "name": "Dolor Generalizado",
+          "href": "/categoria/farmacia/dolor-generalizado",
+          "subsubcategories": {
+            "analgesicos-2": {
+              "name": "Analgésicos",
+              "href": "/categoria/farmacia/dolor-generalizado/analgesicos-2"
+            },
+            "dolor-muscular": {
+              "name": "Dolor Muscular",
+              "href": "/categoria/farmacia/dolor-generalizado/dolor-muscular"
+            },
+            "antiinflamatorios-y-antireumaticos": {
+              "name": "Antiinflamatorios y Antireumáticos",
+              "href": "/categoria/farmacia/dolor-generalizado/antiinflamatorios-y-antireumaticos"
+            }
+          }
+        },
+        "cuidado-respiratorio": {
+          "name": "Cuidado Respiratorio",
+          "href": "/categoria/farmacia/cuidado-respiratorio",
+          "subsubcategories": {
+            "congestion-nasal-1": {
+              "name": "Congestión Nasal",
+              "href": "/categoria/farmacia/cuidado-respiratorio/congestion-nasal-1"
+            }
+          }
+        },
+        "resfriado-comun": {
+          "name": "Resfriado Común",
+          "href": "/categoria/farmacia/resfriado-comun",
+          "subsubcategories": {
+            "congestion-nasal": {
+              "name": "Congestión Nasal",
+              "href": "/categoria/farmacia/resfriado-comun/congestion-nasal"
+            },
+            "preparaciones-para-tos-y-resfrio": {
+              "name": "Preparaciones para Tos y Resfrío",
+              "href": "/categoria/farmacia/resfriado-comun/preparaciones-para-tos-y-resfrio"
+            },
+            "analgesicos": {
+              "name": "Analgésicos",
+              "href": "/categoria/farmacia/resfriado-comun/analgesicos"
+            }
+          }
+        },
+        "colicos-menstruales": {
+          "name": "Cólicos Menstruales",
+          "href": "/categoria/farmacia/colicos-menstruales",
+          "subsubcategories": {
+            "antiinflamatorios-y-antireumaticos-1": {
+              "name": "Antiinflamatorios y Antireumáticos",
+              "href": "/categoria/farmacia/colicos-menstruales/antiinflamatorios-y-antireumaticos-1"
+            }
+          }
+        },
+        "malestar-estomacal": {
+          "name": "Malestar Estomacal",
+          "href": "/categoria/farmacia/malestar-estomacal",
+          "subsubcategories": {
+            "acidez": {
+              "name": "Acidez",
+              "href": "/categoria/farmacia/malestar-estomacal/acidez"
+            },
+            "problemas-estomacales": {
+              "name": "Problemas Estomacales",
+              "href": "/categoria/farmacia/malestar-estomacal/problemas-estomacales"
+            },
+            "agentes-antidiarreicos": {
+              "name": "Agentes Antidiarreicos",
+              "href": "/categoria/farmacia/malestar-estomacal/agentes-antidiarreicos"
+            }
+          }
+        },
+        "malestar-general-y-fiebre": {
+          "name": "Malestar General y Fiebre",
+          "href": "/categoria/farmacia/malestar-general-y-fiebre",
+          "subsubcategories": {
+            "analgesicos-1": {
+              "name": "Analgésicos",
+              "href": "/categoria/farmacia/malestar-general-y-fiebre/analgesicos-1"
+            }
+          }
+        },
+        "herbolario": {
+          "name": "Herbolario",
+          "href": "/categoria/farmacia/herbolario",
+          "subsubcategories": {
+            "aceites-esenciales": {
+              "name": "Aceites Esenciales",
+              "href": "/categoria/farmacia/herbolario/aceites-esenciales"
+            }
+          }
+        },
+        "cuidado-muscular-y-articular": {
+          "name": "Cuidado Muscular y Articular",
+          "href": "/categoria/farmacia/cuidado-muscular-y-articular",
+          "subsubcategories": {
+            "parchescompresas-y-bolsas": {
+              "name": "Parches/compresas y bolsas",
+              "href": "/categoria/farmacia/cuidado-muscular-y-articular/parchescompresas-y-bolsas"
+            }
+          }
+        },
+        "oidos": {
+          "name": "Oídos",
+          "href": "/categoria/farmacia/oidos",
+          "subsubcategories": {
+            "tapones": {
+              "name": "Tapones",
+              "href": "/categoria/farmacia/oidos/tapones"
+            }
+          }
+        },
+        "lo-mejor-de-pg-health": {
+          "name": "Lo Mejor de P&G Health",
+          "href": "/categoria/farmacia/lo-mejor-de-pg-health",
+          "subsubcategories": {
+            "vick": {
+              "name": "Vick",
+              "href": "/categoria/farmacia/lo-mejor-de-pg-health/vick"
+            },
+            "neurobion": {
+              "name": "Neurobion",
+              "href": "/categoria/farmacia/lo-mejor-de-pg-health/neurobion"
+            },
+            "hepabionta": {
+              "name": "Hepabionta",
+              "href": "/categoria/farmacia/lo-mejor-de-pg-health/hepabionta"
+            },
+            "clearblue": {
+              "name": "Clearblue",
+              "href": "/categoria/farmacia/lo-mejor-de-pg-health/clearblue"
+            }
+          }
+        }
+      }
+    },
+    "salud": {
+      "name": "Salud",
+      "href": "/categoria/salud",
+      "subcategories": {
+        "vitaminas-y-complementos": {
+          "name": "Vitaminas y Complementos",
+          "href": "/categoria/salud/vitaminas-y-complementos",
+          "subsubcategories": {
+            "vitamina-d-1": {
+              "name": "Vitamina D",
+              "href": "/categoria/salud/vitaminas-y-complementos/vitamina-d-1"
+            },
+            "vitamina-c-1": {
+              "name": "Vitamina C",
+              "href": "/categoria/salud/vitaminas-y-complementos/vitamina-c-1"
+            },
+            "vitamina-b": {
+              "name": "Vitamina B",
+              "href": "/categoria/salud/vitaminas-y-complementos/vitamina-b"
+            },
+            "vitamina-a-1": {
+              "name": "Vitamina A",
+              "href": "/categoria/salud/vitaminas-y-complementos/vitamina-a-1"
+            },
+            "multivitaminicos": {
+              "name": "Multivitamínicos",
+              "href": "/categoria/salud/vitaminas-y-complementos/multivitaminicos"
+            }
+          }
+        },
+        "soluciones-fisiologicas": {
+          "name": "Soluciones Fisiológicas",
+          "href": "/categoria/salud/soluciones-fisiologicas",
+          "subsubcategories": {}
+        },
+        "sistema-urinario": {
+          "name": "Sistema Urinario",
+          "href": "/categoria/salud/sistema-urinario",
+          "subsubcategories": {
+            "problemas-urinarios-1": {
+              "name": "Problemas Urinarios",
+              "href": "/categoria/salud/sistema-urinario/problemas-urinarios-1"
+            },
+            "diureticos": {
+              "name": "Diuréticos",
+              "href": "/categoria/salud/sistema-urinario/diureticos"
+            },
+            "difuncion-erectil": {
+              "name": "Difunción Eréctil",
+              "href": "/categoria/salud/sistema-urinario/difuncion-erectil"
+            },
+            "antiprostaticos": {
+              "name": "Antiprostáticos",
+              "href": "/categoria/salud/sistema-urinario/antiprostaticos"
+            },
+            "antigotosos-y-uricasuricos": {
+              "name": "Antigotosos y Uricasuricos",
+              "href": "/categoria/salud/sistema-urinario/antigotosos-y-uricasuricos"
+            },
+            "antiespasmodicos-urinarios": {
+              "name": "Antiespasmódicos Urinarios",
+              "href": "/categoria/salud/sistema-urinario/antiespasmodicos-urinarios"
+            },
+            "antibioticos-urinarios": {
+              "name": "Antibióticos Urinarios",
+              "href": "/categoria/salud/sistema-urinario/antibioticos-urinarios"
+            }
+          }
+        },
+        "sistema-sanguineo": {
+          "name": "Sistema Sanguíneo",
+          "href": "/categoria/salud/sistema-sanguineo",
+          "subsubcategories": {
+            "otros-en-sistema-sanguineo": {
+              "name": "Otros en Sistema Sanguíneo",
+              "href": "/categoria/salud/sistema-sanguineo/otros-en-sistema-sanguineo"
+            },
+            "antivaricosos": {
+              "name": "Antivaricosos",
+              "href": "/categoria/salud/sistema-sanguineo/antivaricosos"
+            },
+            "antitromboticos": {
+              "name": "Antitrombóticos",
+              "href": "/categoria/salud/sistema-sanguineo/antitromboticos"
+            },
+            "antihemorragicos": {
+              "name": "Antihemorrágicos",
+              "href": "/categoria/salud/sistema-sanguineo/antihemorragicos"
+            },
+            "anticoagulantestromboliticos": {
+              "name": "Anticoagulantes/Trombolíticos",
+              "href": "/categoria/salud/sistema-sanguineo/anticoagulantestromboliticos"
+            },
+            "antianemicos-1": {
+              "name": "Antianémicos",
+              "href": "/categoria/salud/sistema-sanguineo/antianemicos-1"
+            },
+            "antiagregantes-plaquetarios": {
+              "name": "Antiagregantes Plaquetarios",
+              "href": "/categoria/salud/sistema-sanguineo/antiagregantes-plaquetarios"
+            }
+          }
+        },
+        "sistema-oseo-y-articulaciones": {
+          "name": "Sistema Óseo y Articulaciones",
+          "href": "/categoria/salud/sistema-oseo-y-articulaciones",
+          "subsubcategories": {
+            "osteoporosis": {
+              "name": "Osteoporosis",
+              "href": "/categoria/salud/sistema-oseo-y-articulaciones/osteoporosis"
+            },
+            "osteoartritis-y-periodontopatias": {
+              "name": "Osteoartritis y Periodontopatías",
+              "href": "/categoria/salud/sistema-oseo-y-articulaciones/osteoartritis-y-periodontopatias"
+            },
+            "antirreumatico": {
+              "name": "Antirreumático",
+              "href": "/categoria/salud/sistema-oseo-y-articulaciones/antirreumatico"
+            }
+          }
+        },
+        "sistema-nervioso": {
+          "name": "Sistema Nervioso",
+          "href": "/categoria/salud/sistema-nervioso",
+          "subsubcategories": {
+            "psicoanalepticos": {
+              "name": "Psicoanalépticos",
+              "href": "/categoria/salud/sistema-nervioso/psicoanalepticos"
+            },
+            "antivertiginoso": {
+              "name": "Antivertiginoso",
+              "href": "/categoria/salud/sistema-nervioso/antivertiginoso"
+            },
+            "antiepilepticos": {
+              "name": "Antiepilépticos",
+              "href": "/categoria/salud/sistema-nervioso/antiepilepticos"
+            },
+            "antiparkinsonianos": {
+              "name": "Antiparkinsonianos",
+              "href": "/categoria/salud/sistema-nervioso/antiparkinsonianos"
+            },
+            "otros-en-sistema-nervioso": {
+              "name": "Otros en Sistema Nervioso",
+              "href": "/categoria/salud/sistema-nervioso/otros-en-sistema-nervioso"
+            },
+            "dolores-severos": {
+              "name": "Dolores Severos",
+              "href": "/categoria/salud/sistema-nervioso/dolores-severos"
+            },
+            "ansioliticos": {
+              "name": "Ansiolíticos",
+              "href": "/categoria/salud/sistema-nervioso/ansioliticos"
+            },
+            "sedanteshipnoticos": {
+              "name": "Sedantes/Hipnóticos",
+              "href": "/categoria/salud/sistema-nervioso/sedanteshipnoticos"
+            },
+            "antimigranoso-especializado": {
+              "name": "Antimigrañoso Especializado",
+              "href": "/categoria/salud/sistema-nervioso/antimigranoso-especializado"
+            },
+            "antidepresivos": {
+              "name": "Antidepresivos",
+              "href": "/categoria/salud/sistema-nervioso/antidepresivos"
+            },
+            "antipsicoticos": {
+              "name": "Antipsicóticos",
+              "href": "/categoria/salud/sistema-nervioso/antipsicoticos"
+            },
+            "otros-productos-terapeuticos": {
+              "name": "Otros productos terapéuticos",
+              "href": "/categoria/salud/sistema-nervioso/otros-productos-terapeuticos"
+            }
+          }
+        },
+        "sistema-digestivo-1": {
+          "name": "Sistema Digestivo",
+          "href": "/categoria/salud/sistema-digestivo-1",
+          "subsubcategories": {
+            "reposicion-de-electrolitos": {
+              "name": "Reposición de Electrolitos",
+              "href": "/categoria/salud/sistema-digestivo-1/reposicion-de-electrolitos"
+            },
+            "rehidratantes": {
+              "name": "Rehidratantes",
+              "href": "/categoria/salud/sistema-digestivo-1/rehidratantes"
+            },
+            "reductores-de-grasa": {
+              "name": "Reductores de Grasa",
+              "href": "/categoria/salud/sistema-digestivo-1/reductores-de-grasa"
+            },
+            "otros-sistema-digestivo": {
+              "name": "Otros Sistema Digestivo",
+              "href": "/categoria/salud/sistema-digestivo-1/otros-sistema-digestivo"
+            },
+            "laxantes": {
+              "name": "Laxantes",
+              "href": "/categoria/salud/sistema-digestivo-1/laxantes"
+            },
+            "intolerancia-a-la-lactosa": {
+              "name": "Intolerancia a la Lactosa",
+              "href": "/categoria/salud/sistema-digestivo-1/intolerancia-a-la-lactosa"
+            },
+            "hipolipemiantes": {
+              "name": "Hipolipemiantes",
+              "href": "/categoria/salud/sistema-digestivo-1/hipolipemiantes"
+            },
+            "hepatoprotectores": {
+              "name": "Hepatoprotectores",
+              "href": "/categoria/salud/sistema-digestivo-1/hepatoprotectores"
+            },
+            "flora-intestinal": {
+              "name": "Flora Intestinal",
+              "href": "/categoria/salud/sistema-digestivo-1/flora-intestinal"
+            },
+            "estimulantes-del-apetito": {
+              "name": "Estimulantes del Apetito",
+              "href": "/categoria/salud/sistema-digestivo-1/estimulantes-del-apetito"
+            },
+            "digestivos": {
+              "name": "Digestivos",
+              "href": "/categoria/salud/sistema-digestivo-1/digestivos"
+            },
+            "antiulcerososprotector-gastrico": {
+              "name": "Antiulcerosos/Protector Gástrico",
+              "href": "/categoria/salud/sistema-digestivo-1/antiulcerososprotector-gastrico"
+            },
+            "antiparasitario": {
+              "name": "Antiparasitario",
+              "href": "/categoria/salud/sistema-digestivo-1/antiparasitario"
+            },
+            "antiinfecciososantisepticos-bucal": {
+              "name": "Antiinfecciosos/Antisépticos Bucal",
+              "href": "/categoria/salud/sistema-digestivo-1/antiinfecciososantisepticos-bucal"
+            },
+            "antihemorroidales": {
+              "name": "Antihemorroidales",
+              "href": "/categoria/salud/sistema-digestivo-1/antihemorroidales"
+            },
+            "antiflatulentos": {
+              "name": "Antiflatulentos",
+              "href": "/categoria/salud/sistema-digestivo-1/antiflatulentos"
+            },
+            "antiespasmodicos": {
+              "name": "Antiespasmódicos",
+              "href": "/categoria/salud/sistema-digestivo-1/antiespasmodicos"
+            },
+            "antiemeticos": {
+              "name": "Antieméticos",
+              "href": "/categoria/salud/sistema-digestivo-1/antiemeticos"
+            },
+            "antidiarreicos": {
+              "name": "Antidiarreicos",
+              "href": "/categoria/salud/sistema-digestivo-1/antidiarreicos"
+            },
+            "antibioticos-digestivos": {
+              "name": "Antibióticos Digestivos",
+              "href": "/categoria/salud/sistema-digestivo-1/antibioticos-digestivos"
+            },
+            "antiacidos": {
+              "name": "Antiácidos",
+              "href": "/categoria/salud/sistema-digestivo-1/antiacidos"
+            }
+          }
+        },
+        "sistema-cardiovascular-1": {
+          "name": "Sistema Cardiovascular",
+          "href": "/categoria/salud/sistema-cardiovascular-1",
+          "subsubcategories": {
+            "otros-de-sistema-cardiovascular-1": {
+              "name": "Otros de Sistema Cardiovascular",
+              "href": "/categoria/salud/sistema-cardiovascular-1/otros-de-sistema-cardiovascular-1"
+            },
+            "modificadores-de-lipidos": {
+              "name": "Modificadores de Lípidos",
+              "href": "/categoria/salud/sistema-cardiovascular-1/modificadores-de-lipidos"
+            },
+            "antihipertensivos": {
+              "name": "Antihipertensivos",
+              "href": "/categoria/salud/sistema-cardiovascular-1/antihipertensivos"
+            },
+            "antiarritmicos": {
+              "name": "Antiarrítmicos",
+              "href": "/categoria/salud/sistema-cardiovascular-1/antiarritmicos"
+            },
+            "antianginosos": {
+              "name": "Antianginosos",
+              "href": "/categoria/salud/sistema-cardiovascular-1/antianginosos"
+            },
+            "otros": {
+              "name": "Otros",
+              "href": "/categoria/salud/sistema-cardiovascular-1/otros"
+            }
+          }
+        },
+        "sistema-respiratorio": {
+          "name": "Sistema Respiratorio",
+          "href": "/categoria/salud/sistema-respiratorio",
+          "subsubcategories": {
+            "tos-y-resfrio": {
+              "name": "Tos y Resfrío",
+              "href": "/categoria/salud/sistema-respiratorio/tos-y-resfrio"
+            },
+            "preparaciones-nasales-topicas": {
+              "name": "Preparaciones Nasales Tópicas",
+              "href": "/categoria/salud/sistema-respiratorio/preparaciones-nasales-topicas"
+            },
+            "otros-en-sistema-respiratorio": {
+              "name": "Otros en Sistema Respiratorio",
+              "href": "/categoria/salud/sistema-respiratorio/otros-en-sistema-respiratorio"
+            },
+            "mucoliticos": {
+              "name": "Mucolíticos",
+              "href": "/categoria/salud/sistema-respiratorio/mucoliticos"
+            },
+            "dolor-de-garganta": {
+              "name": "Dolor de Garganta",
+              "href": "/categoria/salud/sistema-respiratorio/dolor-de-garganta"
+            },
+            "descongestionantes": {
+              "name": "Descongestionantes",
+              "href": "/categoria/salud/sistema-respiratorio/descongestionantes"
+            },
+            "corticoides": {
+              "name": "Corticoides",
+              "href": "/categoria/salud/sistema-respiratorio/corticoides"
+            },
+            "broncodilatadores": {
+              "name": "Broncodilatadores",
+              "href": "/categoria/salud/sistema-respiratorio/broncodilatadores"
+            },
+            "broncodilatador-y-expectorante": {
+              "name": "Broncodilatador y Expectorante",
+              "href": "/categoria/salud/sistema-respiratorio/broncodilatador-y-expectorante"
+            },
+            "antitusigenos": {
+              "name": "Antitusígenos",
+              "href": "/categoria/salud/sistema-respiratorio/antitusigenos"
+            },
+            "antihistaminicos-respiratorios": {
+              "name": "Antihistamínicos Respiratorios",
+              "href": "/categoria/salud/sistema-respiratorio/antihistaminicos-respiratorios"
+            },
+            "antigripales-1": {
+              "name": "Antigripales",
+              "href": "/categoria/salud/sistema-respiratorio/antigripales-1"
+            },
+            "antibioticos-respiratorios": {
+              "name": "Antibióticos Respiratorios",
+              "href": "/categoria/salud/sistema-respiratorio/antibioticos-respiratorios"
+            },
+            "antiasmaticos": {
+              "name": "Antiasmáticos",
+              "href": "/categoria/salud/sistema-respiratorio/antiasmaticos"
+            }
+          }
+        },
+        "productos-galenicos": {
+          "name": "Productos Galénicos",
+          "href": "/categoria/salud/productos-galenicos",
+          "subsubcategories": {}
+        },
+        "problemas-generales-1": {
+          "name": "Problemas Generales",
+          "href": "/categoria/salud/problemas-generales-1",
+          "subsubcategories": {
+            "suplemento-dietario": {
+              "name": "Suplemento Dietario",
+              "href": "/categoria/salud/problemas-generales-1/suplemento-dietario"
+            },
+            "sedantes": {
+              "name": "Sedantes",
+              "href": "/categoria/salud/problemas-generales-1/sedantes"
+            },
+            "relajantes-musculares-1": {
+              "name": "Relajantes Musculares",
+              "href": "/categoria/salud/problemas-generales-1/relajantes-musculares-1"
+            },
+            "mas-problemas-generales": {
+              "name": "Más Problemas Generales",
+              "href": "/categoria/salud/problemas-generales-1/mas-problemas-generales"
+            },
+            "mal-de-altura": {
+              "name": "Mal de Altura",
+              "href": "/categoria/salud/problemas-generales-1/mal-de-altura"
+            },
+            "insomnio": {
+              "name": "Insomnio",
+              "href": "/categoria/salud/problemas-generales-1/insomnio"
+            },
+            "corticosteroide-sistemico": {
+              "name": "Corticosteroide sistémico",
+              "href": "/categoria/salud/problemas-generales-1/corticosteroide-sistemico"
+            },
+            "corticoides-1": {
+              "name": "Corticoides",
+              "href": "/categoria/salud/problemas-generales-1/corticoides-1"
+            },
+            "antiparasitario---acaricida-y-otras-indicaciones": {
+              "name": "Antiparasitario - Acaricida y Otras Indicaciones",
+              "href": "/categoria/salud/problemas-generales-1/antiparasitario---acaricida-y-otras-indicaciones"
+            },
+            "antimigranosos": {
+              "name": "Antimigrañosos",
+              "href": "/categoria/salud/problemas-generales-1/antimigranosos"
+            },
+            "antibacteriano-de-uso-sistemico": {
+              "name": "Antibacteriano de Uso Sistémico",
+              "href": "/categoria/salud/problemas-generales-1/antibacteriano-de-uso-sistemico"
+            },
+            "anestesicos-topico": {
+              "name": "Anestésicos Tópico",
+              "href": "/categoria/salud/problemas-generales-1/anestesicos-topico"
+            },
+            "analgesico-y-antipiretico": {
+              "name": "Analgésico y Antipirético",
+              "href": "/categoria/salud/problemas-generales-1/analgesico-y-antipiretico"
+            },
+            "analgesico-y-antiinflamatorios": {
+              "name": "Analgésico y Antiinflamatorios",
+              "href": "/categoria/salud/problemas-generales-1/analgesico-y-antiinflamatorios"
+            },
+            "acidosis-metabolicas": {
+              "name": "Acidosis metabólicas",
+              "href": "/categoria/salud/problemas-generales-1/acidosis-metabolicas"
+            },
+            "otros-1": {
+              "name": "Otros",
+              "href": "/categoria/salud/problemas-generales-1/otros-1"
+            }
+          }
+        },
+        "preparados-estomatologicos-1": {
+          "name": "Preparados Estomatológicos",
+          "href": "/categoria/salud/preparados-estomatologicos-1",
+          "subsubcategories": {
+            "tratamiento-oral-1": {
+              "name": "Tratamiento Oral",
+              "href": "/categoria/salud/preparados-estomatologicos-1/tratamiento-oral-1"
+            }
+          }
+        },
+        "otologicos": {
+          "name": "Otológicos",
+          "href": "/categoria/salud/otologicos",
+          "subsubcategories": {
+            "antiinfeccioso-1": {
+              "name": "Antiinfeccioso",
+              "href": "/categoria/salud/otologicos/antiinfeccioso-1"
+            }
+          }
+        },
+        "optica": {
+          "name": "Óptica",
+          "href": "/categoria/salud/optica",
+          "subsubcategories": {
+            "soluciones-oftalmicas": {
+              "name": "Soluciones Oftálmicas",
+              "href": "/categoria/salud/optica/soluciones-oftalmicas"
+            },
+            "parches-oculares": {
+              "name": "Parches Oculares",
+              "href": "/categoria/salud/optica/parches-oculares"
+            },
+            "montura-de-descanso": {
+              "name": "Montura de Descanso",
+              "href": "/categoria/salud/optica/montura-de-descanso"
+            },
+            "lentes-de-contacto": {
+              "name": "Lentes de Contacto",
+              "href": "/categoria/salud/optica/lentes-de-contacto"
+            },
+            "desinfeccion-lentes-de-contacto": {
+              "name": "Desinfección Lentes de Contacto",
+              "href": "/categoria/salud/optica/desinfeccion-lentes-de-contacto"
+            }
+          }
+        },
+        "oftalmologicos": {
+          "name": "Oftalmológicos",
+          "href": "/categoria/salud/oftalmologicos",
+          "subsubcategories": {
+            "otros-productos-oftalmologicos": {
+              "name": "Otros Productos Oftalmológicos",
+              "href": "/categoria/salud/oftalmologicos/otros-productos-oftalmologicos"
+            },
+            "lagrimas-artificialeslubricantes-oftalmicos": {
+              "name": "Lagrimas artificiales/Lubricantes Oftálmicos",
+              "href": "/categoria/salud/oftalmologicos/lagrimas-artificialeslubricantes-oftalmicos"
+            },
+            "descongestionante-oftalmico": {
+              "name": "Descongestionante Oftálmico",
+              "href": "/categoria/salud/oftalmologicos/descongestionante-oftalmico"
+            },
+            "antisepticos": {
+              "name": "Antisépticos",
+              "href": "/categoria/salud/oftalmologicos/antisepticos"
+            },
+            "antiinflamatorios-oftalmicos": {
+              "name": "Antiinflamatorios Oftálmicos",
+              "href": "/categoria/salud/oftalmologicos/antiinflamatorios-oftalmicos"
+            },
+            "antiinfeccioso": {
+              "name": "Antiinfeccioso",
+              "href": "/categoria/salud/oftalmologicos/antiinfeccioso"
+            },
+            "antiglaucomatosos": {
+              "name": "Antiglaucomatosos",
+              "href": "/categoria/salud/oftalmologicos/antiglaucomatosos"
+            },
+            "antibioticos-oftalmicos": {
+              "name": "Antibióticos Oftálmicos",
+              "href": "/categoria/salud/oftalmologicos/antibioticos-oftalmicos"
+            }
+          }
+        },
+        "nutricion-1": {
+          "name": "Nutrición",
+          "href": "/categoria/salud/nutricion-1",
+          "subsubcategories": {
+            "antianemicos": {
+              "name": "Antianémicos",
+              "href": "/categoria/salud/nutricion-1/antianemicos"
+            }
+          }
+        },
+        "infecciones-y-otros": {
+          "name": "Infecciones y Otros",
+          "href": "/categoria/salud/infecciones-y-otros",
+          "subsubcategories": {
+            "antivirales": {
+              "name": "Antivirales",
+              "href": "/categoria/salud/infecciones-y-otros/antivirales"
+            }
+          }
+        },
+        "hormonas": {
+          "name": "Hormonas",
+          "href": "/categoria/salud/hormonas",
+          "subsubcategories": {
+            "tiroidesantitiroides": {
+              "name": "Tiroides/Antitiroides",
+              "href": "/categoria/salud/hormonas/tiroidesantitiroides"
+            },
+            "reguladores-de-hormonas": {
+              "name": "Reguladores de Hormonas",
+              "href": "/categoria/salud/hormonas/reguladores-de-hormonas"
+            },
+            "otros-tipos-de-hormonas": {
+              "name": "Otros Tipos de Hormonas",
+              "href": "/categoria/salud/hormonas/otros-tipos-de-hormonas"
+            },
+            "insulinas": {
+              "name": "Insulinas",
+              "href": "/categoria/salud/hormonas/insulinas"
+            },
+            "antidiabeticos": {
+              "name": "Antidiabéticos",
+              "href": "/categoria/salud/hormonas/antidiabeticos"
+            },
+            "anticonceptivos": {
+              "name": "Anticonceptivos",
+              "href": "/categoria/salud/hormonas/anticonceptivos"
+            },
+            "androgenosantiandrogenos": {
+              "name": "Andrógenos/Antiandrógenos",
+              "href": "/categoria/salud/hormonas/androgenosantiandrogenos"
+            }
+          }
+        },
+        "dispositivos-quirurgicos-1": {
+          "name": "Dispositivos Quirúrgicos",
+          "href": "/categoria/salud/dispositivos-quirurgicos-1",
+          "subsubcategories": {
+            "material-medico-1": {
+              "name": "Material Médico",
+              "href": "/categoria/salud/dispositivos-quirurgicos-1/material-medico-1"
+            },
+            "jeringas": {
+              "name": "Jeringas",
+              "href": "/categoria/salud/dispositivos-quirurgicos-1/jeringas"
+            },
+            "agujas-1": {
+              "name": "Agujas",
+              "href": "/categoria/salud/dispositivos-quirurgicos-1/agujas-1"
+            }
+          }
+        },
+        "cuidado-muscular-y-articular-1": {
+          "name": "Cuidado Muscular y Articular",
+          "href": "/categoria/salud/cuidado-muscular-y-articular-1",
+          "subsubcategories": {
+            "parchescompresas-y-bolsas-1": {
+              "name": "Parches/compresas y bolsas",
+              "href": "/categoria/salud/cuidado-muscular-y-articular-1/parchescompresas-y-bolsas-1"
+            }
+          }
+        },
+        "cuidado-dermatologico": {
+          "name": "Cuidado Dermatológico",
+          "href": "/categoria/salud/cuidado-dermatologico",
+          "subsubcategories": {
+            "tratamiento-para-escaldadura": {
+              "name": "Tratamiento para Escaldadura",
+              "href": "/categoria/salud/cuidado-dermatologico/tratamiento-para-escaldadura"
+            },
+            "tratamiento-en-quemaduras": {
+              "name": "Tratamiento en Quemaduras",
+              "href": "/categoria/salud/cuidado-dermatologico/tratamiento-en-quemaduras"
+            },
+            "tratamiento-de-acne": {
+              "name": "Tratamiento de Acné",
+              "href": "/categoria/salud/cuidado-dermatologico/tratamiento-de-acne"
+            },
+            "tratamiento-antiviral": {
+              "name": "Tratamiento Antiviral",
+              "href": "/categoria/salud/cuidado-dermatologico/tratamiento-antiviral"
+            },
+            "otros-cuidados-dermatologicos": {
+              "name": "Otros Cuidados Dermatológicos",
+              "href": "/categoria/salud/cuidado-dermatologico/otros-cuidados-dermatologicos"
+            },
+            "corticoides-dermico": {
+              "name": "Corticoides Dérmico",
+              "href": "/categoria/salud/cuidado-dermatologico/corticoides-dermico"
+            },
+            "corticoide-con-antibioticos": {
+              "name": "Corticoide con Antibióticos",
+              "href": "/categoria/salud/cuidado-dermatologico/corticoide-con-antibioticos"
+            },
+            "cicatrizantes-heridas-otros": {
+              "name": "cicatrizantes /Heridas/ Otros",
+              "href": "/categoria/salud/cuidado-dermatologico/cicatrizantes-heridas-otros"
+            },
+            "antivirales-1": {
+              "name": "Antivirales",
+              "href": "/categoria/salud/cuidado-dermatologico/antivirales-1"
+            },
+            "antitromboticos-1": {
+              "name": "Antitromboticos",
+              "href": "/categoria/salud/cuidado-dermatologico/antitromboticos-1"
+            },
+            "antisepticos-y-desinfectantes": {
+              "name": "Antisépticos y Desinfectantes",
+              "href": "/categoria/salud/cuidado-dermatologico/antisepticos-y-desinfectantes"
+            },
+            "antipruriginoso": {
+              "name": "Antipruriginoso",
+              "href": "/categoria/salud/cuidado-dermatologico/antipruriginoso"
+            },
+            "antimicoticos": {
+              "name": "Antimicóticos",
+              "href": "/categoria/salud/cuidado-dermatologico/antimicoticos"
+            },
+            "antiinflamatorios-antirreumaticos-dermicos": {
+              "name": "Antiinflamatorios/ Antirreumaticos Dérmicos",
+              "href": "/categoria/salud/cuidado-dermatologico/antiinflamatorios-antirreumaticos-dermicos"
+            },
+            "antihistaminicos-dermatologico": {
+              "name": "Antihistamínicos Dermatológico",
+              "href": "/categoria/salud/cuidado-dermatologico/antihistaminicos-dermatologico"
+            },
+            "antibioticos-dermatologicos": {
+              "name": "Antibióticos Dermatológicos",
+              "href": "/categoria/salud/cuidado-dermatologico/antibioticos-dermatologicos"
+            },
+            "antibacteriano-dermico": {
+              "name": "Antibacteriano Dérmico",
+              "href": "/categoria/salud/cuidado-dermatologico/antibacteriano-dermico"
+            },
+            "antimicotico": {
+              "name": "Antimicótico",
+              "href": "/categoria/salud/cuidado-dermatologico/antimicotico"
+            }
+          }
+        },
+        "cuidado-de-la-mujer": {
+          "name": "Cuidado de la Mujer",
+          "href": "/categoria/salud/cuidado-de-la-mujer",
+          "subsubcategories": {
+            "sintomas-menstruales": {
+              "name": "Síntomas Menstruales",
+              "href": "/categoria/salud/cuidado-de-la-mujer/sintomas-menstruales"
+            },
+            "cremasovulos-vaginales": {
+              "name": "Cremas/Óvulos vaginales",
+              "href": "/categoria/salud/cuidado-de-la-mujer/cremasovulos-vaginales"
+            },
+            "antimenospausico": {
+              "name": "Antimenospausico",
+              "href": "/categoria/salud/cuidado-de-la-mujer/antimenospausico"
+            },
+            "antigonadotrofinas-y-farmacos-similares": {
+              "name": "Antigonadotrófinas y fármacos similares",
+              "href": "/categoria/salud/cuidado-de-la-mujer/antigonadotrofinas-y-farmacos-similares"
+            }
+          }
+        },
+        "antineoplasicos-e-inmunomoduladores": {
+          "name": "Antineoplásicos e Inmunomoduladores",
+          "href": "/categoria/salud/antineoplasicos-e-inmunomoduladores",
+          "subsubcategories": {
+            "terapia-endocrina": {
+              "name": "Terapia Endocrina",
+              "href": "/categoria/salud/antineoplasicos-e-inmunomoduladores/terapia-endocrina"
+            },
+            "inmunosupresores": {
+              "name": "Inmunosupresores",
+              "href": "/categoria/salud/antineoplasicos-e-inmunomoduladores/inmunosupresores"
+            },
+            "antineoplasicos": {
+              "name": "Antineoplásicos",
+              "href": "/categoria/salud/antineoplasicos-e-inmunomoduladores/antineoplasicos"
+            },
+            "antiestrogenos": {
+              "name": "Antiestrógenos",
+              "href": "/categoria/salud/antineoplasicos-e-inmunomoduladores/antiestrogenos"
+            },
+            "antiandrogenos": {
+              "name": "Antiandrógenos",
+              "href": "/categoria/salud/antineoplasicos-e-inmunomoduladores/antiandrogenos"
+            }
+          }
+        },
+        "antibacterianos-para-uso-sistemico": {
+          "name": "Antibacterianos para uso sistémico",
+          "href": "/categoria/salud/antibacterianos-para-uso-sistemico",
+          "subsubcategories": {
+            "otros-antibacterianos": {
+              "name": "Otros antibacterianos",
+              "href": "/categoria/salud/antibacterianos-para-uso-sistemico/otros-antibacterianos"
+            }
+          }
+        }
+      }
+    },
+    "mama-y-bebe": {
+      "name": "Mamá y Bebé",
+      "href": "/categoria/mama-y-bebe",
+      "subcategories": {
+        "promociones-en-nutricion-infantil": {
+          "name": "Promociones en Nutrición Infantil",
+          "href": "/categoria/mama-y-bebe/promociones-en-nutricion-infantil",
+          "subsubcategories": {
+            "productos-babylac-1.8kg": {
+              "name": "Productos Babylac 1.8KG",
+              "href": "/categoria/mama-y-bebe/promociones-en-nutricion-infantil/productos-babylac-1.8kg"
+            },
+            "productos-vital-900gr": {
+              "name": "Productos Vital 900GR",
+              "href": "/categoria/mama-y-bebe/promociones-en-nutricion-infantil/productos-vital-900gr"
+            },
+            "precios-bajos-en-enfagrow": {
+              "name": "Precios Bajos en Enfagrow",
+              "href": "/categoria/mama-y-bebe/promociones-en-nutricion-infantil/precios-bajos-en-enfagrow"
+            },
+            "pediasure:-pack--bebible": {
+              "name": "Pediasure: Pack + Bebible",
+              "href": "/categoria/mama-y-bebe/promociones-en-nutricion-infantil/pediasure:-pack--bebible"
+            },
+            "nan-3-optipro": {
+              "name": "NAN 3 OPTIPRO",
+              "href": "/categoria/mama-y-bebe/promociones-en-nutricion-infantil/nan-3-optipro"
+            }
+          }
+        },
+        "vitaminas-y-suplementos": {
+          "name": "Vitaminas y Suplementos",
+          "href": "/categoria/mama-y-bebe/vitaminas-y-suplementos",
+          "subsubcategories": {
+            "multivitaminico-prenatal": {
+              "name": "Multivitamínico Prenatal",
+              "href": "/categoria/mama-y-bebe/vitaminas-y-suplementos/multivitaminico-prenatal"
+            },
+            "multivitaminico-para-bebes": {
+              "name": "Multivitamínico para Bebés",
+              "href": "/categoria/mama-y-bebe/vitaminas-y-suplementos/multivitaminico-para-bebes"
+            },
+            "hierro": {
+              "name": "Hierro",
+              "href": "/categoria/mama-y-bebe/vitaminas-y-suplementos/hierro"
+            },
+            "biotina": {
+              "name": "Biotina",
+              "href": "/categoria/mama-y-bebe/vitaminas-y-suplementos/biotina"
+            },
+            "acido-folico": {
+              "name": "Ácido Fólico",
+              "href": "/categoria/mama-y-bebe/vitaminas-y-suplementos/acido-folico"
+            }
+          }
+        },
+        "todo-en-ninet": {
+          "name": "Todo en Ninet",
+          "href": "/categoria/mama-y-bebe/todo-en-ninet",
+          "subsubcategories": {}
+        },
+        "toallitas-humedas": {
+          "name": "Toallitas Húmedas",
+          "href": "/categoria/mama-y-bebe/toallitas-humedas",
+          "subsubcategories": {}
+        },
+        "soporte-para-embarazo": {
+          "name": "Soporte para Embarazo",
+          "href": "/categoria/mama-y-bebe/soporte-para-embarazo",
+          "subsubcategories": {}
+        },
+        "panales-para-bebe": {
+          "name": "Pañales para Bebé",
+          "href": "/categoria/mama-y-bebe/panales-para-bebe",
+          "subsubcategories": {
+            "talla-xxxg--xxxl": {
+              "name": "Talla XXXG / XXXL",
+              "href": "/categoria/mama-y-bebe/panales-para-bebe/talla-xxxg--xxxl"
+            },
+            "talla-xxg--xxl": {
+              "name": "Talla XXG / XXL",
+              "href": "/categoria/mama-y-bebe/panales-para-bebe/talla-xxg--xxl"
+            },
+            "talla-xg--xl": {
+              "name": "Talla XG / XL",
+              "href": "/categoria/mama-y-bebe/panales-para-bebe/talla-xg--xl"
+            },
+            "talla-s--p": {
+              "name": "Talla S / P",
+              "href": "/categoria/mama-y-bebe/panales-para-bebe/talla-s--p"
+            },
+            "talla-m": {
+              "name": "Talla M",
+              "href": "/categoria/mama-y-bebe/panales-para-bebe/talla-m"
+            },
+            "talla-g--l": {
+              "name": "Talla G / L",
+              "href": "/categoria/mama-y-bebe/panales-para-bebe/talla-g--l"
+            },
+            "recien-nacido": {
+              "name": "Recién Nacido",
+              "href": "/categoria/mama-y-bebe/panales-para-bebe/recien-nacido"
+            },
+            "prematuros": {
+              "name": "Prematuros",
+              "href": "/categoria/mama-y-bebe/panales-para-bebe/prematuros"
+            }
+          }
+        },
+        "maquillaje-para-ninas": {
+          "name": "Maquillaje para Niñas",
+          "href": "/categoria/mama-y-bebe/maquillaje-para-ninas",
+          "subsubcategories": {}
+        },
+        "formula-para-bebes": {
+          "name": "Fórmula para Bebés",
+          "href": "/categoria/mama-y-bebe/formula-para-bebes",
+          "subsubcategories": {
+            "otras-formulas-y-suplementos": {
+              "name": "Otras Fórmulas y Suplementos",
+              "href": "/categoria/mama-y-bebe/formula-para-bebes/otras-formulas-y-suplementos"
+            },
+            "nido-y-nan": {
+              "name": "Nido y Nan",
+              "href": "/categoria/mama-y-bebe/formula-para-bebes/nido-y-nan"
+            },
+            "cereales-1": {
+              "name": "Cereales",
+              "href": "/categoria/mama-y-bebe/formula-para-bebes/cereales-1"
+            },
+            "formula-lactea-soya-1": {
+              "name": "Fórmula Láctea Soya 1",
+              "href": "/categoria/mama-y-bebe/formula-para-bebes/formula-lactea-soya-1"
+            },
+            "formula-lactea-sin-lactosa-1": {
+              "name": "Fórmula Láctea sin Lactosa 1",
+              "href": "/categoria/mama-y-bebe/formula-para-bebes/formula-lactea-sin-lactosa-1"
+            },
+            "formula-lactea-regular-3": {
+              "name": "Fórmula Láctea Regular 3",
+              "href": "/categoria/mama-y-bebe/formula-para-bebes/formula-lactea-regular-3"
+            },
+            "formula-lactea-regular-2": {
+              "name": "Fórmula Láctea Regular 2",
+              "href": "/categoria/mama-y-bebe/formula-para-bebes/formula-lactea-regular-2"
+            },
+            "formula-lactea-regular-1": {
+              "name": "Fórmula Láctea Regular 1",
+              "href": "/categoria/mama-y-bebe/formula-para-bebes/formula-lactea-regular-1"
+            },
+            "formula-lactea-prematuros": {
+              "name": "Fórmula Láctea Prematuros",
+              "href": "/categoria/mama-y-bebe/formula-para-bebes/formula-lactea-prematuros"
+            },
+            "formula-lactea-confort": {
+              "name": "Fórmula Láctea Confort",
+              "href": "/categoria/mama-y-bebe/formula-para-bebes/formula-lactea-confort"
+            },
+            "formula-anti-regurgitacion": {
+              "name": "Fórmula Anti Regurgitación",
+              "href": "/categoria/mama-y-bebe/formula-para-bebes/formula-anti-regurgitacion"
+            }
+          }
+        },
+        "dormitorio-1": {
+          "name": "Dormitorio",
+          "href": "/categoria/mama-y-bebe/dormitorio-1",
+          "subsubcategories": {
+            "sonajeros-y-mordedores": {
+              "name": "Sonajeros y Mordedores",
+              "href": "/categoria/mama-y-bebe/dormitorio-1/sonajeros-y-mordedores"
+            },
+            "pijamas": {
+              "name": "Pijamas",
+              "href": "/categoria/mama-y-bebe/dormitorio-1/pijamas"
+            },
+            "mantas": {
+              "name": "Mantas",
+              "href": "/categoria/mama-y-bebe/dormitorio-1/mantas"
+            },
+            "peluches": {
+              "name": "Peluches",
+              "href": "/categoria/mama-y-bebe/dormitorio-1/peluches"
+            },
+            "corrales-y-cunas-1": {
+              "name": "Corrales y Cunas",
+              "href": "/categoria/mama-y-bebe/dormitorio-1/corrales-y-cunas-1"
+            },
+            "almohadas-1": {
+              "name": "Almohadas",
+              "href": "/categoria/mama-y-bebe/dormitorio-1/almohadas-1"
+            }
+          }
+        },
+        "cuidado-de-bebes-y-perfumeria": {
+          "name": "Cuidado de Bebés y Perfumería",
+          "href": "/categoria/mama-y-bebe/cuidado-de-bebes-y-perfumeria",
+          "subsubcategories": {
+            "vinchas--gorros": {
+              "name": "Vinchas / Gorros",
+              "href": "/categoria/mama-y-bebe/cuidado-de-bebes-y-perfumeria/vinchas--gorros"
+            },
+            "talcos": {
+              "name": "Talcos",
+              "href": "/categoria/mama-y-bebe/cuidado-de-bebes-y-perfumeria/talcos"
+            },
+            "locion-para-peinar": {
+              "name": "Loción para peinar",
+              "href": "/categoria/mama-y-bebe/cuidado-de-bebes-y-perfumeria/locion-para-peinar"
+            },
+            "kits-de-cuidado-infantil": {
+              "name": "Kits de Cuidado Infantil",
+              "href": "/categoria/mama-y-bebe/cuidado-de-bebes-y-perfumeria/kits-de-cuidado-infantil"
+            },
+            "hisopos": {
+              "name": "Hisopos",
+              "href": "/categoria/mama-y-bebe/cuidado-de-bebes-y-perfumeria/hisopos"
+            },
+            "cremas-humectantes": {
+              "name": "Cremas Humectantes",
+              "href": "/categoria/mama-y-bebe/cuidado-de-bebes-y-perfumeria/cremas-humectantes"
+            },
+            "crema-para-escaldaduras-de-bebes": {
+              "name": "Crema para Escaldaduras de Bebés",
+              "href": "/categoria/mama-y-bebe/cuidado-de-bebes-y-perfumeria/crema-para-escaldaduras-de-bebes"
+            },
+            "colonia-para-bebe": {
+              "name": "Colonia para Bebé",
+              "href": "/categoria/mama-y-bebe/cuidado-de-bebes-y-perfumeria/colonia-para-bebe"
+            },
+            "cepillos-y-peines": {
+              "name": "Cepillos y Peines",
+              "href": "/categoria/mama-y-bebe/cuidado-de-bebes-y-perfumeria/cepillos-y-peines"
+            },
+            "bloqueador-solar-para-bebes": {
+              "name": "Bloqueador Solar para Bebés",
+              "href": "/categoria/mama-y-bebe/cuidado-de-bebes-y-perfumeria/bloqueador-solar-para-bebes"
+            },
+            "aceite-de-bebe": {
+              "name": "Aceite de Bebé",
+              "href": "/categoria/mama-y-bebe/cuidado-de-bebes-y-perfumeria/aceite-de-bebe"
+            },
+            "turbante": {
+              "name": "Turbante",
+              "href": "/categoria/mama-y-bebe/cuidado-de-bebes-y-perfumeria/turbante"
+            }
+          }
+        },
+        "cuidado-corporal-para-mama": {
+          "name": "Cuidado Corporal para Mamá",
+          "href": "/categoria/mama-y-bebe/cuidado-corporal-para-mama",
+          "subsubcategories": {
+            "tratamiento-reafirmante": {
+              "name": "Tratamiento Reafirmante",
+              "href": "/categoria/mama-y-bebe/cuidado-corporal-para-mama/tratamiento-reafirmante"
+            },
+            "tratamiento-mamario": {
+              "name": "Tratamiento Mamario",
+              "href": "/categoria/mama-y-bebe/cuidado-corporal-para-mama/tratamiento-mamario"
+            },
+            "tratamiento-anti-estrias": {
+              "name": "Tratamiento Anti-Estrías",
+              "href": "/categoria/mama-y-bebe/cuidado-corporal-para-mama/tratamiento-anti-estrias"
+            }
+          }
+        },
+        "aseo-bebe--ninos": {
+          "name": "Aseo Bebé / Niños",
+          "href": "/categoria/mama-y-bebe/aseo-bebe--ninos",
+          "subsubcategories": {
+            "bacinicas-y-asientos-1": {
+              "name": "Bacinicas y Asientos",
+              "href": "/categoria/mama-y-bebe/aseo-bebe--ninos/bacinicas-y-asientos-1"
+            },
+            "toallas-de-bano-infantil": {
+              "name": "Toallas de Baño Infantil",
+              "href": "/categoria/mama-y-bebe/aseo-bebe--ninos/toallas-de-bano-infantil"
+            },
+            "shampoo-para-ninos": {
+              "name": "Shampoo para Niños",
+              "href": "/categoria/mama-y-bebe/aseo-bebe--ninos/shampoo-para-ninos"
+            },
+            "set-de-limpieza-para-bebes": {
+              "name": "Set de Limpieza para Bebés",
+              "href": "/categoria/mama-y-bebe/aseo-bebe--ninos/set-de-limpieza-para-bebes"
+            },
+            "jabon-para-ninos": {
+              "name": "Jabón para Niños",
+              "href": "/categoria/mama-y-bebe/aseo-bebe--ninos/jabon-para-ninos"
+            },
+            "higiene-bucal-infantil-1": {
+              "name": "Higiene Bucal Infantil",
+              "href": "/categoria/mama-y-bebe/aseo-bebe--ninos/higiene-bucal-infantil-1"
+            },
+            "gel-de-bano": {
+              "name": "Gel de Baño",
+              "href": "/categoria/mama-y-bebe/aseo-bebe--ninos/gel-de-bano"
+            },
+            "cambiadores": {
+              "name": "Cambiadores",
+              "href": "/categoria/mama-y-bebe/aseo-bebe--ninos/cambiadores"
+            },
+            "baneras-y-accesorios": {
+              "name": "Bañeras y Accesorios",
+              "href": "/categoria/mama-y-bebe/aseo-bebe--ninos/baneras-y-accesorios"
+            },
+            "acondicionador-para-ninos": {
+              "name": "Acondicionador para Niños",
+              "href": "/categoria/mama-y-bebe/aseo-bebe--ninos/acondicionador-para-ninos"
+            }
+          }
+        },
+        "actividades": {
+          "name": "Actividades",
+          "href": "/categoria/mama-y-bebe/actividades",
+          "subsubcategories": {
+            "sillas-para-autos": {
+              "name": "Sillas para Autos",
+              "href": "/categoria/mama-y-bebe/actividades/sillas-para-autos"
+            },
+            "triciclos": {
+              "name": "Triciclos",
+              "href": "/categoria/mama-y-bebe/actividades/triciclos"
+            },
+            "sillas-mecedoras": {
+              "name": "Sillas Mecedoras",
+              "href": "/categoria/mama-y-bebe/actividades/sillas-mecedoras"
+            },
+            "silla-de-comer-para-bebes": {
+              "name": "Silla de Comer para Bebés",
+              "href": "/categoria/mama-y-bebe/actividades/silla-de-comer-para-bebes"
+            },
+            "loncheras-1": {
+              "name": "Loncheras",
+              "href": "/categoria/mama-y-bebe/actividades/loncheras-1"
+            },
+            "juegos-de-exterior": {
+              "name": "Juegos de Exterior",
+              "href": "/categoria/mama-y-bebe/actividades/juegos-de-exterior"
+            },
+            "corrales-y-cunas": {
+              "name": "Corrales y Cunas",
+              "href": "/categoria/mama-y-bebe/actividades/corrales-y-cunas"
+            },
+            "gimnasio": {
+              "name": "Gimnasio",
+              "href": "/categoria/mama-y-bebe/actividades/gimnasio"
+            },
+            "coches": {
+              "name": "Coches",
+              "href": "/categoria/mama-y-bebe/actividades/coches"
+            },
+            "canguros-y-portabebes": {
+              "name": "Canguros y Portabebés",
+              "href": "/categoria/mama-y-bebe/actividades/canguros-y-portabebes"
+            },
+            "andadores": {
+              "name": "Andadores",
+              "href": "/categoria/mama-y-bebe/actividades/andadores"
+            }
+          }
+        },
+        "accesorios-de-lactancia": {
+          "name": "Accesorios de Lactancia",
+          "href": "/categoria/mama-y-bebe/accesorios-de-lactancia",
+          "subsubcategories": {
+            "baberos": {
+              "name": "Baberos",
+              "href": "/categoria/mama-y-bebe/accesorios-de-lactancia/baberos"
+            },
+            "otros-accesorios-de-lactancia": {
+              "name": "Otros Accesorios de Lactancia",
+              "href": "/categoria/mama-y-bebe/accesorios-de-lactancia/otros-accesorios-de-lactancia"
+            },
+            "almohadillas": {
+              "name": "Almohadillas",
+              "href": "/categoria/mama-y-bebe/accesorios-de-lactancia/almohadillas"
+            },
+            "termos": {
+              "name": "Termos",
+              "href": "/categoria/mama-y-bebe/accesorios-de-lactancia/termos"
+            },
+            "protector-mamario": {
+              "name": "Protector Mamario",
+              "href": "/categoria/mama-y-bebe/accesorios-de-lactancia/protector-mamario"
+            },
+            "procesador": {
+              "name": "Procesador",
+              "href": "/categoria/mama-y-bebe/accesorios-de-lactancia/procesador"
+            },
+            "extractor-de-leche-1": {
+              "name": "Extractor de Leche",
+              "href": "/categoria/mama-y-bebe/accesorios-de-lactancia/extractor-de-leche-1"
+            },
+            "almohada-de-lactancia": {
+              "name": "Almohada de Lactancia",
+              "href": "/categoria/mama-y-bebe/accesorios-de-lactancia/almohada-de-lactancia"
+            },
+            "almacenamiento": {
+              "name": "Almacenamiento",
+              "href": "/categoria/mama-y-bebe/accesorios-de-lactancia/almacenamiento"
+            },
+            "extractor-de-leche": {
+              "name": "Extractor de Leche",
+              "href": "/categoria/mama-y-bebe/accesorios-de-lactancia/extractor-de-leche"
+            }
+          }
+        },
+        "accesorios-de-cuidado-infantil": {
+          "name": "Accesorios de Cuidado Infantil",
+          "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil",
+          "subsubcategories": {
+            "loncheras": {
+              "name": "Loncheras",
+              "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil/loncheras"
+            },
+            "vasos--tazas-y-tomatodos": {
+              "name": "Vasos / Tazas y Tomatodos",
+              "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil/vasos--tazas-y-tomatodos"
+            },
+            "tetinas": {
+              "name": "Tetinas",
+              "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil/tetinas"
+            },
+            "termometros-digitales": {
+              "name": "Termómetros Digitales",
+              "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil/termometros-digitales"
+            },
+            "panaleras": {
+              "name": "Pañaleras",
+              "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil/panaleras"
+            },
+            "otros-accesorios-infantiles": {
+              "name": "Otros Accesorios Infantiles",
+              "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil/otros-accesorios-infantiles"
+            },
+            "monitor-infantil": {
+              "name": "Monitor Infantil",
+              "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil/monitor-infantil"
+            },
+            "esterilizadores-y-accesorios": {
+              "name": "Esterilizadores y Accesorios",
+              "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil/esterilizadores-y-accesorios"
+            },
+            "cubiertos-y-recipientes": {
+              "name": "Cubiertos y Recipientes",
+              "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil/cubiertos-y-recipientes"
+            },
+            "chupones--mordedores": {
+              "name": "Chupones / Mordedores",
+              "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil/chupones--mordedores"
+            },
+            "biberones": {
+              "name": "Biberones",
+              "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil/biberones"
+            },
+            "aspirador-nasal": {
+              "name": "Aspirador Nasal",
+              "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil/aspirador-nasal"
+            },
+            "asientos-para-inodoros": {
+              "name": "Asientos para Inodoros",
+              "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil/asientos-para-inodoros"
+            },
+            "bacinicas-y-asientos": {
+              "name": "Bacinicas y Asientos",
+              "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil/bacinicas-y-asientos"
+            },
+            "higiene-bucal-infantil": {
+              "name": "Higiene Bucal Infantil",
+              "href": "/categoria/mama-y-bebe/accesorios-de-cuidado-infantil/higiene-bucal-infantil"
+            }
+          }
+        },
+        "vestimenta": {
+          "name": "Vestimenta",
+          "href": "/categoria/mama-y-bebe/vestimenta",
+          "subsubcategories": {
+            "ropa-infantil": {
+              "name": "Ropa Infantil",
+              "href": "/categoria/mama-y-bebe/vestimenta/ropa-infantil"
+            }
+          }
+        },
+        "jugueteria": {
+          "name": "Juguetería",
+          "href": "/categoria/mama-y-bebe/jugueteria",
+          "subsubcategories": {
+            "juguetes": {
+              "name": "Juguetes",
+              "href": "/categoria/mama-y-bebe/jugueteria/juguetes"
+            },
+            "juguetes-armable": {
+              "name": "Juguetes Armable",
+              "href": "/categoria/mama-y-bebe/jugueteria/juguetes-armable"
+            },
+            "juegos-de-mesa": {
+              "name": "Juegos de Mesa",
+              "href": "/categoria/mama-y-bebe/jugueteria/juegos-de-mesa"
+            },
+            "juegos-de-exterior-1": {
+              "name": "Juegos de Exterior",
+              "href": "/categoria/mama-y-bebe/jugueteria/juegos-de-exterior-1"
+            },
+            "gimnasios": {
+              "name": "Gimnasios",
+              "href": "/categoria/mama-y-bebe/jugueteria/gimnasios"
+            },
+            "coleccionables": {
+              "name": "Coleccionables",
+              "href": "/categoria/mama-y-bebe/jugueteria/coleccionables"
+            }
+          }
+        },
+        "promociones-para-el-cuidado-infantil": {
+          "name": "Promociones para el Cuidado Infantil",
+          "href": "/categoria/mama-y-bebe/promociones-para-el-cuidado-infantil",
+          "subsubcategories": {
+            "pack-ninet-xl-y-xxl": {
+              "name": "Pack Ninet XL y XXL",
+              "href": "/categoria/mama-y-bebe/promociones-para-el-cuidado-infantil/pack-ninet-xl-y-xxl"
+            },
+            "tus-packs-favoritos-en-bigpack": {
+              "name": "Tus Packs Favoritos en Bigpack",
+              "href": "/categoria/mama-y-bebe/promociones-para-el-cuidado-infantil/tus-packs-favoritos-en-bigpack"
+            },
+            "todo-en-panitos-humedos": {
+              "name": "Todo en Pañitos Húmedos",
+              "href": "/categoria/mama-y-bebe/promociones-para-el-cuidado-infantil/todo-en-panitos-humedos"
+            },
+            "ninet-suave-cuidado-en-todas-las-tallas": {
+              "name": "Ninet Suave Cuidado en Todas las Tallas",
+              "href": "/categoria/mama-y-bebe/promociones-para-el-cuidado-infantil/ninet-suave-cuidado-en-todas-las-tallas"
+            },
+            "perfumeria-par-tu-bebe": {
+              "name": "Perfumería par tu Bebé",
+              "href": "/categoria/mama-y-bebe/promociones-para-el-cuidado-infantil/perfumeria-par-tu-bebe"
+            },
+            "toallitas-humedas-ninet-bio-fibras": {
+              "name": "Toallitas Húmedas Ninet Bio Fibras",
+              "href": "/categoria/mama-y-bebe/promociones-para-el-cuidado-infantil/toallitas-humedas-ninet-bio-fibras"
+            },
+            "grandes-precios-con-huggies-natural": {
+              "name": "Grandes Precios con Huggies Natural",
+              "href": "/categoria/mama-y-bebe/promociones-para-el-cuidado-infantil/grandes-precios-con-huggies-natural"
+            },
+            "huggies-dermacare-con-peluche-de-regalo": {
+              "name": "Huggies Dermacare con Peluche de Regalo",
+              "href": "/categoria/mama-y-bebe/promociones-para-el-cuidado-infantil/huggies-dermacare-con-peluche-de-regalo"
+            },
+            "ninet-calzoncitos-entrenadores": {
+              "name": "Ninet Calzoncitos Entrenadores",
+              "href": "/categoria/mama-y-bebe/promociones-para-el-cuidado-infantil/ninet-calzoncitos-entrenadores"
+            }
+          }
+        }
+      }
+    },
+    "nutricion-para-todos": {
+      "name": "Nutrición para Todos",
+      "href": "/categoria/nutricion-para-todos",
+      "subcategories": {
+        "promociones-en-suplementos-y-vitaminas": {
+          "name": "Promociones en Suplementos y Vitaminas",
+          "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas",
+          "subsubcategories": {
+            "mas-energia-con-magnesol": {
+              "name": "Más Energía con Magnesol",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/mas-energia-con-magnesol"
+            },
+            "geriaplus-pack-en-todos-los-sabores": {
+              "name": "Geriaplus Pack en Todos los Sabores",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/geriaplus-pack-en-todos-los-sabores"
+            },
+            "pack-enfamil-para-mama": {
+              "name": "Pack Enfamil para Mamá",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/pack-enfamil-para-mama"
+            },
+            "packs-bebible-ensure-y-glucerna": {
+              "name": "Packs Bebible Ensure y Glucerna",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/packs-bebible-ensure-y-glucerna"
+            },
+            "pack-vital-vitaminado": {
+              "name": "Pack Vital Vitaminado",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/pack-vital-vitaminado"
+            },
+            "precios-bajos-con-ensure-advance": {
+              "name": "Precios Bajos con Ensure Advance",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/precios-bajos-con-ensure-advance"
+            },
+            "creatina-para-un-rendimiento-total": {
+              "name": "Creatina para un Rendimiento Total",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/creatina-para-un-rendimiento-total"
+            },
+            "applied-nutrition-proteina-isolatada": {
+              "name": "Applied Nutrition Proteína Isolatada",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/applied-nutrition-proteina-isolatada"
+            },
+            "todo-en-whey-protein": {
+              "name": "Todo en Whey Protein",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/todo-en-whey-protein"
+            },
+            "creatinas-demolitor": {
+              "name": "Creatinas Demolitor",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/creatinas-demolitor"
+            },
+            "productos-de-lab-nutrition": {
+              "name": "Productos de Lab Nutrition",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/productos-de-lab-nutrition"
+            },
+            "l-arginine-y-l-carnitine-sunvit": {
+              "name": "L-ARGININE y L-CARNITINE Sunvit",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/l-arginine-y-l-carnitine-sunvit"
+            },
+            "proteinas-applied-nutrition-de-1.8kg": {
+              "name": "Proteinas Applied Nutrition de 1.8kg",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/proteinas-applied-nutrition-de-1.8kg"
+            },
+            "todo-en-gomitas-funcionales": {
+              "name": "Todo en Gomitas Funcionales",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/todo-en-gomitas-funcionales"
+            },
+            "encuentra-tu-colageno-ideal": {
+              "name": "Encuentra tu Colágeno Ideal",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/encuentra-tu-colageno-ideal"
+            },
+            "alivia-el-estrenimiento-con-ciruelax": {
+              "name": "Alivia el Estreñimiento con Ciruelax",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/alivia-el-estrenimiento-con-ciruelax"
+            },
+            "tu-omega-3-fish-oil": {
+              "name": "Tu Omega 3-Fish Oil",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/tu-omega-3-fish-oil"
+            },
+            "vinagres-y-aceites": {
+              "name": "Vinagres y Aceites",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/vinagres-y-aceites"
+            },
+            "tes-y-endulzantes": {
+              "name": "Tés y Endulzantes",
+              "href": "/categoria/nutricion-para-todos/promociones-en-suplementos-y-vitaminas/tes-y-endulzantes"
+            }
+          }
+        },
+        "vitaminas": {
+          "name": "Vitaminas",
+          "href": "/categoria/nutricion-para-todos/vitaminas",
+          "subsubcategories": {
+            "vitamina-e": {
+              "name": "Vitamina E",
+              "href": "/categoria/nutricion-para-todos/vitaminas/vitamina-e"
+            },
+            "vitamina-d": {
+              "name": "Vitamina D",
+              "href": "/categoria/nutricion-para-todos/vitaminas/vitamina-d"
+            },
+            "vitamina-c": {
+              "name": "Vitamina C",
+              "href": "/categoria/nutricion-para-todos/vitaminas/vitamina-c"
+            },
+            "vitamina-b-1": {
+              "name": "Vitamina B",
+              "href": "/categoria/nutricion-para-todos/vitaminas/vitamina-b-1"
+            },
+            "vitamina-a": {
+              "name": "Vitamina A",
+              "href": "/categoria/nutricion-para-todos/vitaminas/vitamina-a"
+            }
+          }
+        },
+        "suplementos-nutricionales": {
+          "name": "Suplementos Nutricionales",
+          "href": "/categoria/nutricion-para-todos/suplementos-nutricionales",
+          "subsubcategories": {
+            "pediatricos": {
+              "name": "Pediátricos",
+              "href": "/categoria/nutricion-para-todos/suplementos-nutricionales/pediatricos"
+            },
+            "naturales": {
+              "name": "Naturales",
+              "href": "/categoria/nutricion-para-todos/suplementos-nutricionales/naturales"
+            },
+            "geriatricos": {
+              "name": "Geriátricos",
+              "href": "/categoria/nutricion-para-todos/suplementos-nutricionales/geriatricos"
+            },
+            "dieteticos": {
+              "name": "Dietéticos",
+              "href": "/categoria/nutricion-para-todos/suplementos-nutricionales/dieteticos"
+            },
+            "deportivos": {
+              "name": "Deportivos",
+              "href": "/categoria/nutricion-para-todos/suplementos-nutricionales/deportivos"
+            },
+            "colagenos-1": {
+              "name": "Colágenos",
+              "href": "/categoria/nutricion-para-todos/suplementos-nutricionales/colagenos-1"
+            },
+            "adultos-1": {
+              "name": "Adultos",
+              "href": "/categoria/nutricion-para-todos/suplementos-nutricionales/adultos-1"
+            }
+          }
+        },
+        "suplementos--complementos": {
+          "name": "Suplementos / Complementos",
+          "href": "/categoria/nutricion-para-todos/suplementos--complementos",
+          "subsubcategories": {
+            "formula-infantil-especial": {
+              "name": "Fórmula Infantil Especial",
+              "href": "/categoria/nutricion-para-todos/suplementos--complementos/formula-infantil-especial"
+            },
+            "embarazo": {
+              "name": "Embarazo",
+              "href": "/categoria/nutricion-para-todos/suplementos--complementos/embarazo"
+            },
+            "diabeticos": {
+              "name": "Diabéticos",
+              "href": "/categoria/nutricion-para-todos/suplementos--complementos/diabeticos"
+            },
+            "colagenos": {
+              "name": "Colágenos",
+              "href": "/categoria/nutricion-para-todos/suplementos--complementos/colagenos"
+            },
+            "cereales-y-compotas": {
+              "name": "Cereales y Compotas",
+              "href": "/categoria/nutricion-para-todos/suplementos--complementos/cereales-y-compotas"
+            },
+            "adulto": {
+              "name": "Adulto",
+              "href": "/categoria/nutricion-para-todos/suplementos--complementos/adulto"
+            },
+            "adultos": {
+              "name": "Adultos",
+              "href": "/categoria/nutricion-para-todos/suplementos--complementos/adultos"
+            }
+          }
+        },
+        "snacks-y-piqueos": {
+          "name": "Snacks y Piqueos",
+          "href": "/categoria/nutricion-para-todos/snacks-y-piqueos",
+          "subsubcategories": {
+            "variados": {
+              "name": "Variados",
+              "href": "/categoria/nutricion-para-todos/snacks-y-piqueos/variados"
+            },
+            "mezcla": {
+              "name": "Mezcla",
+              "href": "/categoria/nutricion-para-todos/snacks-y-piqueos/mezcla"
+            },
+            "galletas": {
+              "name": "Galletas",
+              "href": "/categoria/nutricion-para-todos/snacks-y-piqueos/galletas"
+            },
+            "chocolates": {
+              "name": "Chocolates",
+              "href": "/categoria/nutricion-para-todos/snacks-y-piqueos/chocolates"
+            }
+          }
+        },
+        "multivitaminicos-1": {
+          "name": "Multivitamínicos",
+          "href": "/categoria/nutricion-para-todos/multivitaminicos-1",
+          "subsubcategories": {
+            "prenatal": {
+              "name": "Prenatal",
+              "href": "/categoria/nutricion-para-todos/multivitaminicos-1/prenatal"
+            },
+            "para-ninos": {
+              "name": "Para Niños",
+              "href": "/categoria/nutricion-para-todos/multivitaminicos-1/para-ninos"
+            },
+            "para-adultos": {
+              "name": "Para Adultos",
+              "href": "/categoria/nutricion-para-todos/multivitaminicos-1/para-adultos"
+            },
+            "adulto-mayor": {
+              "name": "Adulto Mayor",
+              "href": "/categoria/nutricion-para-todos/multivitaminicos-1/adulto-mayor"
+            }
+          }
+        },
+        "minerales": {
+          "name": "Minerales",
+          "href": "/categoria/nutricion-para-todos/minerales",
+          "subsubcategories": {
+            "zinc": {
+              "name": "Zinc",
+              "href": "/categoria/nutricion-para-todos/minerales/zinc"
+            },
+            "otros-minerales": {
+              "name": "Otros Minerales",
+              "href": "/categoria/nutricion-para-todos/minerales/otros-minerales"
+            },
+            "magnesio": {
+              "name": "Magnesio",
+              "href": "/categoria/nutricion-para-todos/minerales/magnesio"
+            },
+            "hierro-1": {
+              "name": "Hierro",
+              "href": "/categoria/nutricion-para-todos/minerales/hierro-1"
+            },
+            "calcio": {
+              "name": "Calcio",
+              "href": "/categoria/nutricion-para-todos/minerales/calcio"
+            }
+          }
+        },
+        "fitness-y-deportivos": {
+          "name": "Fitness y Deportivos",
+          "href": "/categoria/nutricion-para-todos/fitness-y-deportivos",
+          "subsubcategories": {
+            "suplementos-dieteticos": {
+              "name": "Suplementos Dietéticos",
+              "href": "/categoria/nutricion-para-todos/fitness-y-deportivos/suplementos-dieteticos"
+            },
+            "suplementos-deportivos": {
+              "name": "Suplementos Deportivos",
+              "href": "/categoria/nutricion-para-todos/fitness-y-deportivos/suplementos-deportivos"
+            }
+          }
+        },
+        "nutricion-pensada-en-ti-y-tu-familia": {
+          "name": "Nutrición Pensada en ti y tu Familia",
+          "href": "/categoria/nutricion-para-todos/nutricion-pensada-en-ti-y-tu-familia",
+          "subsubcategories": {
+            "ensure": {
+              "name": "Ensure",
+              "href": "/categoria/nutricion-para-todos/nutricion-pensada-en-ti-y-tu-familia/ensure"
+            },
+            "glucerna": {
+              "name": "Glucerna",
+              "href": "/categoria/nutricion-para-todos/nutricion-pensada-en-ti-y-tu-familia/glucerna"
+            },
+            "pediasure": {
+              "name": "Pediasure",
+              "href": "/categoria/nutricion-para-todos/nutricion-pensada-en-ti-y-tu-familia/pediasure"
+            },
+            "similac": {
+              "name": "Similac",
+              "href": "/categoria/nutricion-para-todos/nutricion-pensada-en-ti-y-tu-familia/similac"
+            }
+          }
+        }
+      }
+    },
+    "dermatologia-cosmetica": {
+      "name": "Dermatología Cosmética",
+      "href": "/categoria/dermatologia-cosmetica",
+      "subcategories": {
+        "promociones-en-dermocosmetica": {
+          "name": "Promociones en Dermocosmética",
+          "href": "/categoria/dermatologia-cosmetica/promociones-en-dermocosmetica",
+          "subsubcategories": {
+            "fotoproteccion-facial-avanzada-para-ti": {
+              "name": "Fotoproteccion Facial Avanzada para ti",
+              "href": "/categoria/dermatologia-cosmetica/promociones-en-dermocosmetica/fotoproteccion-facial-avanzada-para-ti"
+            },
+            "cuidado-rejuvenecedor": {
+              "name": "Cuidado Rejuvenecedor",
+              "href": "/categoria/dermatologia-cosmetica/promociones-en-dermocosmetica/cuidado-rejuvenecedor"
+            },
+            "antiedad---eucerin-hyaluron-filler": {
+              "name": "Antiedad - Eucerin Hyaluron Filler",
+              "href": "/categoria/dermatologia-cosmetica/promociones-en-dermocosmetica/antiedad---eucerin-hyaluron-filler"
+            },
+            "lo-mejor-en-anticaida": {
+              "name": "Lo mejor en Anticaida",
+              "href": "/categoria/dermatologia-cosmetica/promociones-en-dermocosmetica/lo-mejor-en-anticaida"
+            },
+            "cuidado-dermatologico-para-tu-bebe": {
+              "name": "Cuidado Dermatológico para tu Bebé",
+              "href": "/categoria/dermatologia-cosmetica/promociones-en-dermocosmetica/cuidado-dermatologico-para-tu-bebe"
+            },
+            "los-mejores-productos-para-piel-mixta": {
+              "name": "Los Mejores Productos para Piel Mixta",
+              "href": "/categoria/dermatologia-cosmetica/promociones-en-dermocosmetica/los-mejores-productos-para-piel-mixta"
+            },
+            "productos-sesderma": {
+              "name": "Productos Sesderma",
+              "href": "/categoria/dermatologia-cosmetica/promociones-en-dermocosmetica/productos-sesderma"
+            },
+            "para-pieles-sensible-con-avene": {
+              "name": "Para Pieles Sensible con Avène",
+              "href": "/categoria/dermatologia-cosmetica/promociones-en-dermocosmetica/para-pieles-sensible-con-avene"
+            }
+          }
+        },
+        "cuidado-capilar": {
+          "name": "Cuidado Capilar",
+          "href": "/categoria/dermatologia-cosmetica/cuidado-capilar",
+          "subsubcategories": {}
+        },
+        "fotoprotector": {
+          "name": "Fotoprotector",
+          "href": "/categoria/dermatologia-cosmetica/fotoprotector",
+          "subsubcategories": {
+            "fotoprotector-corporal": {
+              "name": "Fotoprotector Corporal",
+              "href": "/categoria/dermatologia-cosmetica/fotoprotector/fotoprotector-corporal"
+            },
+            "fotoprotector-facial": {
+              "name": "Fotoprotector Facial",
+              "href": "/categoria/dermatologia-cosmetica/fotoprotector/fotoprotector-facial"
+            }
+          }
+        },
+        "tratamiento-facial": {
+          "name": "Tratamiento Facial",
+          "href": "/categoria/dermatologia-cosmetica/tratamiento-facial",
+          "subsubcategories": {
+            "hidratacion": {
+              "name": "Hidratación",
+              "href": "/categoria/dermatologia-cosmetica/tratamiento-facial/hidratacion"
+            },
+            "anti-imperfecciones": {
+              "name": "Anti Imperfecciones",
+              "href": "/categoria/dermatologia-cosmetica/tratamiento-facial/anti-imperfecciones"
+            },
+            "limpieza-facial-1": {
+              "name": "Limpieza Facial",
+              "href": "/categoria/dermatologia-cosmetica/tratamiento-facial/limpieza-facial-1"
+            },
+            "antiedad": {
+              "name": "Antiedad",
+              "href": "/categoria/dermatologia-cosmetica/tratamiento-facial/antiedad"
+            },
+            "antimanchas": {
+              "name": "Antimanchas",
+              "href": "/categoria/dermatologia-cosmetica/tratamiento-facial/antimanchas"
+            }
+          }
+        },
+        "dermatologia-pediatrica": {
+          "name": "Dermatología Pediátrica",
+          "href": "/categoria/dermatologia-cosmetica/dermatologia-pediatrica",
+          "subsubcategories": {}
+        },
+        "tratamientos-corporales": {
+          "name": "Tratamientos Corporales",
+          "href": "/categoria/dermatologia-cosmetica/tratamientos-corporales",
+          "subsubcategories": {
+            "higiene": {
+              "name": "Higiene",
+              "href": "/categoria/dermatologia-cosmetica/tratamientos-corporales/higiene"
+            },
+            "piel-atopica": {
+              "name": "Piel Atópica",
+              "href": "/categoria/dermatologia-cosmetica/tratamientos-corporales/piel-atopica"
+            },
+            "piel-seca": {
+              "name": "Piel Seca",
+              "href": "/categoria/dermatologia-cosmetica/tratamientos-corporales/piel-seca"
+            },
+            "cicatrizantes": {
+              "name": "Cicatrizantes",
+              "href": "/categoria/dermatologia-cosmetica/tratamientos-corporales/cicatrizantes"
+            },
+            "tratamiento-para-estrias-y-celulitis": {
+              "name": "Tratamiento para Estrías y Celulitis",
+              "href": "/categoria/dermatologia-cosmetica/tratamientos-corporales/tratamiento-para-estrias-y-celulitis"
+            },
+            "antimanchas-corporal": {
+              "name": "Antimanchas Corporal",
+              "href": "/categoria/dermatologia-cosmetica/tratamientos-corporales/antimanchas-corporal"
+            },
+            "hidratante-corporal": {
+              "name": "Hidratante Corporal",
+              "href": "/categoria/dermatologia-cosmetica/tratamientos-corporales/hidratante-corporal"
+            }
+          }
+        },
+        "otros-productos": {
+          "name": "Otros Productos",
+          "href": "/categoria/dermatologia-cosmetica/otros-productos",
+          "subsubcategories": {}
+        }
+      }
+    },
+    "cuidado-personal": {
+      "name": "Cuidado Personal",
+      "href": "/categoria/cuidado-personal",
+      "subcategories": {
+        "promociones-en-cuidado-e-higiene-personal": {
+          "name": "Promociones en Cuidado e Higiene Personal",
+          "href": "/categoria/cuidado-personal/promociones-en-cuidado-e-higiene-personal",
+          "subsubcategories": {
+            "tus-marcas-favoritas-en-cuidado-capilar": {
+              "name": "Tus Marcas Favoritas en Cuidado Capilar",
+              "href": "/categoria/cuidado-personal/promociones-en-cuidado-e-higiene-personal/tus-marcas-favoritas-en-cuidado-capilar"
+            },
+            "mas-desodorantes": {
+              "name": "Más Desodorantes",
+              "href": "/categoria/cuidado-personal/promociones-en-cuidado-e-higiene-personal/mas-desodorantes"
+            },
+            "proteccion-femenina-nosotras": {
+              "name": "Protección Femenina Nosotras",
+              "href": "/categoria/cuidado-personal/promociones-en-cuidado-e-higiene-personal/proteccion-femenina-nosotras"
+            },
+            "proteccion-femenina-lady-free": {
+              "name": "Protección Femenina Lady Free",
+              "href": "/categoria/cuidado-personal/promociones-en-cuidado-e-higiene-personal/proteccion-femenina-lady-free"
+            },
+            "lo-mejor-de-elvive": {
+              "name": "Lo Mejor de Elvive",
+              "href": "/categoria/cuidado-personal/promociones-en-cuidado-e-higiene-personal/lo-mejor-de-elvive"
+            },
+            "preservativos-y-lubricante-five": {
+              "name": "Preservativos y Lubricante Five",
+              "href": "/categoria/cuidado-personal/promociones-en-cuidado-e-higiene-personal/preservativos-y-lubricante-five"
+            },
+            "colgate-para-tu-dia-a-dia": {
+              "name": "Colgate para tu Día a Día",
+              "href": "/categoria/cuidado-personal/promociones-en-cuidado-e-higiene-personal/colgate-para-tu-dia-a-dia"
+            },
+            "tus-pack-oral-b": {
+              "name": "Tus Pack Oral-B",
+              "href": "/categoria/cuidado-personal/promociones-en-cuidado-e-higiene-personal/tus-pack-oral-b"
+            },
+            "descubre-lo-nuevo-de-listerine": {
+              "name": "Descubre lo Nuevo de Listerine",
+              "href": "/categoria/cuidado-personal/promociones-en-cuidado-e-higiene-personal/descubre-lo-nuevo-de-listerine"
+            },
+            "tu-cuidado-dental-con-vitis": {
+              "name": "Tu Cuidado Dental con Vitis",
+              "href": "/categoria/cuidado-personal/promociones-en-cuidado-e-higiene-personal/tu-cuidado-dental-con-vitis"
+            },
+            "jabon-antibacterial": {
+              "name": "Jabón Antibacterial",
+              "href": "/categoria/cuidado-personal/promociones-en-cuidado-e-higiene-personal/jabon-antibacterial"
+            },
+            "cuida-tu-cabello-con-dove": {
+              "name": "Cuida tu Cabello con Dove",
+              "href": "/categoria/cuidado-personal/promociones-en-cuidado-e-higiene-personal/cuida-tu-cabello-con-dove"
+            },
+            "oleos-kativa": {
+              "name": "Oleos Kativa",
+              "href": "/categoria/cuidado-personal/promociones-en-cuidado-e-higiene-personal/oleos-kativa"
+            },
+            "lo-mejor-en-salud-bucal": {
+              "name": "Lo Mejor en Salud Bucal",
+              "href": "/categoria/cuidado-personal/promociones-en-cuidado-e-higiene-personal/lo-mejor-en-salud-bucal"
+            }
+          }
+        },
+        "cuidado-intimo": {
+          "name": "Cuidado Íntimo",
+          "href": "/categoria/cuidado-personal/cuidado-intimo",
+          "subsubcategories": {
+            "tampones": {
+              "name": "Tampones",
+              "href": "/categoria/cuidado-personal/cuidado-intimo/tampones"
+            },
+            "protectores-diarios": {
+              "name": "Protectores diarios",
+              "href": "/categoria/cuidado-personal/cuidado-intimo/protectores-diarios"
+            },
+            "higiene-intimo": {
+              "name": "Higiene íntimo",
+              "href": "/categoria/cuidado-personal/cuidado-intimo/higiene-intimo"
+            },
+            "toallas-higienicas": {
+              "name": "Toallas Higiénicas",
+              "href": "/categoria/cuidado-personal/cuidado-intimo/toallas-higienicas"
+            },
+            "toallas-humedas-para-adulto": {
+              "name": "Toallas Húmedas para adulto",
+              "href": "/categoria/cuidado-personal/cuidado-intimo/toallas-humedas-para-adulto"
+            },
+            "incontinencia-femenina": {
+              "name": "Incontinencia Femenina",
+              "href": "/categoria/cuidado-personal/cuidado-intimo/incontinencia-femenina"
+            }
+          }
+        },
+        "bano": {
+          "name": "Baño",
+          "href": "/categoria/cuidado-personal/bano",
+          "subsubcategories": {
+            "cepillo-de-ducha": {
+              "name": "Cepillo de Ducha",
+              "href": "/categoria/cuidado-personal/bano/cepillo-de-ducha"
+            },
+            "esponja": {
+              "name": "Esponja",
+              "href": "/categoria/cuidado-personal/bano/esponja"
+            },
+            "acondicionador-1": {
+              "name": "Acondicionador",
+              "href": "/categoria/cuidado-personal/bano/acondicionador-1"
+            },
+            "sales-y-exfoliantes": {
+              "name": "Sales y Exfoliantes",
+              "href": "/categoria/cuidado-personal/bano/sales-y-exfoliantes"
+            },
+            "jabones": {
+              "name": "Jabones",
+              "href": "/categoria/cuidado-personal/bano/jabones"
+            },
+            "shampoo": {
+              "name": "Shampoo",
+              "href": "/categoria/cuidado-personal/bano/shampoo"
+            },
+            "toallas": {
+              "name": "Toallas",
+              "href": "/categoria/cuidado-personal/bano/toallas"
+            }
+          }
+        },
+        "cuidado-de-la-piel": {
+          "name": "Cuidado de la Piel",
+          "href": "/categoria/cuidado-personal/cuidado-de-la-piel",
+          "subsubcategories": {
+            "gel-adelgazante": {
+              "name": "Gel adelgazante",
+              "href": "/categoria/cuidado-personal/cuidado-de-la-piel/gel-adelgazante"
+            },
+            "bronceador": {
+              "name": "Bronceador",
+              "href": "/categoria/cuidado-personal/cuidado-de-la-piel/bronceador"
+            },
+            "sales-de-bano": {
+              "name": "Sales de baño",
+              "href": "/categoria/cuidado-personal/cuidado-de-la-piel/sales-de-bano"
+            },
+            "cuidado-despues-del-sol": {
+              "name": "Cuidado después del sol",
+              "href": "/categoria/cuidado-personal/cuidado-de-la-piel/cuidado-despues-del-sol"
+            },
+            "repelentes": {
+              "name": "Repelentes",
+              "href": "/categoria/cuidado-personal/cuidado-de-la-piel/repelentes"
+            },
+            "proteccion-solar": {
+              "name": "Protección solar",
+              "href": "/categoria/cuidado-personal/cuidado-de-la-piel/proteccion-solar"
+            }
+          }
+        },
+        "jabones-1": {
+          "name": "Jabones",
+          "href": "/categoria/cuidado-personal/jabones-1",
+          "subsubcategories": {
+            "jabon-en-barra": {
+              "name": "Jabón en Barra",
+              "href": "/categoria/cuidado-personal/jabones-1/jabon-en-barra"
+            },
+            "jabon-liquido": {
+              "name": "Jabón Líquido",
+              "href": "/categoria/cuidado-personal/jabones-1/jabon-liquido"
+            },
+            "gel-de-ducha": {
+              "name": "Gel de Ducha",
+              "href": "/categoria/cuidado-personal/jabones-1/gel-de-ducha"
+            }
+          }
+        },
+        "cuidado-del-cabello": {
+          "name": "Cuidado del Cabello",
+          "href": "/categoria/cuidado-personal/cuidado-del-cabello",
+          "subsubcategories": {
+            "crema-de-peinar": {
+              "name": "Crema de peinar",
+              "href": "/categoria/cuidado-personal/cuidado-del-cabello/crema-de-peinar"
+            },
+            "cepillos-para-peinarse": {
+              "name": "Cepillos para Peinarse",
+              "href": "/categoria/cuidado-personal/cuidado-del-cabello/cepillos-para-peinarse"
+            },
+            "cera--gel-de-cabello": {
+              "name": "Cera / Gel de cabello",
+              "href": "/categoria/cuidado-personal/cuidado-del-cabello/cera--gel-de-cabello"
+            },
+            "ampollas-capilares": {
+              "name": "Ampollas capilares",
+              "href": "/categoria/cuidado-personal/cuidado-del-cabello/ampollas-capilares"
+            },
+            "tratamiento-capilar": {
+              "name": "Tratamiento capilar",
+              "href": "/categoria/cuidado-personal/cuidado-del-cabello/tratamiento-capilar"
+            },
+            "shampoo-y-acondicionadores": {
+              "name": "Shampoo y Acondicionadores",
+              "href": "/categoria/cuidado-personal/cuidado-del-cabello/shampoo-y-acondicionadores"
+            },
+            "acondicionador": {
+              "name": "Acondicionador",
+              "href": "/categoria/cuidado-personal/cuidado-del-cabello/acondicionador"
+            }
+          }
+        },
+        "cuidado-bucal-1": {
+          "name": "Cuidado Bucal",
+          "href": "/categoria/cuidado-personal/cuidado-bucal-1",
+          "subsubcategories": {
+            "crema-dental": {
+              "name": "Crema dental",
+              "href": "/categoria/cuidado-personal/cuidado-bucal-1/crema-dental"
+            },
+            "hilo-dental": {
+              "name": "Hilo Dental",
+              "href": "/categoria/cuidado-personal/cuidado-bucal-1/hilo-dental"
+            },
+            "linea-de-blanqueamiento": {
+              "name": "Línea de Blanqueamiento",
+              "href": "/categoria/cuidado-personal/cuidado-bucal-1/linea-de-blanqueamiento"
+            },
+            "cuidado-bucal-especializado": {
+              "name": "Cuidado Bucal Especializado",
+              "href": "/categoria/cuidado-personal/cuidado-bucal-1/cuidado-bucal-especializado"
+            },
+            "crema-adhesiva-para-protesis-dentales": {
+              "name": "Crema Adhesiva para Prótesis Dentales",
+              "href": "/categoria/cuidado-personal/cuidado-bucal-1/crema-adhesiva-para-protesis-dentales"
+            },
+            "enjuague-bucal": {
+              "name": "Enjuague bucal",
+              "href": "/categoria/cuidado-personal/cuidado-bucal-1/enjuague-bucal"
+            },
+            "cepillo-dental": {
+              "name": "Cepillo dental",
+              "href": "/categoria/cuidado-personal/cuidado-bucal-1/cepillo-dental"
+            }
+          }
+        },
+        "cuidado-de-manos-y-pies": {
+          "name": "Cuidado de Manos y Pies",
+          "href": "/categoria/cuidado-personal/cuidado-de-manos-y-pies",
+          "subsubcategories": {
+            "el-mejor-cuidado-para-tus-pies": {
+              "name": "El Mejor Cuidado para tus Pies",
+              "href": "/categoria/cuidado-personal/cuidado-de-manos-y-pies/el-mejor-cuidado-para-tus-pies"
+            },
+            "accesorios-para-manos--pies": {
+              "name": "Accesorios para Manos / Pies",
+              "href": "/categoria/cuidado-personal/cuidado-de-manos-y-pies/accesorios-para-manos--pies"
+            },
+            "desodorante-para-pies": {
+              "name": "Desodorante para pies",
+              "href": "/categoria/cuidado-personal/cuidado-de-manos-y-pies/desodorante-para-pies"
+            },
+            "crema-para-pies": {
+              "name": "Crema para pies",
+              "href": "/categoria/cuidado-personal/cuidado-de-manos-y-pies/crema-para-pies"
+            },
+            "crema-para-manos-1": {
+              "name": "Crema para Manos",
+              "href": "/categoria/cuidado-personal/cuidado-de-manos-y-pies/crema-para-manos-1"
+            }
+          }
+        },
+        "afeitado": {
+          "name": "Afeitado",
+          "href": "/categoria/cuidado-personal/afeitado",
+          "subsubcategories": {
+            "espuma--gel": {
+              "name": "Espuma / Gel",
+              "href": "/categoria/cuidado-personal/afeitado/espuma--gel"
+            },
+            "maquina-de-afeitar": {
+              "name": "Máquina de Afeitar",
+              "href": "/categoria/cuidado-personal/afeitado/maquina-de-afeitar"
+            },
+            "locion": {
+              "name": "Loción",
+              "href": "/categoria/cuidado-personal/afeitado/locion"
+            }
+          }
+        },
+        "desodorantes": {
+          "name": "Desodorantes",
+          "href": "/categoria/cuidado-personal/desodorantes",
+          "subsubcategories": {
+            "hombre-1": {
+              "name": "Hombre",
+              "href": "/categoria/cuidado-personal/desodorantes/hombre-1"
+            },
+            "aclarado": {
+              "name": "Aclarado",
+              "href": "/categoria/cuidado-personal/desodorantes/aclarado"
+            },
+            "clinical": {
+              "name": "Clinical",
+              "href": "/categoria/cuidado-personal/desodorantes/clinical"
+            },
+            "mujer-1": {
+              "name": "Mujer",
+              "href": "/categoria/cuidado-personal/desodorantes/mujer-1"
+            }
+          }
+        },
+        "depilacion-1": {
+          "name": "Depilación",
+          "href": "/categoria/cuidado-personal/depilacion-1",
+          "subsubcategories": {
+            "maquinas-para-depilacion-1": {
+              "name": "Máquinas para Depilación",
+              "href": "/categoria/cuidado-personal/depilacion-1/maquinas-para-depilacion-1"
+            },
+            "cremas-depilatorias-1": {
+              "name": "Cremas Depilatorias",
+              "href": "/categoria/cuidado-personal/depilacion-1/cremas-depilatorias-1"
+            },
+            "bandas-depilatorias-1": {
+              "name": "Bandas Depilatorias",
+              "href": "/categoria/cuidado-personal/depilacion-1/bandas-depilatorias-1"
+            }
+          }
+        },
+        "bienestar-sexual": {
+          "name": "Bienestar Sexual",
+          "href": "/categoria/cuidado-personal/bienestar-sexual",
+          "subsubcategories": {
+            "condones-preservativos": {
+              "name": "Condones/ Preservativos",
+              "href": "/categoria/cuidado-personal/bienestar-sexual/condones-preservativos"
+            },
+            "lubricante-intimo": {
+              "name": "Lubricante íntimo",
+              "href": "/categoria/cuidado-personal/bienestar-sexual/lubricante-intimo"
+            },
+            "juguetes-para-adultos": {
+              "name": "Juguetes para adultos",
+              "href": "/categoria/cuidado-personal/bienestar-sexual/juguetes-para-adultos"
+            }
+          }
+        }
+      }
+    },
+    "belleza": {
+      "name": "Belleza",
+      "href": "/categoria/belleza",
+      "subcategories": {
+        "promociones-en-belleza": {
+          "name": "Promociones en Belleza",
+          "href": "/categoria/belleza/promociones-en-belleza",
+          "subsubcategories": {
+            "todo-para-el-cuidado-corporal": {
+              "name": "Todo para el Cuidado Corporal",
+              "href": "/categoria/belleza/promociones-en-belleza/todo-para-el-cuidado-corporal"
+            },
+            "encuentra-lo-mejor-de-los-serums": {
+              "name": "Encuentra Lo Mejor de los Sérums",
+              "href": "/categoria/belleza/promociones-en-belleza/encuentra-lo-mejor-de-los-serums"
+            },
+            "lo-mas-vendido-de-ponds": {
+              "name": "Lo más Vendido de Pond's",
+              "href": "/categoria/belleza/promociones-en-belleza/lo-mas-vendido-de-ponds"
+            },
+            "agua-micelar-en-tu-rutina-diaria": {
+              "name": "Agua Micelar en tu Rutina Diaria",
+              "href": "/categoria/belleza/promociones-en-belleza/agua-micelar-en-tu-rutina-diaria"
+            },
+            "productos-cerave": {
+              "name": "Productos Cerave",
+              "href": "/categoria/belleza/promociones-en-belleza/productos-cerave"
+            },
+            "grandes-precios-ponds-y-veet": {
+              "name": "Grandes Precios Ponds y Veet",
+              "href": "/categoria/belleza/promociones-en-belleza/grandes-precios-ponds-y-veet"
+            },
+            "tus-neutrogena-hydro-boost": {
+              "name": "Tus Neutrogena Hydro Boost",
+              "href": "/categoria/belleza/promociones-en-belleza/tus-neutrogena-hydro-boost"
+            },
+            "el-brillo-para-toda-tu-piel": {
+              "name": "El Brillo para toda tu Piel",
+              "href": "/categoria/belleza/promociones-en-belleza/el-brillo-para-toda-tu-piel"
+            },
+            "neutrogena-con-regalo": {
+              "name": "Neutrogena con Regalo",
+              "href": "/categoria/belleza/promociones-en-belleza/neutrogena-con-regalo"
+            },
+            "tus-labios-merecen-nivea": {
+              "name": "Tus Labios Merecen Nivea",
+              "href": "/categoria/belleza/promociones-en-belleza/tus-labios-merecen-nivea"
+            }
+          }
+        },
+        "electrobelleza": {
+          "name": "Electrobelleza",
+          "href": "/categoria/belleza/electrobelleza",
+          "subsubcategories": {
+            "afeitadoras": {
+              "name": "Afeitadoras",
+              "href": "/categoria/belleza/electrobelleza/afeitadoras"
+            },
+            "limpiador-facial": {
+              "name": "Limpiador Facial",
+              "href": "/categoria/belleza/electrobelleza/limpiador-facial"
+            },
+            "masajeadores": {
+              "name": "Masajeadores",
+              "href": "/categoria/belleza/electrobelleza/masajeadores"
+            },
+            "depiladoras": {
+              "name": "Depiladoras",
+              "href": "/categoria/belleza/electrobelleza/depiladoras"
+            },
+            "sauna-facial": {
+              "name": "Sauna Facial",
+              "href": "/categoria/belleza/electrobelleza/sauna-facial"
+            },
+            "secadores-para-cabello": {
+              "name": "Secadores para Cabello",
+              "href": "/categoria/belleza/electrobelleza/secadores-para-cabello"
+            },
+            "alisadores-y-rizadores": {
+              "name": "Alisadores y Rizadores",
+              "href": "/categoria/belleza/electrobelleza/alisadores-y-rizadores"
+            },
+            "maquina-para-cortar-cabello": {
+              "name": "Máquina para Cortar Cabello",
+              "href": "/categoria/belleza/electrobelleza/maquina-para-cortar-cabello"
+            }
+          }
+        },
+        "cosmeticos": {
+          "name": "Cosméticos",
+          "href": "/categoria/belleza/cosmeticos",
+          "subsubcategories": {
+            "polvo-compacto-1": {
+              "name": "Polvo Compacto",
+              "href": "/categoria/belleza/cosmeticos/polvo-compacto-1"
+            },
+            "esmaltes": {
+              "name": "Esmaltes",
+              "href": "/categoria/belleza/cosmeticos/esmaltes"
+            },
+            "sombras": {
+              "name": "Sombras",
+              "href": "/categoria/belleza/cosmeticos/sombras"
+            },
+            "pestanas-potizas": {
+              "name": "Pestañas Potizas",
+              "href": "/categoria/belleza/cosmeticos/pestanas-potizas"
+            },
+            "quita-esmaltes": {
+              "name": "Quita Esmaltes",
+              "href": "/categoria/belleza/cosmeticos/quita-esmaltes"
+            },
+            "labial": {
+              "name": "Labial",
+              "href": "/categoria/belleza/cosmeticos/labial"
+            },
+            "bases": {
+              "name": "Bases",
+              "href": "/categoria/belleza/cosmeticos/bases"
+            },
+            "delineador": {
+              "name": "Delineador",
+              "href": "/categoria/belleza/cosmeticos/delineador"
+            },
+            "tratamiento-pestanas": {
+              "name": "Tratamiento Pestañas",
+              "href": "/categoria/belleza/cosmeticos/tratamiento-pestanas"
+            },
+            "tinte-para-cejas": {
+              "name": "Tinte para Cejas",
+              "href": "/categoria/belleza/cosmeticos/tinte-para-cejas"
+            },
+            "mascara-de-pestanas": {
+              "name": "Máscara de Pestañas",
+              "href": "/categoria/belleza/cosmeticos/mascara-de-pestanas"
+            },
+            "mascarillas-faciales": {
+              "name": "Mascarillas Faciales",
+              "href": "/categoria/belleza/cosmeticos/mascarillas-faciales"
+            },
+            "polvo-compacto": {
+              "name": "Polvo Compacto",
+              "href": "/categoria/belleza/cosmeticos/polvo-compacto"
+            },
+            "manos-y-pies": {
+              "name": "Manos y Pies",
+              "href": "/categoria/belleza/cosmeticos/manos-y-pies"
+            }
+          }
+        },
+        "cuidado-facial": {
+          "name": "Cuidado Facial",
+          "href": "/categoria/belleza/cuidado-facial",
+          "subsubcategories": {
+            "proteccion-para-labios": {
+              "name": "Protección para Labios",
+              "href": "/categoria/belleza/cuidado-facial/proteccion-para-labios"
+            },
+            "limpieza-facial": {
+              "name": "Limpieza Facial",
+              "href": "/categoria/belleza/cuidado-facial/limpieza-facial"
+            },
+            "exfoliante": {
+              "name": "Exfoliante",
+              "href": "/categoria/belleza/cuidado-facial/exfoliante"
+            },
+            "desmaquillantes": {
+              "name": "Desmaquillantes",
+              "href": "/categoria/belleza/cuidado-facial/desmaquillantes"
+            },
+            "protector-solar-facial": {
+              "name": "Protector Solar Facial",
+              "href": "/categoria/belleza/cuidado-facial/protector-solar-facial"
+            },
+            "crema-facial": {
+              "name": "Crema facial",
+              "href": "/categoria/belleza/cuidado-facial/crema-facial"
+            },
+            "panuelo-facial": {
+              "name": "Pañuelo Facial",
+              "href": "/categoria/belleza/cuidado-facial/panuelo-facial"
+            },
+            "mascarillas-1": {
+              "name": "Mascarillas",
+              "href": "/categoria/belleza/cuidado-facial/mascarillas-1"
+            },
+            "serum": {
+              "name": "Sérum",
+              "href": "/categoria/belleza/cuidado-facial/serum"
+            },
+            "crema-contorno-de-ojos": {
+              "name": "Crema Contorno de Ojos",
+              "href": "/categoria/belleza/cuidado-facial/crema-contorno-de-ojos"
+            },
+            "agua-micelar": {
+              "name": "Agua Micelar",
+              "href": "/categoria/belleza/cuidado-facial/agua-micelar"
+            },
+            "cremas-faciales": {
+              "name": "Cremas Faciales",
+              "href": "/categoria/belleza/cuidado-facial/cremas-faciales"
+            }
+          }
+        },
+        "cremas-hidratantes": {
+          "name": "Cremas Hidratantes",
+          "href": "/categoria/belleza/cremas-hidratantes",
+          "subsubcategories": {
+            "crema-anti-estrias": {
+              "name": "Crema Anti-Estrías",
+              "href": "/categoria/belleza/cremas-hidratantes/crema-anti-estrias"
+            },
+            "crema-para-piernas": {
+              "name": "Crema para Piernas",
+              "href": "/categoria/belleza/cremas-hidratantes/crema-para-piernas"
+            },
+            "cremas-regeneradoras": {
+              "name": "Cremas Regeneradoras",
+              "href": "/categoria/belleza/cremas-hidratantes/cremas-regeneradoras"
+            },
+            "crema-para-manos": {
+              "name": "Crema para Manos",
+              "href": "/categoria/belleza/cremas-hidratantes/crema-para-manos"
+            },
+            "cremas-corporales": {
+              "name": "Cremas Corporales",
+              "href": "/categoria/belleza/cremas-hidratantes/cremas-corporales"
+            }
+          }
+        },
+        "fragancias": {
+          "name": "Fragancias",
+          "href": "/categoria/belleza/fragancias",
+          "subsubcategories": {
+            "estuches": {
+              "name": "Estuches",
+              "href": "/categoria/belleza/fragancias/estuches"
+            },
+            "hombre": {
+              "name": "Hombre",
+              "href": "/categoria/belleza/fragancias/hombre"
+            },
+            "mujer": {
+              "name": "Mujer",
+              "href": "/categoria/belleza/fragancias/mujer"
+            }
+          }
+        },
+        "tintes-para-cabello": {
+          "name": "Tintes para Cabello",
+          "href": "/categoria/belleza/tintes-para-cabello",
+          "subsubcategories": {
+            "placenta-life": {
+              "name": "Placenta Life",
+              "href": "/categoria/belleza/tintes-para-cabello/placenta-life"
+            },
+            "magic-retouch": {
+              "name": "Magic Retouch",
+              "href": "/categoria/belleza/tintes-para-cabello/magic-retouch"
+            },
+            "life-for-men": {
+              "name": "Life For Men",
+              "href": "/categoria/belleza/tintes-para-cabello/life-for-men"
+            },
+            "koleston": {
+              "name": "Koleston",
+              "href": "/categoria/belleza/tintes-para-cabello/koleston"
+            },
+            "keracolor": {
+              "name": "Keracolor",
+              "href": "/categoria/belleza/tintes-para-cabello/keracolor"
+            },
+            "intensa": {
+              "name": "Intensa",
+              "href": "/categoria/belleza/tintes-para-cabello/intensa"
+            },
+            "igora-vital": {
+              "name": "Igora Vital",
+              "href": "/categoria/belleza/tintes-para-cabello/igora-vital"
+            },
+            "genetics": {
+              "name": "Genetics",
+              "href": "/categoria/belleza/tintes-para-cabello/genetics"
+            },
+            "excellence": {
+              "name": "Excellence",
+              "href": "/categoria/belleza/tintes-para-cabello/excellence"
+            },
+            "duo-color": {
+              "name": "Duo Color",
+              "href": "/categoria/belleza/tintes-para-cabello/duo-color"
+            },
+            "creme-palette": {
+              "name": "Creme Palette",
+              "href": "/categoria/belleza/tintes-para-cabello/creme-palette"
+            },
+            "casting-creme-gloss": {
+              "name": "Casting Creme Gloss",
+              "href": "/categoria/belleza/tintes-para-cabello/casting-creme-gloss"
+            },
+            "otras-marcas": {
+              "name": "Otras Marcas",
+              "href": "/categoria/belleza/tintes-para-cabello/otras-marcas"
+            }
+          }
+        },
+        "accesorios": {
+          "name": "Accesorios",
+          "href": "/categoria/belleza/accesorios",
+          "subsubcategories": {
+            "peines--cepillos": {
+              "name": "Peines / Cepillos",
+              "href": "/categoria/belleza/accesorios/peines--cepillos"
+            },
+            "mas-accesorios": {
+              "name": "Más Accesorios",
+              "href": "/categoria/belleza/accesorios/mas-accesorios"
+            },
+            "manos-y-pies-1": {
+              "name": "Manos y Pies",
+              "href": "/categoria/belleza/accesorios/manos-y-pies-1"
+            },
+            "ligas--pinzas": {
+              "name": "Ligas / Pinzas",
+              "href": "/categoria/belleza/accesorios/ligas--pinzas"
+            },
+            "joyeria": {
+              "name": "Joyería",
+              "href": "/categoria/belleza/accesorios/joyeria"
+            },
+            "espejos": {
+              "name": "Espejos",
+              "href": "/categoria/belleza/accesorios/espejos"
+            },
+            "brochas-y-esponjas-para-maquillaje": {
+              "name": "Brochas y Esponjas para Maquillaje",
+              "href": "/categoria/belleza/accesorios/brochas-y-esponjas-para-maquillaje"
+            },
+            "colet--lazo": {
+              "name": "Colet / lazo",
+              "href": "/categoria/belleza/accesorios/colet--lazo"
+            },
+            "gancho": {
+              "name": "Gancho",
+              "href": "/categoria/belleza/accesorios/gancho"
+            },
+            "gancho-para-nina": {
+              "name": "Gancho para Niña",
+              "href": "/categoria/belleza/accesorios/gancho-para-nina"
+            },
+            "horquilla": {
+              "name": "Horquilla",
+              "href": "/categoria/belleza/accesorios/horquilla"
+            },
+            "tiara-para-nina": {
+              "name": "Tiara para Niña",
+              "href": "/categoria/belleza/accesorios/tiara-para-nina"
+            },
+            "vincha--diadema": {
+              "name": "Vincha / Diadema",
+              "href": "/categoria/belleza/accesorios/vincha--diadema"
+            },
+            "discos-desmaquillantes": {
+              "name": "Discos Desmaquillantes",
+              "href": "/categoria/belleza/accesorios/discos-desmaquillantes"
+            }
+          }
+        },
+        "depilacion": {
+          "name": "Depilación",
+          "href": "/categoria/belleza/depilacion",
+          "subsubcategories": {
+            "maquinas-para-depilacion": {
+              "name": "Máquinas para Depilación",
+              "href": "/categoria/belleza/depilacion/maquinas-para-depilacion"
+            },
+            "cremas-depilatorias": {
+              "name": "Cremas Depilatorias",
+              "href": "/categoria/belleza/depilacion/cremas-depilatorias"
+            },
+            "bandas-depilatorias": {
+              "name": "Bandas Depilatorias",
+              "href": "/categoria/belleza/depilacion/bandas-depilatorias"
+            }
+          }
+        },
+        "belleza-en-casa-loreal": {
+          "name": "Belleza en Casa L'Oréal",
+          "href": "/categoria/belleza/belleza-en-casa-loreal",
+          "subsubcategories": {}
+        },
+        "bloqueadores-solares": {
+          "name": "Bloqueadores Solares",
+          "href": "/categoria/belleza/bloqueadores-solares",
+          "subsubcategories": {}
+        }
+      }
+    },
+    "limpieza-y-cuidado-para-el-hogar": {
+      "name": "Limpieza y Cuidado para el Hogar",
+      "href": "/categoria/limpieza-y-cuidado-para-el-hogar",
+      "subcategories": {
+        "limpieza-del-hogar": {
+          "name": "Limpieza del Hogar",
+          "href": "/categoria/limpieza-y-cuidado-para-el-hogar/limpieza-del-hogar",
+          "subsubcategories": {}
+        },
+        "papel-higienico-y-toallas": {
+          "name": "Papel Higiénico y Toallas",
+          "href": "/categoria/limpieza-y-cuidado-para-el-hogar/papel-higienico-y-toallas",
+          "subsubcategories": {}
+        },
+        "insecticidas": {
+          "name": "Insecticidas",
+          "href": "/categoria/limpieza-y-cuidado-para-el-hogar/insecticidas",
+          "subsubcategories": {}
+        },
+        "accesorios-de-cocina-1": {
+          "name": "Accesorios de Cocina",
+          "href": "/categoria/limpieza-y-cuidado-para-el-hogar/accesorios-de-cocina-1",
+          "subsubcategories": {}
+        },
+        "aromatizantes": {
+          "name": "Aromatizantes",
+          "href": "/categoria/limpieza-y-cuidado-para-el-hogar/aromatizantes",
+          "subsubcategories": {}
+        },
+        "baterias-y-pilas": {
+          "name": "Baterías y Pilas",
+          "href": "/categoria/limpieza-y-cuidado-para-el-hogar/baterias-y-pilas",
+          "subsubcategories": {}
+        }
+      }
+    },
+    "cuidado-del-cabello-1": {
+      "name": "Cuidado del Cabello",
+      "href": "/categoria/cuidado-del-cabello-1",
+      "subcategories": {
+        "cuidado-y-belleza-superior": {
+          "name": "Cuidado y Belleza Superior",
+          "href": "/categoria/cuidado-del-cabello-1/cuidado-y-belleza-superior",
+          "subsubcategories": {
+            "nutricion-e-hidratacion": {
+              "name": "Nutrición e Hidratación",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-y-belleza-superior/nutricion-e-hidratacion"
+            },
+            "proteccion-de-color": {
+              "name": "Protección de Color",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-y-belleza-superior/proteccion-de-color"
+            },
+            "cabello-liso-o-rizado-1": {
+              "name": "Cabello Liso o Rizado",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-y-belleza-superior/cabello-liso-o-rizado-1"
+            },
+            "reparacion": {
+              "name": "Reparación",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-y-belleza-superior/reparacion"
+            },
+            "cabello-seco---normal-o-graso": {
+              "name": "Cabello Seco - Normal o Graso",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-y-belleza-superior/cabello-seco---normal-o-graso"
+            },
+            "antifrizz": {
+              "name": "Antifrizz",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-y-belleza-superior/antifrizz"
+            }
+          }
+        },
+        "cuidado-masculino-1": {
+          "name": "Cuidado Masculino",
+          "href": "/categoria/cuidado-del-cabello-1/cuidado-masculino-1",
+          "subsubcategories": {
+            "shampoo-y-tratamiento": {
+              "name": "Shampoo y Tratamiento",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-masculino-1/shampoo-y-tratamiento"
+            },
+            "afeitado--rasurado": {
+              "name": "Afeitado / Rasurado",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-masculino-1/afeitado--rasurado"
+            },
+            "tinte": {
+              "name": "Tinte",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-masculino-1/tinte"
+            },
+            "desodorantes-para-hombre": {
+              "name": "Desodorantes para Hombre",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-masculino-1/desodorantes-para-hombre"
+            },
+            "fijador-capilar": {
+              "name": "Fijador Capilar",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-masculino-1/fijador-capilar"
+            }
+          }
+        },
+        "tintes": {
+          "name": "Tintes",
+          "href": "/categoria/cuidado-del-cabello-1/tintes",
+          "subsubcategories": {
+            "lo-mas-vendido-2": {
+              "name": "Lo Más Vendido",
+              "href": "/categoria/cuidado-del-cabello-1/tintes/lo-mas-vendido-2"
+            },
+            "tintes-hombre": {
+              "name": "Tintes Hombre",
+              "href": "/categoria/cuidado-del-cabello-1/tintes/tintes-hombre"
+            },
+            "tintes-mujer": {
+              "name": "Tintes Mujer",
+              "href": "/categoria/cuidado-del-cabello-1/tintes/tintes-mujer"
+            }
+          }
+        },
+        "cuidado-anticaida--anticaspa": {
+          "name": "Cuidado Anticaida / Anticaspa",
+          "href": "/categoria/cuidado-del-cabello-1/cuidado-anticaida--anticaspa",
+          "subsubcategories": {
+            "lo-mas-vendido-3": {
+              "name": "Lo Más Vendido",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-anticaida--anticaspa/lo-mas-vendido-3"
+            },
+            "anticaida": {
+              "name": "Anticaida",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-anticaida--anticaspa/anticaida"
+            },
+            "anticaspa": {
+              "name": "Anticaspa",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-anticaida--anticaspa/anticaspa"
+            }
+          }
+        },
+        "accesorios-2": {
+          "name": "Accesorios",
+          "href": "/categoria/cuidado-del-cabello-1/accesorios-2",
+          "subsubcategories": {}
+        },
+        "cuidado-profesional": {
+          "name": "Cuidado Profesional",
+          "href": "/categoria/cuidado-del-cabello-1/cuidado-profesional",
+          "subsubcategories": {
+            "antifrizz-y-reparacion": {
+              "name": "Antifrizz y Reparación",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-profesional/antifrizz-y-reparacion"
+            },
+            "cabello-seco---normal-o-graso-1": {
+              "name": "Cabello Seco - Normal o Graso",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-profesional/cabello-seco---normal-o-graso-1"
+            },
+            "cabello-liso-o-rizado": {
+              "name": "Cabello Liso o Rizado",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-profesional/cabello-liso-o-rizado"
+            },
+            "otros-tratamientos": {
+              "name": "Otros Tratamientos",
+              "href": "/categoria/cuidado-del-cabello-1/cuidado-profesional/otros-tratamientos"
+            }
+          }
+        },
+        "tratamientos": {
+          "name": "Tratamientos",
+          "href": "/categoria/cuidado-del-cabello-1/tratamientos",
+          "subsubcategories": {}
+        },
+        "shampoo-y-acondicionador": {
+          "name": "Shampoo y Acondicionador",
+          "href": "/categoria/cuidado-del-cabello-1/shampoo-y-acondicionador",
+          "subsubcategories": {}
+        }
+      }
+    },
+    "adulto-mayor-1": {
+      "name": "Adulto Mayor",
+      "href": "/categoria/adulto-mayor-1",
+      "subcategories": {
+        "promociones-para-el-adulto-mayor": {
+          "name": "Promociones para el Adulto Mayor",
+          "href": "/categoria/adulto-mayor-1/promociones-para-el-adulto-mayor",
+          "subsubcategories": {
+            "todo-en-los-packs-de-panales-para-adulto": {
+              "name": "Todo en los Packs de Pañales para Adulto",
+              "href": "/categoria/adulto-mayor-1/promociones-para-el-adulto-mayor/todo-en-los-packs-de-panales-para-adulto"
+            },
+            "pack-pants-plenitud-tena-y-secos": {
+              "name": "Pack Pants Plenitud Tena y Secos",
+              "href": "/categoria/adulto-mayor-1/promociones-para-el-adulto-mayor/pack-pants-plenitud-tena-y-secos"
+            }
+          }
+        },
+        "incontinencia": {
+          "name": "Incontinencia",
+          "href": "/categoria/adulto-mayor-1/incontinencia",
+          "subsubcategories": {
+            "escaldaduras-adultos-tratamientos": {
+              "name": "Escaldaduras Adultos Tratamientos",
+              "href": "/categoria/adulto-mayor-1/incontinencia/escaldaduras-adultos-tratamientos"
+            },
+            "incontinencia-moderada": {
+              "name": "Incontinencia Moderada",
+              "href": "/categoria/adulto-mayor-1/incontinencia/incontinencia-moderada"
+            },
+            "protectores-de-cama": {
+              "name": "Protectores de Cama",
+              "href": "/categoria/adulto-mayor-1/incontinencia/protectores-de-cama"
+            },
+            "incontinencia-leve": {
+              "name": "Incontinencia Leve",
+              "href": "/categoria/adulto-mayor-1/incontinencia/incontinencia-leve"
+            },
+            "toallas-humedas-para-adultos": {
+              "name": "Toallas Húmedas para Adultos",
+              "href": "/categoria/adulto-mayor-1/incontinencia/toallas-humedas-para-adultos"
+            },
+            "incontinencia-severa": {
+              "name": "Incontinencia Severa",
+              "href": "/categoria/adulto-mayor-1/incontinencia/incontinencia-severa"
+            }
+          }
+        },
+        "cuidado-bucal": {
+          "name": "Cuidado Bucal",
+          "href": "/categoria/adulto-mayor-1/cuidado-bucal",
+          "subsubcategories": {
+            "crema-adhesiva": {
+              "name": "Crema adhesiva",
+              "href": "/categoria/adulto-mayor-1/cuidado-bucal/crema-adhesiva"
+            }
+          }
+        },
+        "nutricion-adulto": {
+          "name": "Nutrición Adulto",
+          "href": "/categoria/adulto-mayor-1/nutricion-adulto",
+          "subsubcategories": {}
+        },
+        "vitaminas-para-adultos": {
+          "name": "Vitaminas para Adultos",
+          "href": "/categoria/adulto-mayor-1/vitaminas-para-adultos",
+          "subsubcategories": {}
+        }
+      }
+    },
+    "dispositivos-medicos": {
+      "name": "Dispositivos Médicos",
+      "href": "/categoria/dispositivos-medicos",
+      "subcategories": {
+        "vaporizador": {
+          "name": "Vaporizador",
+          "href": "/categoria/dispositivos-medicos/vaporizador",
+          "subsubcategories": {}
+        },
+        "test-de-embarazo": {
+          "name": "Test de Embarazo",
+          "href": "/categoria/dispositivos-medicos/test-de-embarazo",
+          "subsubcategories": {}
+        },
+        "test-covid-pruebas-rapidas": {
+          "name": "Test Covid Pruebas Rápidas",
+          "href": "/categoria/dispositivos-medicos/test-covid-pruebas-rapidas",
+          "subsubcategories": {}
+        },
+        "termometros": {
+          "name": "Termómetros",
+          "href": "/categoria/dispositivos-medicos/termometros",
+          "subsubcategories": {}
+        },
+        "tensiometros": {
+          "name": "Tensiómetros",
+          "href": "/categoria/dispositivos-medicos/tensiometros",
+          "subsubcategories": {}
+        },
+        "respirometro": {
+          "name": "Respirómetro",
+          "href": "/categoria/dispositivos-medicos/respirometro",
+          "subsubcategories": {}
+        },
+        "oximetros": {
+          "name": "Oxímetros",
+          "href": "/categoria/dispositivos-medicos/oximetros",
+          "subsubcategories": {}
+        },
+        "ortopedia": {
+          "name": "Ortopedia",
+          "href": "/categoria/dispositivos-medicos/ortopedia",
+          "subsubcategories": {
+            "collarines": {
+              "name": "Collarines",
+              "href": "/categoria/dispositivos-medicos/ortopedia/collarines"
+            },
+            "cabestrillos": {
+              "name": "Cabestrillos",
+              "href": "/categoria/dispositivos-medicos/ortopedia/cabestrillos"
+            },
+            "hombrera": {
+              "name": "Hombrera",
+              "href": "/categoria/dispositivos-medicos/ortopedia/hombrera"
+            },
+            "rodilleras": {
+              "name": "Rodilleras",
+              "href": "/categoria/dispositivos-medicos/ortopedia/rodilleras"
+            },
+            "codera": {
+              "name": "Codera",
+              "href": "/categoria/dispositivos-medicos/ortopedia/codera"
+            },
+            "tobilleras-y-munequeras": {
+              "name": "Tobilleras y Muñequeras",
+              "href": "/categoria/dispositivos-medicos/ortopedia/tobilleras-y-munequeras"
+            },
+            "taloneras": {
+              "name": "Taloneras",
+              "href": "/categoria/dispositivos-medicos/ortopedia/taloneras"
+            },
+            "plantillas": {
+              "name": "Plantillas",
+              "href": "/categoria/dispositivos-medicos/ortopedia/plantillas"
+            },
+            "almohadillas-1": {
+              "name": "Almohadillas",
+              "href": "/categoria/dispositivos-medicos/ortopedia/almohadillas-1"
+            },
+            "almohada-cervical": {
+              "name": "Almohada Cervical",
+              "href": "/categoria/dispositivos-medicos/ortopedia/almohada-cervical"
+            },
+            "rodete-coxis": {
+              "name": "Rodete Coxis",
+              "href": "/categoria/dispositivos-medicos/ortopedia/rodete-coxis"
+            },
+            "fajas": {
+              "name": "Fajas",
+              "href": "/categoria/dispositivos-medicos/ortopedia/fajas"
+            },
+            "cintas-kinesiologicas": {
+              "name": "Cintas Kinesiológicas",
+              "href": "/categoria/dispositivos-medicos/ortopedia/cintas-kinesiologicas"
+            },
+            "parches": {
+              "name": "Parches",
+              "href": "/categoria/dispositivos-medicos/ortopedia/parches"
+            },
+            "gel-frio-calor": {
+              "name": "Gel Frío Calor",
+              "href": "/categoria/dispositivos-medicos/ortopedia/gel-frio-calor"
+            },
+            "corrector-de-postura": {
+              "name": "Corrector de Postura",
+              "href": "/categoria/dispositivos-medicos/ortopedia/corrector-de-postura"
+            },
+            "medias-de-compresion": {
+              "name": "Medias de Compresión",
+              "href": "/categoria/dispositivos-medicos/ortopedia/medias-de-compresion"
+            },
+            "otros-productos-ortopedicos": {
+              "name": "Otros Productos Ortopédicos",
+              "href": "/categoria/dispositivos-medicos/ortopedia/otros-productos-ortopedicos"
+            },
+            "cuidado-del-pie": {
+              "name": "Cuidado del Pie",
+              "href": "/categoria/dispositivos-medicos/ortopedia/cuidado-del-pie"
+            },
+            "otros-productos-de-ortopedia": {
+              "name": "Otros productos de Ortopedia",
+              "href": "/categoria/dispositivos-medicos/ortopedia/otros-productos-de-ortopedia"
+            }
+          }
+        },
+        "nebulizadores": {
+          "name": "Nebulizadores",
+          "href": "/categoria/dispositivos-medicos/nebulizadores",
+          "subsubcategories": {}
+        },
+        "lampara-infrarroja": {
+          "name": "Lámpara Infrarroja",
+          "href": "/categoria/dispositivos-medicos/lampara-infrarroja",
+          "subsubcategories": {}
+        },
+        "glucometros": {
+          "name": "Glucómetros",
+          "href": "/categoria/dispositivos-medicos/glucometros",
+          "subsubcategories": {
+            "lancetas": {
+              "name": "Lancetas",
+              "href": "/categoria/dispositivos-medicos/glucometros/lancetas"
+            },
+            "equipos-2": {
+              "name": "Equipos",
+              "href": "/categoria/dispositivos-medicos/glucometros/equipos-2"
+            },
+            "tiras-reactivas": {
+              "name": "Tiras Reactivas",
+              "href": "/categoria/dispositivos-medicos/glucometros/tiras-reactivas"
+            }
+          }
+        },
+        "botiquin": {
+          "name": "Botiquín",
+          "href": "/categoria/dispositivos-medicos/botiquin",
+          "subsubcategories": {
+            "pastillero": {
+              "name": "Pastillero",
+              "href": "/categoria/dispositivos-medicos/botiquin/pastillero"
+            },
+            "agua-oxigenada": {
+              "name": "Agua Oxigenada",
+              "href": "/categoria/dispositivos-medicos/botiquin/agua-oxigenada"
+            },
+            "esparadrapobenditasapositos": {
+              "name": "Esparadrapo/Benditas/Apósitos",
+              "href": "/categoria/dispositivos-medicos/botiquin/esparadrapobenditasapositos"
+            },
+            "otros-productos-botiquin": {
+              "name": "Otros Productos Botiquín",
+              "href": "/categoria/dispositivos-medicos/botiquin/otros-productos-botiquin"
+            },
+            "oxigeno-portatil": {
+              "name": "Oxígeno Portátil",
+              "href": "/categoria/dispositivos-medicos/botiquin/oxigeno-portatil"
+            },
+            "gasas": {
+              "name": "Gasas",
+              "href": "/categoria/dispositivos-medicos/botiquin/gasas"
+            },
+            "aerocamaras": {
+              "name": "Aerocamaras",
+              "href": "/categoria/dispositivos-medicos/botiquin/aerocamaras"
+            },
+            "mascarillas-2": {
+              "name": "Mascarillas",
+              "href": "/categoria/dispositivos-medicos/botiquin/mascarillas-2"
+            },
+            "alcoholes": {
+              "name": "Alcoholes",
+              "href": "/categoria/dispositivos-medicos/botiquin/alcoholes"
+            },
+            "vendas": {
+              "name": "Vendas",
+              "href": "/categoria/dispositivos-medicos/botiquin/vendas"
+            },
+            "algodones": {
+              "name": "Algodones",
+              "href": "/categoria/dispositivos-medicos/botiquin/algodones"
+            },
+            "guantes-1": {
+              "name": "Guantes",
+              "href": "/categoria/dispositivos-medicos/botiquin/guantes-1"
+            },
+            "equipos-1": {
+              "name": "Equipos",
+              "href": "/categoria/dispositivos-medicos/botiquin/equipos-1"
+            }
+          }
+        },
+        "articulos-de-proteccion": {
+          "name": "Artículos de Protección",
+          "href": "/categoria/dispositivos-medicos/articulos-de-proteccion",
+          "subsubcategories": {
+            "alcohol-en-gel": {
+              "name": "Alcohol en Gel",
+              "href": "/categoria/dispositivos-medicos/articulos-de-proteccion/alcohol-en-gel"
+            },
+            "mamelucos": {
+              "name": "Mamelucos",
+              "href": "/categoria/dispositivos-medicos/articulos-de-proteccion/mamelucos"
+            },
+            "protectores-faciales": {
+              "name": "Protectores Faciales",
+              "href": "/categoria/dispositivos-medicos/articulos-de-proteccion/protectores-faciales"
+            },
+            "guantes": {
+              "name": "Guantes",
+              "href": "/categoria/dispositivos-medicos/articulos-de-proteccion/guantes"
+            },
+            "otros-en-articulos-de-proteccion": {
+              "name": "Otros en Artículos de Protección",
+              "href": "/categoria/dispositivos-medicos/articulos-de-proteccion/otros-en-articulos-de-proteccion"
+            },
+            "mascarillas": {
+              "name": "Mascarillas",
+              "href": "/categoria/dispositivos-medicos/articulos-de-proteccion/mascarillas"
+            }
+          }
+        },
+        "equipos-medicos": {
+          "name": "Equipos Médicos",
+          "href": "/categoria/dispositivos-medicos/equipos-medicos",
+          "subsubcategories": {
+            "andadores-1": {
+              "name": "Andadores",
+              "href": "/categoria/dispositivos-medicos/equipos-medicos/andadores-1"
+            },
+            "camas-clinicas-1": {
+              "name": "Camas Clinicas",
+              "href": "/categoria/dispositivos-medicos/equipos-medicos/camas-clinicas-1"
+            },
+            "concentradores-de-oxigeno": {
+              "name": "Concentradores de Oxígeno",
+              "href": "/categoria/dispositivos-medicos/equipos-medicos/concentradores-de-oxigeno"
+            },
+            "muletas": {
+              "name": "Muletas",
+              "href": "/categoria/dispositivos-medicos/equipos-medicos/muletas"
+            },
+            "equipos-urinarios": {
+              "name": "Equipos Urinarios",
+              "href": "/categoria/dispositivos-medicos/equipos-medicos/equipos-urinarios"
+            },
+            "estirador-cervical": {
+              "name": "Estirador Cervical",
+              "href": "/categoria/dispositivos-medicos/equipos-medicos/estirador-cervical"
+            },
+            "sillas-de-ruedas": {
+              "name": "Sillas de Ruedas",
+              "href": "/categoria/dispositivos-medicos/equipos-medicos/sillas-de-ruedas"
+            },
+            "bastones": {
+              "name": "Bastones",
+              "href": "/categoria/dispositivos-medicos/equipos-medicos/bastones"
+            },
+            "aspirador-de-secreciones": {
+              "name": "Aspirador de Secreciones",
+              "href": "/categoria/dispositivos-medicos/equipos-medicos/aspirador-de-secreciones"
+            },
+            "equipos": {
+              "name": "Equipos",
+              "href": "/categoria/dispositivos-medicos/equipos-medicos/equipos"
+            },
+            "camas-clinicas": {
+              "name": "Camas Clínicas",
+              "href": "/categoria/dispositivos-medicos/equipos-medicos/camas-clinicas"
+            }
+          }
+        },
+        "sistema-cardiovascular": {
+          "name": "Sistema Cardiovascular",
+          "href": "/categoria/dispositivos-medicos/sistema-cardiovascular",
+          "subsubcategories": {
+            "otros-de-sistema-cardiovascular": {
+              "name": "Otros de Sistema Cardiovascular",
+              "href": "/categoria/salud/sistema-cardiovascular/otros-de-sistema-cardiovascular"
+            }
+          }
+        },
+        "dispositivos-quirurgicos": {
+          "name": "Dispositivos Quirúrgicos",
+          "href": "/categoria/dispositivos-medicos/dispositivos-quirurgicos",
+          "subsubcategories": {
+            "agujas": {
+              "name": "Agujas",
+              "href": "/categoria/salud/dispositivos-quirurgicos/agujas"
+            },
+            "material-medico": {
+              "name": "Material Médico",
+              "href": "/categoria/salud/dispositivos-quirurgicos/material-medico"
+            }
+          }
+        },
+        "problemas-generales": {
+          "name": "Problemas Generales",
+          "href": "/categoria/dispositivos-medicos/problemas-generales",
+          "subsubcategories": {
+            "relajantes-musculares": {
+              "name": "Relajantes Musculares",
+              "href": "/categoria/salud/problemas-generales/relajantes-musculares"
+            }
+          }
+        },
+        "preparados-estomatologicos": {
+          "name": "Preparados Estomatológicos",
+          "href": "/categoria/dispositivos-medicos/preparados-estomatologicos",
+          "subsubcategories": {
+            "tratamiento-oral": {
+              "name": "Tratamiento Oral",
+              "href": "/categoria/salud/preparados-estomatologicos/tratamiento-oral"
+            }
+          }
+        }
+      }
+    },
+    "productos-naturales-1": {
+      "name": "Productos Naturales",
+      "href": "/categoria/productos-naturales-1",
+      "subcategories": {
+        "sistema-respiratorioinmunitario": {
+          "name": "Sistema Respiratorio/Inmunitario",
+          "href": "/categoria/productos-naturales-1/sistema-respiratorioinmunitario",
+          "subsubcategories": {
+            "tos": {
+              "name": "Tos",
+              "href": "/categoria/productos-naturales-1/sistema-respiratorioinmunitario/tos"
+            },
+            "fortalecer-defensas": {
+              "name": "Fortalecer defensas",
+              "href": "/categoria/productos-naturales-1/sistema-respiratorioinmunitario/fortalecer-defensas"
+            }
+          }
+        },
+        "sistema-renal-reproductor": {
+          "name": "Sistema Renal/ Reproductor",
+          "href": "/categoria/productos-naturales-1/sistema-renal-reproductor",
+          "subsubcategories": {
+            "problemas-urinarios": {
+              "name": "Problemas Urinarios",
+              "href": "/categoria/productos-naturales-1/sistema-renal-reproductor/problemas-urinarios"
+            },
+            "problemas-reproductor-masculino": {
+              "name": "Problemas Reproductor Masculino",
+              "href": "/categoria/productos-naturales-1/sistema-renal-reproductor/problemas-reproductor-masculino"
+            },
+            "problemas-reproductor-femenino": {
+              "name": "Problemas Reproductor Femenino",
+              "href": "/categoria/productos-naturales-1/sistema-renal-reproductor/problemas-reproductor-femenino"
+            }
+          }
+        },
+        "sistema-locomotor": {
+          "name": "Sistema Locomotor",
+          "href": "/categoria/productos-naturales-1/sistema-locomotor",
+          "subsubcategories": {
+            "sedantes-1": {
+              "name": "Sedantes",
+              "href": "/categoria/productos-naturales-1/sistema-locomotor/sedantes-1"
+            },
+            "articulaciones-y-huesos": {
+              "name": "Articulaciones y huesos",
+              "href": "/categoria/productos-naturales-1/sistema-locomotor/articulaciones-y-huesos"
+            },
+            "antiinflamatorios-naturales": {
+              "name": "Antiinflamatorios naturales",
+              "href": "/categoria/productos-naturales-1/sistema-locomotor/antiinflamatorios-naturales"
+            }
+          }
+        },
+        "sistema-digestivo": {
+          "name": "Sistema digestivo",
+          "href": "/categoria/productos-naturales-1/sistema-digestivo",
+          "subsubcategories": {
+            "protectores-hepaticos-1": {
+              "name": "Protectores Hepáticos",
+              "href": "/categoria/productos-naturales-1/sistema-digestivo/protectores-hepaticos-1"
+            },
+            "laxantes-1": {
+              "name": "Laxantes",
+              "href": "/categoria/productos-naturales-1/sistema-digestivo/laxantes-1"
+            }
+          }
+        },
+        "sistema-circulatorio": {
+          "name": "Sistema Circulatorio",
+          "href": "/categoria/productos-naturales-1/sistema-circulatorio",
+          "subsubcategories": {
+            "colesterol": {
+              "name": "Colesterol",
+              "href": "/categoria/productos-naturales-1/sistema-circulatorio/colesterol"
+            },
+            "cardiovasculares": {
+              "name": "Cardiovasculares",
+              "href": "/categoria/productos-naturales-1/sistema-circulatorio/cardiovasculares"
+            }
+          }
+        },
+        "productos-naturales": {
+          "name": "Productos Naturales",
+          "href": "/categoria/productos-naturales-1/productos-naturales",
+          "subsubcategories": {
+            "protectores-hepaticos": {
+              "name": "Protectores Hepáticos",
+              "href": "/categoria/productos-naturales-1/productos-naturales/protectores-hepaticos"
+            }
+          }
+        },
+        "infusiones-naturales": {
+          "name": "Infusiones Naturales",
+          "href": "/categoria/productos-naturales-1/infusiones-naturales",
+          "subsubcategories": {
+            "otras-infusiones": {
+              "name": "Otras infusiones",
+              "href": "/categoria/productos-naturales-1/infusiones-naturales/otras-infusiones"
+            },
+            "infusiones-relajantes": {
+              "name": "Infusiones relajantes",
+              "href": "/categoria/productos-naturales-1/infusiones-naturales/infusiones-relajantes"
+            },
+            "infusiones-reductores": {
+              "name": "Infusiones Reductores",
+              "href": "/categoria/productos-naturales-1/infusiones-naturales/infusiones-reductores"
+            },
+            "infusiones-digestivas": {
+              "name": "Infusiones digestivas",
+              "href": "/categoria/productos-naturales-1/infusiones-naturales/infusiones-digestivas"
+            },
+            "antigripales": {
+              "name": "Antigripales",
+              "href": "/categoria/productos-naturales-1/infusiones-naturales/antigripales"
+            }
+          }
+        },
+        "dietas": {
+          "name": "Dietas",
+          "href": "/categoria/productos-naturales-1/dietas",
+          "subsubcategories": {
+            "otros-productos-de-dieta": {
+              "name": "Otros Productos de Dieta",
+              "href": "/categoria/productos-naturales-1/dietas/otros-productos-de-dieta"
+            },
+            "incremento-de-masa-muscular": {
+              "name": "Incremento de Masa Muscular",
+              "href": "/categoria/productos-naturales-1/dietas/incremento-de-masa-muscular"
+            },
+            "edulcorante": {
+              "name": "Edulcorante",
+              "href": "/categoria/productos-naturales-1/dietas/edulcorante"
+            },
+            "adelgazantes": {
+              "name": "Adelgazantes",
+              "href": "/categoria/productos-naturales-1/dietas/adelgazantes"
+            }
+          }
+        },
+        "antioxidantes": {
+          "name": "Antioxidantes",
+          "href": "/categoria/productos-naturales-1/antioxidantes",
+          "subsubcategories": {}
+        },
+        "alimentos-naturales": {
+          "name": "Alimentos Naturales",
+          "href": "/categoria/productos-naturales-1/alimentos-naturales",
+          "subsubcategories": {
+            "quinua": {
+              "name": "Quinua",
+              "href": "/categoria/productos-naturales-1/alimentos-naturales/quinua"
+            },
+            "otros-alimentos-naturales": {
+              "name": "Otros Alimentos Naturales",
+              "href": "/categoria/productos-naturales-1/alimentos-naturales/otros-alimentos-naturales"
+            },
+            "mantequilla-de-mani--almendras": {
+              "name": "Mantequilla de Maní / Almendras",
+              "href": "/categoria/productos-naturales-1/alimentos-naturales/mantequilla-de-mani--almendras"
+            },
+            "maca": {
+              "name": "Maca",
+              "href": "/categoria/productos-naturales-1/alimentos-naturales/maca"
+            },
+            "fibras": {
+              "name": "Fibras",
+              "href": "/categoria/productos-naturales-1/alimentos-naturales/fibras"
+            },
+            "espirulina": {
+              "name": "Espirulina",
+              "href": "/categoria/productos-naturales-1/alimentos-naturales/espirulina"
+            },
+            "cereales": {
+              "name": "Cereales",
+              "href": "/categoria/productos-naturales-1/alimentos-naturales/cereales"
+            },
+            "bebidas": {
+              "name": "Bebidas",
+              "href": "/categoria/productos-naturales-1/alimentos-naturales/bebidas"
+            },
+            "aguaje": {
+              "name": "Aguaje",
+              "href": "/categoria/productos-naturales-1/alimentos-naturales/aguaje"
+            },
+            "aceite-de-oliva": {
+              "name": "Aceite de Oliva",
+              "href": "/categoria/productos-naturales-1/alimentos-naturales/aceite-de-oliva"
+            }
+          }
+        }
+      }
+    },
+    "deportes": {
+      "name": "Deportes",
+      "href": "/categoria/deportes",
+      "subcategories": {
+        "nutricion-deportiva": {
+          "name": "Nutrición Deportiva",
+          "href": "/categoria/deportes/nutricion-deportiva",
+          "subsubcategories": {
+            "suplementos-deportivos-2": {
+              "name": "Suplementos Deportivos",
+              "href": "/categoria/deportes/nutricion-deportiva/suplementos-deportivos-2"
+            },
+            "adelgazantes-naturales": {
+              "name": "Adelgazantes Naturales",
+              "href": "/categoria/deportes/nutricion-deportiva/adelgazantes-naturales"
+            },
+            "suplementos-dieteticos-1": {
+              "name": "Suplementos Dietéticos",
+              "href": "/categoria/deportes/nutricion-deportiva/suplementos-dieteticos-1"
+            },
+            "bebidas-y-rehidratantes": {
+              "name": "Bebidas y Rehidratantes",
+              "href": "/categoria/deportes/nutricion-deportiva/bebidas-y-rehidratantes"
+            },
+            "energizantes-naturales": {
+              "name": "Energizantes Naturales",
+              "href": "/categoria/deportes/nutricion-deportiva/energizantes-naturales"
+            }
+          }
+        },
+        "zona-fitness": {
+          "name": "Zona Fitness",
+          "href": "/categoria/deportes/zona-fitness",
+          "subsubcategories": {
+            "pesas-y-mancuernas": {
+              "name": "Pesas y Mancuernas",
+              "href": "/categoria/deportes/zona-fitness/pesas-y-mancuernas"
+            },
+            "rodillo-de-automasaje": {
+              "name": "Rodillo de Automasaje",
+              "href": "/categoria/deportes/zona-fitness/rodillo-de-automasaje"
+            },
+            "accesorios-para-abdominales": {
+              "name": "Accesorios para Abdominales",
+              "href": "/categoria/deportes/zona-fitness/accesorios-para-abdominales"
+            },
+            "mat-de-yoga": {
+              "name": "Mat de Yoga",
+              "href": "/categoria/deportes/zona-fitness/mat-de-yoga"
+            },
+            "pelota-de-entrenamiento": {
+              "name": "Pelota de Entrenamiento",
+              "href": "/categoria/deportes/zona-fitness/pelota-de-entrenamiento"
+            },
+            "cuerda-para-saltar": {
+              "name": "Cuerda para Saltar",
+              "href": "/categoria/deportes/zona-fitness/cuerda-para-saltar"
+            },
+            "bandas-y-ligas-de-resistencia": {
+              "name": "Bandas y Ligas de Resistencia",
+              "href": "/categoria/deportes/zona-fitness/bandas-y-ligas-de-resistencia"
+            },
+            "colchonetas-para-entrenamiento": {
+              "name": "Colchonetas para Entrenamiento",
+              "href": "/categoria/deportes/zona-fitness/colchonetas-para-entrenamiento"
+            },
+            "estimulador-muscular": {
+              "name": "Estimulador Muscular",
+              "href": "/categoria/deportes/zona-fitness/estimulador-muscular"
+            }
+          }
+        },
+        "maquinas-deportivas": {
+          "name": "Máquinas Deportivas",
+          "href": "/categoria/deportes/maquinas-deportivas",
+          "subsubcategories": {
+            "trotadoras": {
+              "name": "Trotadoras",
+              "href": "/categoria/deportes/maquinas-deportivas/trotadoras"
+            },
+            "ejercicios-multifuncion": {
+              "name": "Ejercicios Multifunción",
+              "href": "/categoria/deportes/maquinas-deportivas/ejercicios-multifuncion"
+            },
+            "bicicletas-estacionarias": {
+              "name": "Bicicletas Estacionarias",
+              "href": "/categoria/deportes/maquinas-deportivas/bicicletas-estacionarias"
+            },
+            "maquinas-abdominales": {
+              "name": "Máquinas Abdominales",
+              "href": "/categoria/deportes/maquinas-deportivas/maquinas-abdominales"
+            },
+            "banca-de-entrenamiento": {
+              "name": "Banca de Entrenamiento",
+              "href": "/categoria/deportes/maquinas-deportivas/banca-de-entrenamiento"
+            }
+          }
+        },
+        "accesorios-deportivos": {
+          "name": "Accesorios Deportivos",
+          "href": "/categoria/deportes/accesorios-deportivos",
+          "subsubcategories": {
+            "faja-deportiva": {
+              "name": "Faja Deportiva",
+              "href": "/categoria/deportes/accesorios-deportivos/faja-deportiva"
+            },
+            "balanzas": {
+              "name": "Balanzas",
+              "href": "/categoria/deportes/accesorios-deportivos/balanzas"
+            },
+            "guantes-y-munequeras-deportivas": {
+              "name": "Guantes y Muñequeras Deportivas",
+              "href": "/categoria/deportes/accesorios-deportivos/guantes-y-munequeras-deportivas"
+            },
+            "pelotas-medicinales": {
+              "name": "Pelotas Medicinales",
+              "href": "/categoria/deportes/accesorios-deportivos/pelotas-medicinales"
+            },
+            "tomatodos": {
+              "name": "Tomatodos",
+              "href": "/categoria/deportes/accesorios-deportivos/tomatodos"
+            },
+            "mascarilla-deportivas": {
+              "name": "Mascarilla Deportivas",
+              "href": "/categoria/deportes/accesorios-deportivos/mascarilla-deportivas"
+            },
+            "otros-accesorios-deportivos": {
+              "name": "Otros Accesorios Deportivos",
+              "href": "/categoria/deportes/accesorios-deportivos/otros-accesorios-deportivos"
+            }
+          }
+        },
+        "natacion": {
+          "name": "Natación",
+          "href": "/categoria/deportes/natacion",
+          "subsubcategories": {
+            "accesorios-de-natacion": {
+              "name": "Accesorios de Natación",
+              "href": "/categoria/deportes/natacion/accesorios-de-natacion"
+            },
+            "lentes-para-natacion": {
+              "name": "Lentes para Natación",
+              "href": "/categoria/deportes/natacion/lentes-para-natacion"
+            },
+            "gorro-de-natacion": {
+              "name": "Gorro de Natación",
+              "href": "/categoria/deportes/natacion/gorro-de-natacion"
+            },
+            "flotadores": {
+              "name": "Flotadores",
+              "href": "/categoria/deportes/natacion/flotadores"
+            }
+          }
+        },
+        "equipos-de-box": {
+          "name": "Equipos de Box",
+          "href": "/categoria/deportes/equipos-de-box",
+          "subsubcategories": {
+            "accesorios-de-boxeo": {
+              "name": "Accesorios de Boxeo",
+              "href": "/categoria/deportes/equipos-de-box/accesorios-de-boxeo"
+            },
+            "guantes-de-box": {
+              "name": "Guantes de Box",
+              "href": "/categoria/deportes/equipos-de-box/guantes-de-box"
+            }
+          }
+        },
+        "scooter": {
+          "name": "Scooter",
+          "href": "/categoria/deportes/scooter",
+          "subsubcategories": {}
+        },
+        "bicicletas": {
+          "name": "Bicicletas",
+          "href": "/categoria/deportes/bicicletas",
+          "subsubcategories": {
+            "accesorios-para-bicicletas": {
+              "name": "Accesorios para Bicicletas",
+              "href": "/categoria/deportes/bicicletas/accesorios-para-bicicletas"
+            },
+            "cascos": {
+              "name": "Cascos",
+              "href": "/categoria/deportes/bicicletas/cascos"
+            },
+            "bicicletas-montaneras": {
+              "name": "Bicicletas Montañeras",
+              "href": "/categoria/deportes/bicicletas/bicicletas-montaneras"
+            },
+            "bicicletas-electricas": {
+              "name": "Bicicletas Eléctricas",
+              "href": "/categoria/deportes/bicicletas/bicicletas-electricas"
+            },
+            "bicicletas-infantiles": {
+              "name": "Bicicletas Infantiles",
+              "href": "/categoria/deportes/bicicletas/bicicletas-infantiles"
+            },
+            "bicicletas-urbanas": {
+              "name": "Bicicletas Urbanas",
+              "href": "/categoria/deportes/bicicletas/bicicletas-urbanas"
+            },
+            "bicicletas-bmx": {
+              "name": "Bicicletas BMX",
+              "href": "/categoria/deportes/bicicletas/bicicletas-bmx"
+            }
+          }
+        },
+        "ropa-derpotiva-para-mujer": {
+          "name": "Ropa Derpotiva para Mujer",
+          "href": "/categoria/deportes/ropa-derpotiva-para-mujer",
+          "subsubcategories": {}
+        },
+        "crossfit": {
+          "name": "Crossfit",
+          "href": "/categoria/deportes/crossfit",
+          "subsubcategories": {
+            "compresas-frio-calor": {
+              "name": "Compresas Frío-Calor",
+              "href": "/categoria/deportes/crossfit/compresas-frio-calor"
+            },
+            "sogas-para-crossfit": {
+              "name": "Sogas para Crossfit",
+              "href": "/categoria/deportes/crossfit/sogas-para-crossfit"
+            },
+            "chalecos": {
+              "name": "Chalecos",
+              "href": "/categoria/deportes/crossfit/chalecos"
+            },
+            "accesorios-crossfit": {
+              "name": "Accesorios Crossfit",
+              "href": "/categoria/deportes/crossfit/accesorios-crossfit"
+            }
+          }
+        }
+      }
+    },
+    "peru-pasion": {
+      "name": "Perú Pasión",
+      "href": "/categoria/peru-pasion",
+      "subcategories": {
+        "nutricion": {
+          "name": "Nutrición",
+          "href": "/categoria/peru-pasion/nutricion",
+          "subsubcategories": {
+            "alimentos-naturales--organicos": {
+              "name": "Alimentos naturales / orgánicos",
+              "href": "/categoria/peru-pasion/nutricion/alimentos-naturales--organicos"
+            },
+            "suplementos-naturales": {
+              "name": "Suplementos naturales",
+              "href": "/categoria/peru-pasion/nutricion/suplementos-naturales"
+            },
+            "otras-vitaminas-y-suplementos": {
+              "name": "Otras vitaminas y suplementos",
+              "href": "/categoria/peru-pasion/nutricion/otras-vitaminas-y-suplementos"
+            }
+          }
+        },
+        "higiene-y-cuidado-personal": {
+          "name": "Higiene y cuidado personal",
+          "href": "/categoria/peru-pasion/higiene-y-cuidado-personal",
+          "subsubcategories": {
+            "shampoo-capilar": {
+              "name": "Shampoo Capilar",
+              "href": "/categoria/peru-pasion/higiene-y-cuidado-personal/shampoo-capilar"
+            },
+            "acondicionadores": {
+              "name": "Acondicionadores",
+              "href": "/categoria/peru-pasion/higiene-y-cuidado-personal/acondicionadores"
+            },
+            "cepillo-de-dientes": {
+              "name": "Cepillo de dientes",
+              "href": "/categoria/peru-pasion/higiene-y-cuidado-personal/cepillo-de-dientes"
+            },
+            "geles-de-bano": {
+              "name": "Geles de baño",
+              "href": "/categoria/peru-pasion/higiene-y-cuidado-personal/geles-de-bano"
+            }
+          }
+        },
+        "dispositivos-ortopedicos": {
+          "name": "Dispositivos Ortopédicos",
+          "href": "/categoria/peru-pasion/dispositivos-ortopedicos",
+          "subsubcategories": {
+            "faja-ortopedica": {
+              "name": "Faja ortopédica",
+              "href": "/categoria/peru-pasion/dispositivos-ortopedicos/faja-ortopedica"
+            },
+            "cojines": {
+              "name": "Cojines",
+              "href": "/categoria/peru-pasion/dispositivos-ortopedicos/cojines"
+            },
+            "almohadas-terapeuticas--almohadillas": {
+              "name": "Almohadas terapeúticas / Almohadillas",
+              "href": "/categoria/peru-pasion/dispositivos-ortopedicos/almohadas-terapeuticas--almohadillas"
+            },
+            "compresas-termicas": {
+              "name": "Compresas térmicas",
+              "href": "/categoria/peru-pasion/dispositivos-ortopedicos/compresas-termicas"
+            }
+          }
+        },
+        "esenciasaromaterapia": {
+          "name": "Esencias/Aromaterapia",
+          "href": "/categoria/peru-pasion/esenciasaromaterapia",
+          "subsubcategories": {
+            "aceites-esenciales-aromaticos": {
+              "name": "Aceites Esenciales Aromáticos",
+              "href": "/categoria/peru-pasion/esenciasaromaterapia/aceites-esenciales-aromaticos"
+            },
+            "otros-aceites-y-accesorios": {
+              "name": "Otros aceites y accesorios",
+              "href": "/categoria/peru-pasion/esenciasaromaterapia/otros-aceites-y-accesorios"
+            }
+          }
+        },
+        "belleza-y-estetica": {
+          "name": "Belleza y estética",
+          "href": "/categoria/peru-pasion/belleza-y-estetica",
+          "subsubcategories": {
+            "rostro-saludable": {
+              "name": "Rostro Saludable",
+              "href": "/categoria/peru-pasion/belleza-y-estetica/rostro-saludable"
+            },
+            "cuidado-corporal": {
+              "name": "Cuidado corporal",
+              "href": "/categoria/peru-pasion/belleza-y-estetica/cuidado-corporal"
+            },
+            "accesorios-de-belleza": {
+              "name": "Accesorios de belleza",
+              "href": "/categoria/peru-pasion/belleza-y-estetica/accesorios-de-belleza"
+            }
+          }
+        }
+      }
+    },
+    "nuevas-categorias": {
+      "name": "Nuevas Categorías",
+      "href": "/categoria/nuevas-categorias",
+      "subcategories": {
+        "promociones-marketplace": {
+          "name": "Promociones Marketplace",
+          "href": "/categoria/nuevas-categorias/promociones-marketplace",
+          "subsubcategories": {
+            "colageno-hidrolizado-y-citrato-de-magnesio": {
+              "name": "Colágeno Hidrolizado y Citrato de Magnesio",
+              "href": "/categoria/nuevas-categorias/promociones-marketplace/colageno-hidrolizado-y-citrato-de-magnesio"
+            },
+            "precios-bajos-en-vitaminas--suplementos-y-multivitaminicos": {
+              "name": "Precios Bajos en vitaminas Suplementos y Multivitamínicos",
+              "href": "/categoria/nuevas-categorias/promociones-marketplace/precios-bajos-en-vitaminas--suplementos-y-multivitaminicos"
+            },
+            "encuentra-tu-suplemento-deportivo": {
+              "name": "Encuentra tu Suplemento Deportivo",
+              "href": "/categoria/nuevas-categorias/promociones-marketplace/encuentra-tu-suplemento-deportivo"
+            },
+            "activa-el-crecimiento-de-tu-cabello-con-minoxidil": {
+              "name": "Activa el Crecimiento de tu Cabello con MINOXIDIL",
+              "href": "/categoria/nuevas-categorias/promociones-marketplace/activa-el-crecimiento-de-tu-cabello-con-minoxidil"
+            },
+            "tensiometros-oximetro-glucometros": {
+              "name": "Tensiometros Oxímetro Glucómetros",
+              "href": "/categoria/nuevas-categorias/promociones-marketplace/tensiometros-oximetro-glucometros"
+            },
+            "productos-favoritos-de-the-ordinary": {
+              "name": "Productos Favoritos de The Ordinary",
+              "href": "/categoria/nuevas-categorias/promociones-marketplace/productos-favoritos-de-the-ordinary"
+            }
+          }
+        },
+        "tecnologia-y-accesorios": {
+          "name": "Tecnología y Accesorios",
+          "href": "/categoria/nuevas-categorias/tecnologia-y-accesorios",
+          "subsubcategories": {
+            "smarphone-y-celulares": {
+              "name": "Smarphone y Celulares",
+              "href": "/categoria/nuevas-categorias/tecnologia-y-accesorios/smarphone-y-celulares"
+            },
+            "tripode-y-soporte": {
+              "name": "Trípode y Soporte",
+              "href": "/categoria/nuevas-categorias/tecnologia-y-accesorios/tripode-y-soporte"
+            },
+            "smartwatch": {
+              "name": "Smartwatch",
+              "href": "/categoria/nuevas-categorias/tecnologia-y-accesorios/smartwatch"
+            },
+            "parlantes": {
+              "name": "Parlantes",
+              "href": "/categoria/nuevas-categorias/tecnologia-y-accesorios/parlantes"
+            },
+            "otros-en-tecnologia-y-accesorios": {
+              "name": "Otros en Tecnología y Accesorios",
+              "href": "/categoria/nuevas-categorias/tecnologia-y-accesorios/otros-en-tecnologia-y-accesorios"
+            },
+            "mochila-para-laptop": {
+              "name": "Mochila para Laptop",
+              "href": "/categoria/nuevas-categorias/tecnologia-y-accesorios/mochila-para-laptop"
+            },
+            "case": {
+              "name": "Case",
+              "href": "/categoria/nuevas-categorias/tecnologia-y-accesorios/case"
+            },
+            "bateria-portatil": {
+              "name": "Batería Portátil",
+              "href": "/categoria/nuevas-categorias/tecnologia-y-accesorios/bateria-portatil"
+            },
+            "balanza-de-mano": {
+              "name": "Balanza de Mano",
+              "href": "/categoria/nuevas-categorias/tecnologia-y-accesorios/balanza-de-mano"
+            },
+            "audifonos": {
+              "name": "Audífonos",
+              "href": "/categoria/nuevas-categorias/tecnologia-y-accesorios/audifonos"
+            },
+            "accesorios-para-smartwatch": {
+              "name": "Accesorios para Smartwatch",
+              "href": "/categoria/nuevas-categorias/tecnologia-y-accesorios/accesorios-para-smartwatch"
+            },
+            "cables-y-accesorios": {
+              "name": "Cables y Accesorios",
+              "href": "/categoria/nuevas-categorias/tecnologia-y-accesorios/cables-y-accesorios"
+            }
+          }
+        },
+        "nutricion-adultos": {
+          "name": "Nutrición Adultos",
+          "href": "/categoria/nuevas-categorias/nutricion-adultos",
+          "subsubcategories": {
+            "suplementos-fitness-y-deportivos": {
+              "name": "Suplementos Fitness y Deportivos",
+              "href": "/categoria/nuevas-categorias/nutricion-adultos/suplementos-fitness-y-deportivos"
+            },
+            "suplementos-deportivos-1": {
+              "name": "Suplementos Deportivos",
+              "href": "/categoria/nuevas-categorias/nutricion-adultos/suplementos-deportivos-1"
+            },
+            "quemadores-de-grasa": {
+              "name": "Quemadores de Grasa",
+              "href": "/categoria/nuevas-categorias/nutricion-adultos/quemadores-de-grasa"
+            },
+            "proteinas": {
+              "name": "Proteínas",
+              "href": "/categoria/nuevas-categorias/nutricion-adultos/proteinas"
+            },
+            "glutamina": {
+              "name": "Glutamina",
+              "href": "/categoria/nuevas-categorias/nutricion-adultos/glutamina"
+            },
+            "ganador-de-masa-muscular": {
+              "name": "Ganador de Masa Muscular",
+              "href": "/categoria/nuevas-categorias/nutricion-adultos/ganador-de-masa-muscular"
+            },
+            "complementos--suplementos-nutricionales": {
+              "name": "Complementos / Suplementos Nutricionales",
+              "href": "/categoria/nuevas-categorias/nutricion-adultos/complementos--suplementos-nutricionales"
+            },
+            "colagenos-2": {
+              "name": "Colágenos",
+              "href": "/categoria/nuevas-categorias/nutricion-adultos/colagenos-2"
+            },
+            "aminoacidos": {
+              "name": "Aminoácidos",
+              "href": "/categoria/nuevas-categorias/nutricion-adultos/aminoacidos"
+            }
+          }
+        },
+        "mundo-infantil": {
+          "name": "Mundo Infantil",
+          "href": "/categoria/nuevas-categorias/mundo-infantil",
+          "subsubcategories": {
+            "mas-productos-infantiles": {
+              "name": "Más Productos Infantiles",
+              "href": "/categoria/nuevas-categorias/mundo-infantil/mas-productos-infantiles"
+            }
+          }
+        },
+        "moda-mujer": {
+          "name": "Moda Mujer",
+          "href": "/categoria/nuevas-categorias/moda-mujer",
+          "subsubcategories": {
+            "lenceria-femenina": {
+              "name": "Lencería Femenina",
+              "href": "/categoria/nuevas-categorias/moda-mujer/lenceria-femenina"
+            },
+            "gorros": {
+              "name": "Gorros",
+              "href": "/categoria/nuevas-categorias/moda-mujer/gorros"
+            },
+            "cubre-pezon": {
+              "name": "Cubre Pezón",
+              "href": "/categoria/nuevas-categorias/moda-mujer/cubre-pezon"
+            }
+          }
+        },
+        "mascotas": {
+          "name": "Mascotas",
+          "href": "/categoria/nuevas-categorias/mascotas",
+          "subsubcategories": {
+            "vitaminas-y-suplementos-para-mascotas": {
+              "name": "Vitaminas y Suplementos para Mascotas",
+              "href": "/categoria/nuevas-categorias/mascotas/vitaminas-y-suplementos-para-mascotas"
+            },
+            "transportadores": {
+              "name": "Transportadores",
+              "href": "/categoria/nuevas-categorias/mascotas/transportadores"
+            },
+            "ropa-para-mascotas": {
+              "name": "Ropa para Mascotas",
+              "href": "/categoria/nuevas-categorias/mascotas/ropa-para-mascotas"
+            },
+            "platos": {
+              "name": "Platos",
+              "href": "/categoria/nuevas-categorias/mascotas/platos"
+            },
+            "otros-productos-nuevos": {
+              "name": "Otros Productos Nuevos",
+              "href": "/categoria/nuevas-categorias/mascotas/otros-productos-nuevos"
+            },
+            "juguetes-para-mascotas": {
+              "name": "Juguetes para Mascotas",
+              "href": "/categoria/nuevas-categorias/mascotas/juguetes-para-mascotas"
+            },
+            "higiene-para-tu-mascota": {
+              "name": "Higiene para tu Mascota",
+              "href": "/categoria/nuevas-categorias/mascotas/higiene-para-tu-mascota"
+            },
+            "correa-y-arnes-para-perros": {
+              "name": "Correa y Arnés para Perros",
+              "href": "/categoria/nuevas-categorias/mascotas/correa-y-arnes-para-perros"
+            },
+            "collar-para-perros": {
+              "name": "Collar para Perros",
+              "href": "/categoria/nuevas-categorias/mascotas/collar-para-perros"
+            },
+            "antiparasitarios": {
+              "name": "Antiparasitarios",
+              "href": "/categoria/nuevas-categorias/mascotas/antiparasitarios"
+            },
+            "camas": {
+              "name": "Camas",
+              "href": "/categoria/nuevas-categorias/mascotas/camas"
+            },
+            "bebederos-para-mascota": {
+              "name": "Bebederos para Mascota",
+              "href": "/categoria/nuevas-categorias/mascotas/bebederos-para-mascota"
+            },
+            "areneros-para-gatos": {
+              "name": "Areneros para Gatos",
+              "href": "/categoria/nuevas-categorias/mascotas/areneros-para-gatos"
+            },
+            "accesorios-para-perros": {
+              "name": "Accesorios para Perros",
+              "href": "/categoria/nuevas-categorias/mascotas/accesorios-para-perros"
+            },
+            "accesorios-para-gatos": {
+              "name": "Accesorios para Gatos",
+              "href": "/categoria/nuevas-categorias/mascotas/accesorios-para-gatos"
+            }
+          }
+        },
+        "limpieza-para-tu-hogar-1": {
+          "name": "Limpieza para tu Hogar",
+          "href": "/categoria/nuevas-categorias/limpieza-para-tu-hogar-1",
+          "subsubcategories": {
+            "purificador-de-agua": {
+              "name": "Purificador de Agua",
+              "href": "/categoria/nuevas-categorias/limpieza-para-tu-hogar-1/purificador-de-agua"
+            },
+            "limpieza-para-el-hogar": {
+              "name": "Limpieza para el Hogar",
+              "href": "/categoria/nuevas-categorias/limpieza-para-tu-hogar-1/limpieza-para-el-hogar"
+            },
+            "dispensadores": {
+              "name": "Dispensadores",
+              "href": "/categoria/nuevas-categorias/limpieza-para-tu-hogar-1/dispensadores"
+            },
+            "aromaterapia": {
+              "name": "Aromaterapia",
+              "href": "/categoria/nuevas-categorias/limpieza-para-tu-hogar-1/aromaterapia"
+            },
+            "accesorios-de-cocina": {
+              "name": "Accesorios de Cocina",
+              "href": "/categoria/nuevas-categorias/limpieza-para-tu-hogar-1/accesorios-de-cocina"
+            },
+            "accesorios-de-bano": {
+              "name": "Accesorios de Baño",
+              "href": "/categoria/nuevas-categorias/limpieza-para-tu-hogar-1/accesorios-de-bano"
+            }
+          }
+        },
+        "hogar-y-decoracion": {
+          "name": "Hogar y Decoración",
+          "href": "/categoria/nuevas-categorias/hogar-y-decoracion",
+          "subsubcategories": {
+            "tomatodo": {
+              "name": "Tomatodo",
+              "href": "/categoria/nuevas-categorias/hogar-y-decoracion/tomatodo"
+            },
+            "otros-en-hogar-y-decoracion": {
+              "name": "Otros en Hogar y Decoración",
+              "href": "/categoria/nuevas-categorias/hogar-y-decoracion/otros-en-hogar-y-decoracion"
+            },
+            "mochilas": {
+              "name": "Mochilas",
+              "href": "/categoria/nuevas-categorias/hogar-y-decoracion/mochilas"
+            },
+            "loncheras-2": {
+              "name": "Loncheras",
+              "href": "/categoria/nuevas-categorias/hogar-y-decoracion/loncheras-2"
+            },
+            "limpieza-para-tu-hogar": {
+              "name": "Limpieza para tu Hogar",
+              "href": "/categoria/nuevas-categorias/hogar-y-decoracion/limpieza-para-tu-hogar"
+            },
+            "accesorios-de-cocina-2": {
+              "name": "Accesorios de Cocina",
+              "href": "/categoria/nuevas-categorias/hogar-y-decoracion/accesorios-de-cocina-2"
+            },
+            "iluminacion": {
+              "name": "Iluminación",
+              "href": "/categoria/nuevas-categorias/hogar-y-decoracion/iluminacion"
+            },
+            "espejos-1": {
+              "name": "Espejos",
+              "href": "/categoria/nuevas-categorias/hogar-y-decoracion/espejos-1"
+            },
+            "cestos--organizadores": {
+              "name": "Cestos / Organizadores",
+              "href": "/categoria/nuevas-categorias/hogar-y-decoracion/cestos--organizadores"
+            },
+            "caja-organizadora": {
+              "name": "Caja Organizadora",
+              "href": "/categoria/nuevas-categorias/hogar-y-decoracion/caja-organizadora"
+            },
+            "caja-de-herramientas": {
+              "name": "Caja de Herramientas",
+              "href": "/categoria/nuevas-categorias/hogar-y-decoracion/caja-de-herramientas"
+            },
+            "bolsas": {
+              "name": "Bolsas",
+              "href": "/categoria/nuevas-categorias/hogar-y-decoracion/bolsas"
+            }
+          }
+        },
+        "electrohogar": {
+          "name": "Electrohogar",
+          "href": "/categoria/nuevas-categorias/electrohogar",
+          "subsubcategories": {
+            "ventiladores": {
+              "name": "Ventiladores",
+              "href": "/categoria/nuevas-categorias/electrohogar/ventiladores"
+            },
+            "termoradiador": {
+              "name": "Termoradiador",
+              "href": "/categoria/nuevas-categorias/electrohogar/termoradiador"
+            },
+            "selladora-de-bolsa": {
+              "name": "Selladora de Bolsa",
+              "href": "/categoria/nuevas-categorias/electrohogar/selladora-de-bolsa"
+            },
+            "purificador-de-aire": {
+              "name": "Purificador de Aire",
+              "href": "/categoria/nuevas-categorias/electrohogar/purificador-de-aire"
+            },
+            "otros-productos-electrohogar": {
+              "name": "Otros Productos Electrohogar",
+              "href": "/categoria/nuevas-categorias/electrohogar/otros-productos-electrohogar"
+            },
+            "deshumecedores": {
+              "name": "Deshumecedores",
+              "href": "/categoria/nuevas-categorias/electrohogar/deshumecedores"
+            },
+            "calefactores": {
+              "name": "Calefactores",
+              "href": "/categoria/nuevas-categorias/electrohogar/calefactores"
+            },
+            "aspiradoras": {
+              "name": "Aspiradoras",
+              "href": "/categoria/nuevas-categorias/electrohogar/aspiradoras"
+            }
+          }
+        },
+        "dormitorio": {
+          "name": "Dormitorio",
+          "href": "/categoria/nuevas-categorias/dormitorio",
+          "subsubcategories": {
+            "sabanas": {
+              "name": "Sábanas",
+              "href": "/categoria/nuevas-categorias/dormitorio/sabanas"
+            },
+            "fundas-para-almohadas": {
+              "name": "Fundas para Almohadas",
+              "href": "/categoria/nuevas-categorias/dormitorio/fundas-para-almohadas"
+            },
+            "edredones-y-cobertores": {
+              "name": "Edredones y Cobertores",
+              "href": "/categoria/nuevas-categorias/dormitorio/edredones-y-cobertores"
+            },
+            "cama-infantil": {
+              "name": "Cama Infantil",
+              "href": "/categoria/nuevas-categorias/dormitorio/cama-infantil"
+            },
+            "almohadas": {
+              "name": "Almohadas",
+              "href": "/categoria/nuevas-categorias/dormitorio/almohadas"
+            }
+          }
+        },
+        "belleza-y-accesorios": {
+          "name": "Belleza y Accesorios",
+          "href": "/categoria/nuevas-categorias/belleza-y-accesorios",
+          "subsubcategories": {
+            "relojes-para-mujer": {
+              "name": "Relojes para Mujer",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/relojes-para-mujer"
+            },
+            "relojes-para-hombres": {
+              "name": "Relojes para Hombres",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/relojes-para-hombres"
+            },
+            "pulseras": {
+              "name": "Pulseras",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/pulseras"
+            },
+            "pines": {
+              "name": "Pines",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/pines"
+            },
+            "perfumes": {
+              "name": "Perfumes",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/perfumes"
+            },
+            "otros-belleza-y-accesorios": {
+              "name": "Otros Belleza y Accesorios",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/otros-belleza-y-accesorios"
+            },
+            "organizador": {
+              "name": "Organizador",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/organizador"
+            },
+            "manicure": {
+              "name": "Manicure",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/manicure"
+            },
+            "lentes": {
+              "name": "Lentes",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/lentes"
+            },
+            "lentes-de-medida": {
+              "name": "Lentes de Medida",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/lentes-de-medida"
+            },
+            "faja-modeladora": {
+              "name": "Faja Modeladora",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/faja-modeladora"
+            },
+            "dijes-y-argollas": {
+              "name": "Dijes y Argollas",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/dijes-y-argollas"
+            },
+            "collares-y-cadenas": {
+              "name": "Collares y Cadenas",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/collares-y-cadenas"
+            },
+            "bolsos-y-carteras": {
+              "name": "Bolsos y Carteras",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/bolsos-y-carteras"
+            },
+            "billeteras": {
+              "name": "Billeteras",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/billeteras"
+            },
+            "belleza-facial": {
+              "name": "Belleza Facial",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/belleza-facial"
+            },
+            "aretes": {
+              "name": "Aretes",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/aretes"
+            },
+            "aceite-para-masajes": {
+              "name": "Aceite para Masajes",
+              "href": "/categoria/nuevas-categorias/belleza-y-accesorios/aceite-para-masajes"
+            }
+          }
+        },
+        "accesorios-para-autos": {
+          "name": "Accesorios para Autos",
+          "href": "/categoria/nuevas-categorias/accesorios-para-autos",
+          "subsubcategories": {
+            "cargadores-para-celulares": {
+              "name": "Cargadores para Celulares",
+              "href": "/categoria/nuevas-categorias/accesorios-para-autos/cargadores-para-celulares"
+            }
+          }
+        },
+        "videojuegos-y-consolas": {
+          "name": "Videojuegos y consolas",
+          "href": "/categoria/nuevas-categorias/videojuegos-y-consolas",
+          "subsubcategories": {
+            "consolas": {
+              "name": "Consolas",
+              "href": "/categoria/nuevas-categorias/videojuegos-y-consolas/consolas"
+            },
+            "accesorios-1": {
+              "name": "Accesorios",
+              "href": "/categoria/nuevas-categorias/videojuegos-y-consolas/accesorios-1"
+            }
+          }
+        }
+      }
+    },
+    "dias-oh!": {
+      "name": "Días Oh!",
+      "href": "/categoria/dias-oh!",
+      "subcategories": {}
+    }
+  }
+}

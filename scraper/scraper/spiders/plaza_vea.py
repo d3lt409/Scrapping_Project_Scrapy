@@ -202,9 +202,13 @@ class PlazaVeaSpider(scrapy.Spider):
 
     def extract_product_data(self, product_element, categoria, subcategoria):
         try:
+            # Intentar obtener el nombre completo del atributo title
             name_list = product_element.xpath(plaza_vea.XPATH_PRODUCT_NAME).getall()
             if not name_list:
-                return None
+                # Fallback al texto truncado si no hay atributo title
+                name_list = product_element.xpath(plaza_vea.XPATH_PRODUCT_NAME_FALLBACK).getall()
+                if not name_list:
+                    return None
             name = name_list[0].strip()
             
             price_list = product_element.xpath(plaza_vea.XPATH_PRODUCT_PRICE).getall()

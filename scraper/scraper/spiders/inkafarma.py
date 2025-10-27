@@ -5,6 +5,10 @@ from scraper.items import ScraperItem
 from scrapy.http import Response
 from playwright.async_api import Page
 import time
+import json
+import os
+import subprocess
+from datetime import datetime, timedelta
 
 from .constants import inkafarma
 
@@ -15,15 +19,315 @@ class InkafarmaSpider(scrapy.Spider):
     def __init__(self, custom_urls=None, *args, **kwargs):
         super(InkafarmaSpider, self).__init__(*args, **kwargs)
         self.custom_urls = custom_urls  # Initialize custom_urls
-
-        # Verificar que las constantes estén disponibles
-        if not hasattr(inkafarma, 'CATEGORIAS_CON_SUBCATEGORIAS'):
-            self.logger.error("❌ CATEGORIAS_CON_SUBCATEGORIAS no encontrada. Fallback estará limitado.")
+        
+        # Cargar o actualizar la estructura JSON
+        self.structure_data = self._load_or_update_structure()
+        
+        # Procesar URLs de entrada basándose en la estructura JSON
+        self.start_urls = self._process_json_structure()
+    
+    def _get_json_path(self):
+        """Obtiene la ruta del archivo JSON de estructura"""
+        return os.path.join(os.path.dirname(__file__), "constants", "inkafarma_complete_structure.json")
+    
+    def _is_json_outdated(self):
+        """Verifica si el JSON es mayor a 1 mes de antigüedad"""
+        json_path = self._get_json_path()
+        
+        if not os.path.exists(json_path):
+            self.logger.info("📋 Archivo JSON no existe, necesita generarse")
+            return True
+        
+        # Obtener fecha de modificación del archivo
+        file_mod_time = datetime.fromtimestamp(os.path.getmtime(json_path))
+        one_month_ago = datetime.now() - timedelta(days=30)
+        
+        if file_mod_time < one_month_ago:
+            self.logger.info(f"⏰ Archivo JSON desactualizado. Última modificación: {file_mod_time}")
+            return True
+        
+        self.logger.info(f"✅ Archivo JSON actualizado. Última modificación: {file_mod_time}")
+        return False
+    
+    def _run_inkatest_spider(self):
+        """Ejecuta el spider inkatest para generar/actualizar el JSON"""
+        try:
+            self.logger.info("🚀 Ejecutando spider inkatest para actualizar estructura...")
+            
+            # Cambiar al directorio del proyecto para ejecutar scrapy
+            current_dir = os.getcwd()
+            project_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+            
+            os.chdir(project_dir)
+            
+            # Ejecutar el spider inkatest
+            result = subprocess.run(
+                ["scrapy", "crawl", "inkatest"],
+                capture_output=True,
+                text=True,
+                timeout=7200  # 2 horas máximo
+            )
+            
+            os.chdir(current_dir)
+            
+            if result.returncode == 0:
+                self.logger.info("✅ Spider inkatest completado exitosamente")
+                return True
+            else:
+                self.logger.error(f"❌ Error ejecutando inkatest: {result.stderr}")
+                return False
+                
+        except subprocess.TimeoutExpired:
+            self.logger.error("⏰ Timeout ejecutando inkatest")
+            return False
+        except Exception as e:
+            self.logger.error(f"❌ Error ejecutando inkatest: {e}")
+            return False
+    
+    def _load_structure_json(self):
+        """Carga la estructura desde el archivo JSON"""
+        json_path = self._get_json_path()
+        
+        try:
+            with open(json_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            self.logger.info(f"📊 Estructura cargada: {data['metadata']['total_categories']} categorías, "
+                           f"{data['metadata']['total_subcategories']} subcategorías, "
+                           f"{data['metadata']['total_subsubcategories']} sub-subcategorías")
+            
+            return data
+            
+        except Exception as e:
+            self.logger.error(f"❌ Error cargando JSON: {e}")
+            return None
+    
+    def _load_or_update_structure(self):
+        """Carga la estructura JSON o la actualiza si es necesario"""
+        
+        # Verificar si necesita actualización
+        if self._is_json_outdated():
+            self.logger.info("🔄 Actualizando estructura de categorías...")
+            
+            if self._run_inkatest_spider():
+                self.logger.info("✅ Estructura actualizada exitosamente")
+            else:
+                self.logger.warning("⚠️ No se pudo actualizar, usando estructura existente")
+        
+        # Cargar la estructura (actualizada o existente)
+        return self._load_structure_json()
+    
+    def _process_json_structure(self):
+        """Procesa la estructura JSON para generar URLs de inicio"""
+        if not self.structure_data:
+            self.logger.error("❌ No hay estructura JSON disponible, usando fallback")
+            return ["https://inkafarma.pe/"]
+        
+        # Si hay custom_urls, usarlas
+        if self.custom_urls:
+            urls = self.custom_urls.split(',') if isinstance(self.custom_urls, str) else self.custom_urls
+            return [url.strip() for url in urls]
+        
+        # Generar URLs desde el JSON
+        start_urls = []
+        
+        for category_key, category_data in self.structure_data["categories"].items():
+            # Agregar URL de la categoría principal
+            category_url = f"https://inkafarma.pe{category_data['href']}"
+            start_urls.append(category_url)
+        
+        self.logger.info(f"🎯 Generadas {len(start_urls)} URLs desde estructura JSON")
+        return start_urls
+    
+    def _extract_category_info_from_url(self, url):
+        """Extrae información de categoría desde la URL usando la estructura JSON"""
+        if not self.structure_data:
+            return None
+        
+        # Extraer path de la URL
+        path = url.replace("https://inkafarma.pe", "")
+        
+        # Buscar en la estructura JSON
+        for category_key, category_data in self.structure_data["categories"].items():
+            if category_data["href"] == path:
+                return {
+                    "level": "category",
+                    "category_key": category_key,
+                    "category_name": category_data["name"],
+                    "href": category_data["href"],
+                    "subcategories": category_data["subcategories"]
+                }
+        
+        return None
+    
+    def _get_subcategory_urls(self, category_info):
+        """Obtiene URLs de subcategorías para una categoría dada"""
+        urls = []
+        
+        if category_info and "subcategories" in category_info:
+            for sub_key, sub_data in category_info["subcategories"].items():
+                url = f"https://inkafarma.pe{sub_data['href']}"
+                urls.append({
+                    "url": url,
+                    "category_name": category_info["category_name"],
+                    "subcategory_name": sub_data["name"],
+                    "subcategory_key": sub_key,
+                    "href": sub_data["href"],
+                    "subsubcategories": sub_data.get("subsubcategories", {})
+                })
+        
+        return urls
+    
+    def _get_subsubcategory_urls(self, subcategory_info):
+        """Obtiene URLs de sub-subcategorías para una subcategoría dada"""
+        urls = []
+        
+        if "subsubcategories" in subcategory_info:
+            for subsub_key, subsub_data in subcategory_info["subsubcategories"].items():
+                url = f"https://inkafarma.pe{subsub_data['href']}"
+                urls.append({
+                    "url": url,
+                    "category_name": subcategory_info["category_name"],
+                    "subcategory_name": subcategory_info["subcategory_name"],
+                    "subsubcategory_name": subsub_data["name"],
+                    "href": subsub_data["href"]
+                })
+        
+        return urls
+    
+    async def _count_products_on_page(self, page):
+        """Cuenta los productos en la página actual usando el H3 que muestra el conteo real"""
+        try:
+            # Esperar a que se cargue el contenido y el H3 con el conteo
+            await page.wait_for_selector(inkafarma.SELECTOR_PRODUCT_COUNT_H3, timeout=10000)
+            await page.wait_for_timeout(2000)
+            
+            # Obtener el texto del H3 que contiene el conteo de productos
+            h3_element = page.locator(inkafarma.SELECTOR_PRODUCT_COUNT_H3)
+            h3_text = await h3_element.text_content()
+            
+            if h3_text:
+                # Extraer número usando regex (ej: "Encontramos 156 productos")
+                import re
+                match = re.search(r'(\d+)', h3_text)
+                if match:
+                    count = int(match.group(1))
+                    self.logger.info(f"📊 Conteo desde H3: '{h3_text}' -> {count} productos")
+                    return count
+            
+            # Fallback: contar elementos DOM si no se encuentra el H3
+            products = page.locator("//fp-filtered-product-list//fp-product-large")
+            count = await products.count()
+            self.logger.warning(f"⚠️ Usando conteo DOM fallback: {count}")
+            return count
+            
+        except Exception as e:
+            self.logger.warning(f"⚠️ Error contando productos: {e}")
+            return 0
+    
+    async def parse_category_json(self, response):
+        """Parser principal usando la estructura JSON"""
+        page = response.meta["playwright_page"]
+        category_info = response.meta["category_info"]
+        
+        if not category_info:
+            self.logger.error(f"❌ No se pudo extraer información de categoría para {response.url}")
+            await page.close()
+            return
+        
+        self.logger.info(f"🔍 Procesando categoría: {category_info['category_name']}")
+        
+        # Contar productos en la página actual
+        product_count = await self._count_products_on_page(page)
+        self.logger.info(f"📊 Productos encontrados en categoría principal: {product_count}")
+        
+        # Si hay más de 250 productos, navegar por subcategorías
+        if product_count >= 250:
+            self.logger.info(f"⚠️ Categoría con {product_count} productos (≥250). Navegando por subcategorías...")
+            
+            # Generar requests para subcategorías
+            subcategory_urls = self._get_subcategory_urls(category_info)
+            
+            for sub_info in subcategory_urls:
+                yield scrapy.Request(
+                    url=sub_info["url"],
+                    callback=self.parse_subcategory_json,
+                    meta={
+                        "playwright": True,
+                        "playwright_include_page": True,
+                        "subcategory_info": sub_info,
+                        "playwright_page_goto_kwargs": {
+                            "wait_until": "domcontentloaded",
+                            "timeout": 30000,
+                        },
+                        "playwright_page_methods": [
+                            PageMethod("wait_for_load_state", "domcontentloaded"),
+                            PageMethod("wait_for_timeout", 3000),
+                        ],
+                    }
+                )
         else:
-            self.logger.info(f"✅ CATEGORIAS_CON_SUBCATEGORIAS cargada con {len(inkafarma.CATEGORIAS_CON_SUBCATEGORIAS)} categorías")
-
-        # Procesar URLs de entrada
-        self.start_urls, self.subcategories = self._process_input_urls(custom_urls)
+            # Procesar productos directamente
+            async for item in self.parse_products(response, category_name="farmacia", subcategory_name=category_info['category_name']):
+                yield item
+        
+        await page.close()
+    
+    async def parse_subcategory_json(self, response):
+        """Parser para subcategorías usando la estructura JSON"""
+        page = response.meta["playwright_page"]
+        subcategory_info = response.meta["subcategory_info"]
+        
+        self.logger.info(f"🔍 Procesando subcategoría: {subcategory_info['subcategory_name']}")
+        
+        # Contar productos en la subcategoría
+        product_count = await self._count_products_on_page(page)
+        self.logger.info(f"📊 Productos encontrados en subcategoría: {product_count}")
+        
+        # Si hay más de 250 productos, navegar por sub-subcategorías
+        if product_count >= 250 and subcategory_info.get("subsubcategories"):
+            self.logger.info(f"⚠️ Subcategoría con {product_count} productos (≥250). Navegando por sub-subcategorías...")
+            
+            # Generar requests para sub-subcategorías
+            subsubcategory_urls = self._get_subsubcategory_urls(subcategory_info)
+            
+            for subsub_info in subsubcategory_urls:
+                yield scrapy.Request(
+                    url=subsub_info["url"],
+                    callback=self.parse_subsubcategory_json,
+                    meta={
+                        "playwright": True,
+                        "playwright_include_page": True,
+                        "subsubcategory_info": subsub_info,
+                        "playwright_page_goto_kwargs": {
+                            "wait_until": "domcontentloaded",
+                            "timeout": 30000,
+                        },
+                        "playwright_page_methods": [
+                            PageMethod("wait_for_load_state", "domcontentloaded"),
+                            PageMethod("wait_for_timeout", 3000),
+                        ],
+                    }
+                )
+        else:
+            # Procesar productos directamente
+            async for item in self.parse_products(response, category_name="farmacia", subcategory_name=subcategory_info['subcategory_name']):
+                yield item
+        
+        await page.close()
+    
+    async def parse_subsubcategory_json(self, response):
+        """Parser para sub-subcategorías usando la estructura JSON"""
+        page = response.meta["playwright_page"]
+        subsubcategory_info = response.meta["subsubcategory_info"]
+        
+        self.logger.info(f"🔍 Procesando sub-subcategoría: {subsubcategory_info['subsubcategory_name']}")
+        
+        # Procesar productos directamente (nivel más profundo)
+        async for item in self.parse_products(response, category_name="farmacia", subcategory_name=subsubcategory_info['subcategory_name']):
+            yield item
+        
+        await page.close()
     
     def _process_input_urls(self, custom_urls):
         if custom_urls:
@@ -43,15 +347,31 @@ class InkafarmaSpider(scrapy.Spider):
 
     def generate_all_subcategory_urls(self):
         """
-        Genera todas las URLs de subcategorías usando CATEGORIAS_CON_SUBCATEGORIAS
+        Genera todas las URLs de subcategorías usando la estructura JSON (preferred)
         Útil para scraping exhaustivo por subcategorías
         """
         all_urls = []
-        
-        for categoria, subcategorias in inkafarma.CATEGORIAS_CON_SUBCATEGORIAS.items():
+        # Preferir la estructura JSON si está disponible
+        if self.structure_data and isinstance(self.structure_data.get('categories'), dict):
+            for categoria_key, categoria_obj in self.structure_data['categories'].items():
+                subcategories = categoria_obj.get('subcategories', {}) or {}
+                for subcat_key, subcat_obj in subcategories.items():
+                    href = subcat_obj.get('href') or f"/categoria/{categoria_key}/{subcat_key}"
+                    url = f"https://inkafarma.pe{href}"
+                    all_urls.append({
+                        'url': url,
+                        'categoria': categoria_key,
+                        'subcategoria': subcat_key
+                    })
+
+            self.logger.info(f"📋 Generadas {len(all_urls)} URLs de subcategorías desde JSON")
+            return all_urls
+
+        # Fallback a constantes si por algún motivo no existe el JSON
+        for categoria, subcategorias in getattr(inkafarma, 'CATEGORIAS_CON_SUBCATEGORIAS', {}).items():
             for subcategoria in subcategorias:
                 url = inkafarma.CATEGORIA_SUBCATEGORIA_URL_TEMPLATE.format(
-                    categoria=categoria, 
+                    categoria=categoria,
                     subcategoria=subcategoria
                 )
                 all_urls.append({
@@ -59,26 +379,29 @@ class InkafarmaSpider(scrapy.Spider):
                     'categoria': categoria,
                     'subcategoria': subcategoria
                 })
-        
-        self.logger.info(f"📋 Generadas {len(all_urls)} URLs de subcategorías")
+
+        self.logger.info(f"📋 Generadas {len(all_urls)} URLs de subcategorías (fallback constantes)")
         return all_urls
 
     def start_requests(self):
-        """Generar requests iniciales con configuración de Playwright"""
-        self.logger.info("🚀 Iniciando scraping de InkaFarma con Playwright...")
+        """Generar requests iniciales usando la estructura JSON"""
+        self.logger.info("🚀 Iniciando scraping de InkaFarma con estructura JSON...")
 
-        urls, subcategories = self._process_input_urls(self.custom_urls)
-        for i, (url, subcategory) in enumerate(zip(urls, subcategories)):
+        for i, url in enumerate(self.start_urls):
             unique_url = f"{url}?scrapy_index={i}&ts={int(time.time())}"
+            
+            # Extraer información de categoría desde la URL
+            category_info = self._extract_category_info_from_url(url)
+            
             yield scrapy.Request(
                 url=unique_url,
-                callback=self.parse_category,
+                callback=self.parse_category_json,
                 meta={
                     "playwright": True,
                     "playwright_include_page": True,
-                    "subcategory": subcategory,  # Pass subcategory in meta
+                    "category_info": category_info,
                     "playwright_page_goto_kwargs": {
-                        "wait_until": "domcontentloaded",  # Solo esperar DOM, no todos los recursos
+                        "wait_until": "domcontentloaded",
                         "timeout": 30000,
                     },
                     "playwright_page_methods": [
@@ -216,40 +539,86 @@ class InkafarmaSpider(scrapy.Spider):
                 if not menu_structure or not menu_structure.get('categorias'):
                     self.logger.warning("⚠️ No se encontró estructura del menú o departamentos. Activando fallback con subcategorías predefinidas...")
                     
-                    # NUEVO FALLBACK: Usar estructura predefinida de categorías y subcategorías
+                    # NUEVO FALLBACK: Usar estructura JSON (preferible) o constantes como última opción
                     category_raw = self.extract_category_raw_from_url(current_url)
-                    self.logger.info(f"🔍 Buscando categoria '{category_raw}' en estructura predefinida...")
-                    
-                    # Buscar la categoría en CATEGORIAS_CON_SUBCATEGORIAS
-                    if hasattr(inkafarma, 'CATEGORIAS_CON_SUBCATEGORIAS') and category_raw in inkafarma.CATEGORIAS_CON_SUBCATEGORIAS:
-                        subcategorias = inkafarma.CATEGORIAS_CON_SUBCATEGORIAS[category_raw]
-                        self.logger.info(f"✅ Encontrada categoria '{category_raw}' con {len(subcategorias)} subcategorías")
-                        
-                        # Procesar cada subcategoría usando el template
-                        for subcategoria in subcategorias:
+                    self.logger.info(f"🔍 Buscando categoria '{category_raw}' en estructura JSON...")
+
+                    # Intentar obtener subcategorías desde la estructura JSON
+                    if self.structure_data and isinstance(self.structure_data.get('categories'), dict) and category_raw in self.structure_data['categories']:
+                        subcats_data = self.structure_data['categories'][category_raw].get('subcategories', {}) or {}
+                        self.logger.info(f"✅ Encontrada categoria '{category_raw}' con {len(subcats_data)} subcategorías (desde JSON)")
+
+                        # Procesar cada subcategoría usando los href del JSON
+                        for subcat_key, subcat_obj in subcats_data.items():
                             try:
-                                subcategoria_url = inkafarma.CATEGORIA_SUBCATEGORIA_URL_TEMPLATE.format(
-                                    categoria=category_raw, 
-                                    subcategoria=subcategoria
-                                )
-                                self.logger.info(f"🔄 Fallback: Procesando subcategoría '{subcategoria}' → {subcategoria_url}")
-                                
+                                href = subcat_obj.get('href') or f"/categoria/{category_raw}/{subcat_key}"
+                                subcategoria_url = f"https://inkafarma.pe{href}"
+                                self.logger.info(f"🔄 JSON Fallback: Procesando subcategoría '{subcat_key}' → {subcategoria_url}")
+
                                 # Navegar a la subcategoría
                                 await page.goto(subcategoria_url, wait_until="domcontentloaded", timeout=30000)
                                 await page.wait_for_timeout(3000)
-                                
+
                                 # Verificar si la subcategoría existe y tiene productos
                                 page_title = await page.title()
                                 if "404" not in page_title and "Not Found" not in page_title:
                                     subcat_count = await self.get_product_count(page)
-                                    self.logger.info(f"  📊 Productos en subcategoría '{subcategoria}': {subcat_count}")
-                                    
+                                    self.logger.info(f"  � Productos en subcategoría '{subcat_key}': {subcat_count}")
+
                                     if subcat_count > 0:
                                         # Extraer productos de la subcategoría
                                         await self.await_products_loaded(page)
                                         productos_cargados = await self.scroll_to_load_all_products(page)
+                                        self.logger.info(f"  ✅ Productos extraídos de '{subcat_key}': {productos_cargados}")
+
+                                        content = await page.content()
+                                        from scrapy.http import HtmlResponse
+                                        updated_response = HtmlResponse(
+                                            url=subcategoria_url,
+                                            body=content,
+                                            encoding='utf-8'
+                                        )
+                                        for item in self.parse_products(updated_response, subcat_key):
+                                            yield item
+                                    else:
+                                        self.logger.info(f"  ⚠️ Subcategoría '{subcat_key}' sin productos")
+                                else:
+                                    self.logger.warning(f"  ⚠️ Subcategoría no encontrada: {subcategoria_url}")
+
+                            except Exception as subcat_error:
+                                self.logger.error(f"  ❌ Error procesando subcategoría '{subcat_key}': {subcat_error}")
+                                continue
+
+                        await page.close()
+                        return
+
+                    # Si no está en JSON, intentar fallback a las constantes antiguas
+                    self.logger.info(f"🔍 Intentando fallback con constantes para '{category_raw}'")
+                    if hasattr(inkafarma, 'CATEGORIAS_CON_SUBCATEGORIAS') and category_raw in inkafarma.CATEGORIAS_CON_SUBCATEGORIAS:
+                        subcategorias = inkafarma.CATEGORIAS_CON_SUBCATEGORIAS[category_raw]
+                        self.logger.info(f"✅ Encontrada categoria '{category_raw}' con {len(subcategorias)} subcategorías (desde constantes)")
+
+                        for subcategoria in subcategorias:
+                            try:
+                                subcategoria_url = inkafarma.CATEGORIA_SUBCATEGORIA_URL_TEMPLATE.format(
+                                    categoria=category_raw,
+                                    subcategoria=subcategoria
+                                )
+                                self.logger.info(f"🔄 Constantes Fallback: Procesando subcategoría '{subcategoria}' → {subcategoria_url}")
+
+                                await page.goto(subcategoria_url, wait_until="domcontentloaded", timeout=30000)
+                                await page.wait_for_timeout(3000)
+
+                                page_title = await page.title()
+                                if "404" not in page_title and "Not Found" not in page_title:
+                                    subcat_count = await self.get_product_count(page)
+                                    self.logger.info(f"  📊 Productos en subcategoría '{subcategoria}': {subcat_count}")
+
+                                    if subcat_count > 0:
+                                        await self.await_products_loaded(page)
+                                        productos_cargados = await self.scroll_to_load_all_products(page)
                                         self.logger.info(f"  ✅ Productos extraídos de '{subcategoria}': {productos_cargados}")
-                                        
+
                                         content = await page.content()
                                         from scrapy.http import HtmlResponse
                                         updated_response = HtmlResponse(
@@ -263,17 +632,17 @@ class InkafarmaSpider(scrapy.Spider):
                                         self.logger.info(f"  ⚠️ Subcategoría '{subcategoria}' sin productos")
                                 else:
                                     self.logger.warning(f"  ⚠️ Subcategoría no encontrada: {subcategoria_url}")
-                                    
+
                             except Exception as subcat_error:
                                 self.logger.error(f"  ❌ Error procesando subcategoría '{subcategoria}': {subcat_error}")
                                 continue
-                        
+
                         await page.close()
                         return
                     else:
-                        self.logger.warning(f"⚠️ Categoría '{category_raw}' no encontrada en estructura predefinida")
-                        if not hasattr(inkafarma, 'CATEGORIAS_CON_SUBCATEGORIAS'):
-                            self.logger.error("❌ CATEGORIAS_CON_SUBCATEGORIAS no está disponible en el módulo inkafarma")
+                        self.logger.warning(f"⚠️ Categoría '{category_raw}' no encontrada en estructura (JSON ni constantes)")
+                        if not self.structure_data:
+                            self.logger.error("❌ Estructura JSON no está disponible para el fallback")
                     
                     # FALLBACK FINAL: Si no se encuentra en la estructura, scraping directo
                     original_url = response.url.split('?')[0]  # Remover parámetros de scrapy
@@ -591,11 +960,24 @@ class InkafarmaSpider(scrapy.Spider):
         
         return productos_finales
 
-    def parse_products(self, response, subcategory_name=None):
+    async def parse_products(self, response, category_name="farmacia", subcategory_name=None):
         """
         Extrae productos ÚNICAMENTE después de que el scroll se haya completado y la página esté estable.
         Utiliza el selector correcto: //fp-filtered-product-list//fp-product-large (Card de producto)
         """
+        # Obtener el objeto page de Playwright
+        page = response.meta.get("playwright_page")
+        if not page:
+            self.logger.error("❌ No hay página de Playwright disponible")
+            return
+        
+        # Realizar scroll completo para cargar todos los productos
+        await self.scroll_to_load_all_products(page)
+        
+        # Actualizar el response con el contenido después del scroll
+        updated_content = await page.content()
+        response = response.replace(body=updated_content.encode('utf-8'))
+        
         # Usar XPath para seleccionar todos los fp-product-large dentro de fp-filtered-product-list
         productos = response.xpath("//fp-filtered-product-list//fp-product-large")
         
@@ -656,16 +1038,10 @@ class InkafarmaSpider(scrapy.Spider):
                 item['total_unit_quantity'] = quantity
                 item['unit_type'] = unit_type
                 
-                # Asignar categoría y subcategoría correctamente
-                if subcategory_name:
-                    # Extraer categoría principal de la subcategoría
-                    category_principal = self.extract_category_from_subcategory(subcategory_name)
-                    item['category'] = category_principal
-                    item['sub_category'] = subcategory_name
-                else:
-                    # Si no hay subcategoría, usar categoría genérica
-                    item['category'] = "Farmacia"
-                    item['sub_category'] = None
+                # Asignar categoría y subcategoría según especificación
+                # Siempre usar "farmacia" como categoría principal
+                item['category'] = category_name if category_name else "farmacia"
+                item['sub_category'] = subcategory_name if subcategory_name else None
                 
                 # Información comercial
                 item['comercial_name'] = inkafarma.COMERCIAL_NAME
@@ -681,28 +1057,36 @@ class InkafarmaSpider(scrapy.Spider):
     
     def extract_category_from_subcategory(self, subcategory_name):
         """
-        Extrae la categoría principal de una subcategoría usando CATEGORIAS_CON_SUBCATEGORIAS
+        Extrae la categoría principal de una subcategoría usando la estructura JSON cuando esté disponible
         """
         try:
-            for categoria, subcategorias in inkafarma.CATEGORIAS_CON_SUBCATEGORIAS.items():
-                if subcategory_name in subcategorias:
-                    return categoria
-            
-            # Si no se encuentra, intentar extraer de la URL o usar lógica de fallback
+            # Priorizar búsqueda en la estructura JSON
+            if self.structure_data and isinstance(self.structure_data.get('categories'), dict):
+                for categoria_key, categoria_obj in self.structure_data['categories'].items():
+                    subcats = categoria_obj.get('subcategories', {}) or {}
+                    # Buscar por slug (clave) o por nombre visible
+                    if subcategory_name in subcats:
+                        return categoria_key
+                    for subkey, subobj in subcats.items():
+                        name = subobj.get('name', '')
+                        if name and subcategory_name.lower() == name.lower():
+                            return categoria_key
+
+            # Si no se encuentra en JSON, intentar heurísticas sobre el texto
             if 'packs' in subcategory_name.lower():
-                return 'packs'
-            elif 'bebe' in subcategory_name.lower():
-                return 'bebe-y-mama'
-            elif 'dermocosmetica' in subcategory_name.lower():
-                return 'dermocosmetica'
+                return 'inka-packs'
+            elif 'bebe' in subcategory_name.lower() or 'mama' in subcategory_name.lower():
+                return 'mama-y-bebe'
+            elif 'dermocosmetica' in subcategory_name.lower() or 'dermocosmetica' in subcategory_name.lower():
+                return 'dermatologia-cosmetica'
             elif 'suplementos' in subcategory_name.lower():
-                return 'suplementos-deportivos'
+                return 'nutricion-para-todos'
             else:
-                return 'Farmacia'  # Categoría por defecto
-                
+                return 'farmacia'  # Categoría por defecto (en minúscula, consistente con uso JSON)
+
         except Exception as e:
             self.logger.warning(f"⚠️ No se pudo extraer categoría de '{subcategory_name}': {e}")
-            return 'Farmacia'
+            return 'farmacia'
     
     def calculate_unit_price(self, precio_total, presentacion):
         try:
