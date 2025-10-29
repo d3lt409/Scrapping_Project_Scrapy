@@ -10,7 +10,8 @@ class ScraperItem(scrapy.Item):
     name = scrapy.Field()
     category = scrapy.Field()
     sub_category = scrapy.Field()
-    result_datetime = scrapy.Field()
+    result_date = scrapy.Field()
+    result_time = scrapy.Field()
 
     price = scrapy.Field()
     unit_price = scrapy.Field()
@@ -22,8 +23,9 @@ class ScraperItem(scrapy.Item):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        current_datetime = datetime.datetime.now()
-        self['result_datetime'] = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
+        current_date = datetime.datetime.now()
+        self['result_date'] = current_date.strftime('%Y-%m-%d')
+        self['result_time'] = current_date.strftime('%H:%M:%S')
 
 
 class JuriscolItem(scrapy.Item):
@@ -39,7 +41,6 @@ class JuriscolItem(scrapy.Item):
     
     # Metadata de scraping
     result_datetime = scrapy.Field()  # Fecha y hora de scraping
-    search_vigencia = scrapy.Field()  # Estado de vigencia por el que se buscó
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

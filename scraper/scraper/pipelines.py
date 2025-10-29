@@ -59,6 +59,7 @@ class JuriscolPipeline:
             epigrafe TEXT,
             documento_url VARCHAR(1000),
             result_datetime TIMESTAMP NOT NULL,
+
             CONSTRAINT uk_legislacion_col_documento UNIQUE (tipo, numero, ano, sector)
         );
         """

@@ -49,27 +49,24 @@ class JuriscolSpider(scrapy.Spider):
             self.logger.info(f"Iniciando scraping secuencial de {len(self.tipos)} tipos x {len(self.sectores)} sectores x {len(self.vigencias)} vigencias = {len(self.tipos) * len(self.sectores) * len(self.vigencias)} combinaciones")
             
             for tipo_index, tipo in enumerate(self.tipos):
+                # Recargar página al cambiar de tipo de norma (excepto en el primero)
+                if tipo_index > 0:
+                    self.logger.info(f"Cambiando a tipo de norma: {tipo} - Recargando página")
+                    await page.reload(wait_until="networkidle")
                 for sector_index, sector in enumerate(self.sectores):
                     for vigencia_index, vigencia in enumerate(self.vigencias):
                         self.combinations_processed += 1
                         self.logger.info(f"[{self.combinations_processed}/{len(self.tipos) * len(self.sectores) * len(self.vigencias)}] Procesando {tipo} / {sector} / {vigencia}")
-                        
-                        # Procesar combinación con reintentos y hacer yield de items
                         async for item in self.process_combination_with_retries(page, tipo, sector, vigencia, max_retries=3):
                             yield item
-                        
-                        # Pequeña pausa entre combinaciones para estabilidad
-                        await asyncio.sleep(0.5)
-            
-            self.logger.info(f"Scraping completado. Total extraído: {self.total_extracted}, Errores: {self.errors_count}")
-            
+            self.logger.info(f"Scraping completado: {self.total_extracted} items extraídos con {self.errors_count} errores.")
         except Exception as e:
-            self.logger.error(f"Error crítico en parse principal: {e}")
+            self.logger.error(f"Error general en parse: {e}")
         finally:
             try:
                 await page.close()
-            except Exception:
-                pass
+            except Exception as e:
+                self.logger.error(f"Error cerrando la página: {e}")
 
     async def process_combination_with_retries(self, page, tipo, sector, vigencia, max_retries=3):
         """Procesa una combinación con sistema de reintentos robusto"""
@@ -77,13 +74,12 @@ class JuriscolSpider(scrapy.Spider):
             try:
                 if attempt > 0:
                     self.logger.info(f"Reintento {attempt}/{max_retries} para {tipo}/{sector}/{vigencia}")
-                    # Backoff exponencial: 1s, 2s, 4s
-                    await asyncio.sleep(2 ** (attempt - 1))
-                
-                # Navegar de vuelta a la página principal si es un reintento
-                if attempt > 0:
+                # Recargar página si es un reintento >= 2 o al cambiar de categoría
+                if attempt >= 2:
+                    self.logger.info(f"Recargando página para {tipo}/{sector}/{vigencia} (intento {attempt})")
+                    await page.reload(wait_until="networkidle")
+                elif attempt > 0:
                     await page.goto(START_URL, wait_until="networkidle")
-                    await asyncio.sleep(1)
                 
                 # Procesar combinación y hacer yield de items
                 item_count = 0
@@ -107,6 +103,12 @@ class JuriscolSpider(scrapy.Spider):
     async def process_single_combination(self, page, tipo, sector, vigencia):
         """Procesa una sola combinación tipo+sector+vigencia con manejo de errores detallado"""
         try:
+            # Verificar que estamos en la página correcta
+            current_url = page.url
+            if START_URL not in current_url:
+                self.logger.info(f"Navegando a página principal desde: {current_url}")
+                await page.goto(START_URL, wait_until="networkidle")
+            
             # 1. Desplegar formulario con reintentos
             form_deployed = await self.deploy_form_with_retries(page)
             if not form_deployed:
@@ -136,52 +138,41 @@ class JuriscolSpider(scrapy.Spider):
             
         except Exception as e:
             self.logger.error(f"Error en process_single_combination {tipo}/{sector}/{vigencia}: {e}")
+            raise  # Re-lanzar la excepción para que sea manejada por el sistema de reintentos
 
     async def deploy_form_with_retries(self, page, max_attempts=3):
         """Despliega el formulario con múltiples intentos"""
         for attempt in range(max_attempts):
             try:
-                # Esperar que el botón esté disponible
-                await page.wait_for_selector(SELECTORS['TOGGLE_FORM_BUTTON'], timeout=10000)
-                
-                # Verificar si el formulario ya está desplegado
+                await page.wait_for_selector(SELECTORS['TOGGLE_FORM_BUTTON'], timeout=3000)
                 form_visible = await page.is_visible('select[name="tipo"]')
                 if form_visible:
                     return True
-                
-                # Hacer clic en el botón para desplegar
                 await page.click(SELECTORS['TOGGLE_FORM_BUTTON'])
-                
-                # Esperar a que aparezca el formulario
-                await page.wait_for_selector('select[name="tipo"]', timeout=5000)
-                await asyncio.sleep(0.5)  # Pequeña pausa para estabilidad
-                
-                # Verificar que realmente esté visible
+                await page.wait_for_selector('select[name="tipo"]', timeout=1000)
                 if await page.is_visible('select[name="tipo"]'):
                     return True
-                    
             except Exception as e:
                 self.logger.warning(f"Intento {attempt + 1} de desplegar formulario falló: {e}")
                 if attempt < max_attempts - 1:
-                    await asyncio.sleep(1)
                     continue
         
         return False
 
     async def select_tipo_norma(self, page, tipo):
         """Selecciona el tipo de norma con validación"""
-        await page.wait_for_selector(SELECTORS['TIPO_NORMA_SELECT'], timeout=5000)
+        await page.wait_for_selector(SELECTORS['TIPO_NORMA_SELECT'], timeout=500)
         await page.select_option(SELECTORS['TIPO_NORMA_SELECT'], value=tipo)
         
         # Disparar eventos para activar validaciones JavaScript
         await page.evaluate("""
-            const select = document.querySelector('select[name="tipo"]');
+            const select = document.querySelector('select[name=\"tipo\"]');
             if (select) {
                 select.dispatchEvent(new Event('change', { bubbles: true }));
                 select.dispatchEvent(new Event('input', { bubbles: true }));
             }
         """)
-        await asyncio.sleep(0.5)  # Dar tiempo para que se procesen los eventos
+        # await asyncio.sleep(0.5)  # Eliminado para mayor velocidad
 
     async def select_sector(self, page, sector):
         """Selecciona el sector con JavaScript robusto"""
@@ -218,7 +209,7 @@ class JuriscolSpider(scrapy.Spider):
         
         result = await page.evaluate(js_select_sector)
         if result and result.get('success'):
-            await asyncio.sleep(0.5)
+            # await asyncio.sleep(0.2)  # Eliminado para mayor velocidad
             return True
         else:
             self.logger.error(f"Error seleccionando sector {sector}: {result}")
@@ -259,7 +250,7 @@ class JuriscolSpider(scrapy.Spider):
         
         result = await page.evaluate(js_select_vigencia)
         if result and result.get('success'):
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.3)
             return True
         else:
             self.logger.error(f"Error seleccionando vigencia {vigencia}: {result}")
@@ -303,12 +294,11 @@ class JuriscolSpider(scrapy.Spider):
     async def wait_for_results(self, page):
         """Espera a que aparezcan los resultados con manejo de errores"""
         try:
-            # Esperar tabla de resultados o mensaje de sin resultados
             await page.wait_for_selector(
                 f"{SELECTORS['RESULTS_TABLE']}, .no-results, .sin-resultados",
-                timeout=15000
+                timeout=3000
             )
-            await asyncio.sleep(1)  # Estabilización
+            # await asyncio.sleep(1)  # Eliminado para mayor velocidad
         except Exception as e:
             self.logger.warning(f"Timeout esperando resultados: {e}")
             raise
@@ -361,7 +351,7 @@ class JuriscolSpider(scrapy.Spider):
                 consecutive_errors = 0  # Reset contador de errores
                 
                 # Pausa entre páginas para estabilidad
-                await asyncio.sleep(0.3)
+                # await asyncio.sleep(0.3)  # Eliminado para mayor velocidad
                 
             except Exception as e:
                 consecutive_errors += 1
@@ -372,7 +362,7 @@ class JuriscolSpider(scrapy.Spider):
                     break
                 
                 # Pausa más larga en caso de error
-                await asyncio.sleep(1 + consecutive_errors)
+                # await asyncio.sleep(1 + consecutive_errors)  # Eliminado para mayor velocidad
                 continue
 
     async def get_total_expected(self, page):
