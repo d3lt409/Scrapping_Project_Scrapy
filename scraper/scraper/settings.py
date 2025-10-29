@@ -25,27 +25,24 @@ ADDONS = {}
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 
-# Concurrency and throttling settings
-CONCURRENT_REQUESTS = 4
-CONCURRENT_REQUESTS_PER_DOMAIN = 1
-DOWNLOAD_DELAY = 3
+# Concurrency and throttling settings (optimizado para procesamiento secuencial robusto)
+CONCURRENT_REQUESTS = 1  # Una sola request activa para procesamiento secuencial
+CONCURRENT_REQUESTS_PER_DOMAIN = 1  # Una request por dominio
+DOWNLOAD_DELAY = 0.5  # Delay reducido para velocidad
 
-# Timeout settings
-DOWNLOAD_TIMEOUT = 60  # 60 segundos para descargas
+# Timeout settings (optimizado para estabilidad)
+DOWNLOAD_TIMEOUT = 120  # 120 segundos para descargas complejas
 PLAYWRIGHT_BROWSER_TYPE = 'chromium'
-PLAYWRIGHT_TIMEOUT = 60000  # 60 segundos para Playwright
+PLAYWRIGHT_TIMEOUT = 120000  # 120 segundos para Playwright
+PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 150000  # 2.5 minutos para navegación
 
-# Retry settings
+# Retry settings (más agresivo para robustez)
 RETRY_ENABLED = True
-RETRY_TIMES = 3
-RETRY_HTTP_CODES = [500, 502, 503, 504, 522, 524, 408, 429]
+RETRY_TIMES = 5  # Más reintentos
+RETRY_HTTP_CODES = [500, 502, 503, 504, 522, 524, 408, 429, 520, 521, 523]
 
-# AutoThrottle settings
-AUTOTHROTTLE_ENABLED = True
-AUTOTHROTTLE_START_DELAY = 1
-AUTOTHROTTLE_MAX_DELAY = 10
-AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
-AUTOTHROTTLE_DEBUG = False
+# AutoThrottle deshabilitado para control manual
+AUTOTHROTTLE_ENABLED = False
 
 # Disable cookies (enabled by default)
 # COOKIES_ENABLED = False
@@ -122,13 +119,17 @@ PLAYWRIGHT_LAUNCH_OPTIONS = {
         "--disable-setuid-sandbox", 
         "--disable-dev-shm-usage",
         "--disable-web-security",
-        "--disable-features=VizDisplayCompositor"
-    ]
+        "--disable-features=VizDisplayCompositor",
+        "--disable-blink-features=AutomationControlled",
+        "--window-size=1920,1080",
+        "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+    ],
+    "slow_mo": 0  # Sin ralentización artificial
 }
 
-# Configuración de timeouts
-DOWNLOAD_TIMEOUT = 90 
-PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 90000  
+# Configuración de timeouts extendidos para estabilidad
+DOWNLOAD_TIMEOUT = 120  # 120 segundos 
+PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 150000  # 2.5 minutos  
 
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 
@@ -136,6 +137,7 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 
 ITEM_PIPELINES = {
     'scraper.pipelines.PostgresPipeline': 300,
+    'scraper.pipelines.JuriscolPipeline': 301,
 }
 
 # País para la tabla de base de datos

@@ -7,8 +7,133 @@
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 import psycopg2
-from scraper.items import ScraperItem
+from scraper.items import ScraperItem, JuriscolItem
 from scraper.config import DB_HOST, DB_PORT, DB_SSL_PATH, DB_USER, DB_PASSWORD, DB_NAME
+
+
+class JuriscolPipeline:
+    """Pipeline específico para items de Juriscol"""
+    
+    def __init__(self):
+        self._connect()
+        self.items_processed = 0
+        self.items_duplicated = 0
+        self.items_inserted = 0
+
+    def _connect(self):
+        """Establecer conexión a la base de datos"""
+        hostname = DB_HOST
+        username = DB_USER
+        password = DB_PASSWORD
+        database = DB_NAME
+        port = DB_PORT
+        ssl_mode = 'verify-ca'
+
+        self.connection = psycopg2.connect(
+            host=hostname,
+            user=username,
+            password=password,
+            dbname=database,
+            port=port,
+            sslmode=ssl_mode,
+            sslrootcert=DB_SSL_PATH
+        )
+
+        self.cur = self.connection.cursor()
+        self.cur.execute("SET search_path TO public;")
+        
+        # Crear tabla si no existe
+        self.create_table_if_not_exists()
+        
+    def create_table_if_not_exists(self):
+        """Crear la tabla de legislacion_col si no existe"""
+        create_table_sql = """
+        CREATE TABLE IF NOT EXISTS legislacion_col (
+            id SERIAL PRIMARY KEY,
+            tipo VARCHAR(50) NOT NULL,
+            numero VARCHAR(20) NOT NULL,
+            ano INTEGER NOT NULL,
+            sector VARCHAR(200) NOT NULL,
+            emisor VARCHAR(500) NOT NULL,
+            estado VARCHAR(100),
+            epigrafe TEXT,
+            documento_url VARCHAR(1000),
+            result_datetime TIMESTAMP NOT NULL,
+            CONSTRAINT uk_legislacion_col_documento UNIQUE (tipo, numero, ano, sector)
+        );
+        """
+        
+        try:
+            self.cur.execute(create_table_sql)
+            self.connection.commit()
+        except Exception as e:
+            print(f"Error creando tabla legislacion_col: {e}")
+            self.connection.rollback()
+
+    def open_spider(self, spider):
+        spider.logger.info("Pipeline de Juriscol iniciado.")
+
+    def close_spider(self, spider):
+        if hasattr(self, 'cur') and self.cur:
+            self.cur.close()
+        if hasattr(self, 'connection') and self.connection:
+            self.connection.close()
+            
+        spider.logger.info(f"Pipeline de Juriscol cerrado. Estadísticas:")
+        spider.logger.info(f"  - Items procesados: {self.items_processed}")
+        spider.logger.info(f"  - Items insertados: {self.items_inserted}")
+        spider.logger.info(f"  - Items duplicados: {self.items_duplicated}")
+
+    def process_item(self, item, spider):
+        if isinstance(item, JuriscolItem):
+            adapter = ItemAdapter(item)
+            self.items_processed += 1
+            
+            try:
+                insert_sql = """
+                    INSERT INTO legislacion_col (
+                        tipo, numero, ano, sector, emisor, estado, epigrafe, documento_url,
+                        result_datetime
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (tipo, numero, ano, sector) DO NOTHING;
+                """
+                
+                data_tuple = (
+                    adapter.get('tipo'),
+                    adapter.get('numero'),
+                    adapter.get('ano'),
+                    adapter.get('sector'),
+                    adapter.get('emisor'),
+                    adapter.get('estado'),
+                    adapter.get('epigrafe'),
+                    adapter.get('documento_url'),
+                    adapter.get('result_datetime')
+                )
+                
+                # Ejecutar inserción
+                self.cur.execute(insert_sql, data_tuple)
+                
+                # Verificar si se insertó (rowcount > 0 significa inserción exitosa)
+                if self.cur.rowcount > 0:
+                    self.items_inserted += 1
+                    spider.logger.info(f"Documento insertado: {adapter.get('tipo')} {adapter.get('numero')}/{adapter.get('ano')}")
+                else:
+                    self.items_duplicated += 1
+                    spider.logger.debug(f"Documento duplicado ignorado: {adapter.get('tipo')} {adapter.get('numero')}/{adapter.get('ano')}")
+                
+                self.connection.commit()
+
+            except Exception as e:
+                try:
+                    if hasattr(self, 'connection') and self.connection and self.connection.closed == 0:
+                        self.connection.rollback()
+                except Exception as rollback_error:
+                    spider.logger.warning(f"Error en rollback: {rollback_error}")
+                    
+                spider.logger.error(f"Error al guardar el item de Juriscol: {e}")
+                spider.logger.error(f"Datos del item: {dict(adapter)}")
+
+        return item
 
 
 class PostgresPipeline:
@@ -103,8 +228,8 @@ class PostgresPipeline:
                     INSERT INTO {self.pais} (
                         name, price, unit_price, total_unit_quantity, unit_type,
                         category, sub_category, comercial_name, comercial_id,
-                        result_date, result_time
-                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        result_datetime
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
                 
                 data_tuple = (
@@ -117,8 +242,7 @@ class PostgresPipeline:
                     adapter.get('sub_category'),
                     adapter.get('comercial_name'),
                     adapter.get('comercial_id'),
-                    adapter.get('result_date'),
-                    adapter.get('result_time')
+                    adapter.get('result_datetime')
                 )
                 
                 spider.logger.info(f"Insertando producto en tabla '{self.pais}': {adapter.get('name')} - {adapter.get('comercial_name')}")
