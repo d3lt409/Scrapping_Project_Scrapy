@@ -80,15 +80,10 @@ class JuriscolSpider(scrapy.Spider):
         """Procesa una combinación con sistema de reintentos robusto"""
         for attempt in range(max_retries + 1):
             try:
+                # Navegar a URL principal si es un reintento
                 if attempt > 0:
                     self.logger.info(f"Reintento {attempt}/{max_retries} para {tipo}/{sector}/{vigencia}")
                     await asyncio.sleep(2 ** (attempt - 1))
-                
-                # Navegar a URL principal si es un reintento
-                if attempt > 0:
-                    self.logger.info(f"Navegando a URL principal para reintentar {tipo}/{sector}/{vigencia} (intento {attempt})")
-                    await page.goto(START_URL, wait_until="networkidle")
-                    await asyncio.sleep(1)
                 
                 # Procesar combinación y hacer yield de items
                 item_count = 0
