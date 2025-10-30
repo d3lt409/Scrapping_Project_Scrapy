@@ -53,12 +53,20 @@ class JuriscolSpider(scrapy.Spider):
                 if tipo_index > 0:
                     self.logger.info(f"Cambiando a tipo de norma: {tipo} - Recargando página")
                     await page.reload(wait_until="networkidle")
+                    await asyncio.sleep(2)
                 for sector_index, sector in enumerate(self.sectores):
                     for vigencia_index, vigencia in enumerate(self.vigencias):
+                        # Recargar página al cambiar de vigencia para resetear el formulario
+                        if vigencia_index > 0:
+                            self.logger.info(f"Cambiando a vigencia: {vigencia} - Recargando página")
+                            await page.reload(wait_until="networkidle")
+                            await asyncio.sleep(1)
+                        
                         self.combinations_processed += 1
                         self.logger.info(f"[{self.combinations_processed}/{len(self.tipos) * len(self.sectores) * len(self.vigencias)}] Procesando {tipo} / {sector} / {vigencia}")
                         async for item in self.process_combination_with_retries(page, tipo, sector, vigencia, max_retries=3):
                             yield item
+                        await asyncio.sleep(0.5)
             self.logger.info(f"Scraping completado: {self.total_extracted} items extraídos con {self.errors_count} errores.")
         except Exception as e:
             self.logger.error(f"Error general en parse: {e}")
@@ -74,12 +82,15 @@ class JuriscolSpider(scrapy.Spider):
             try:
                 if attempt > 0:
                     self.logger.info(f"Reintento {attempt}/{max_retries} para {tipo}/{sector}/{vigencia}")
+                    await asyncio.sleep(2 ** (attempt - 1))
                 # Recargar página si es un reintento >= 2 o al cambiar de categoría
                 if attempt >= 2:
                     self.logger.info(f"Recargando página para {tipo}/{sector}/{vigencia} (intento {attempt})")
                     await page.reload(wait_until="networkidle")
+                    await asyncio.sleep(2)
                 elif attempt > 0:
                     await page.goto(START_URL, wait_until="networkidle")
+                    await asyncio.sleep(1)
                 
                 # Procesar combinación y hacer yield de items
                 item_count = 0
@@ -144,24 +155,26 @@ class JuriscolSpider(scrapy.Spider):
         """Despliega el formulario con múltiples intentos"""
         for attempt in range(max_attempts):
             try:
-                await page.wait_for_selector(SELECTORS['TOGGLE_FORM_BUTTON'], timeout=3000)
+                await page.wait_for_selector(SELECTORS['TOGGLE_FORM_BUTTON'], timeout=10000)
                 form_visible = await page.is_visible('select[name="tipo"]')
                 if form_visible:
                     return True
                 await page.click(SELECTORS['TOGGLE_FORM_BUTTON'])
-                await page.wait_for_selector('select[name="tipo"]', timeout=1000)
+                await page.wait_for_selector('select[name="tipo"]', timeout=3000)
+                await asyncio.sleep(0.2)  # Pequeña pausa para estabilidad
                 if await page.is_visible('select[name="tipo"]'):
                     return True
             except Exception as e:
                 self.logger.warning(f"Intento {attempt + 1} de desplegar formulario falló: {e}")
                 if attempt < max_attempts - 1:
+                    await asyncio.sleep(1)
                     continue
         
         return False
 
     async def select_tipo_norma(self, page, tipo):
         """Selecciona el tipo de norma con validación"""
-        await page.wait_for_selector(SELECTORS['TIPO_NORMA_SELECT'], timeout=500)
+        await page.wait_for_selector(SELECTORS['TIPO_NORMA_SELECT'], timeout=1000)
         await page.select_option(SELECTORS['TIPO_NORMA_SELECT'], value=tipo)
         
         # Disparar eventos para activar validaciones JavaScript
@@ -172,7 +185,7 @@ class JuriscolSpider(scrapy.Spider):
                 select.dispatchEvent(new Event('input', { bubbles: true }));
             }
         """)
-        # await asyncio.sleep(0.5)  # Eliminado para mayor velocidad
+        await asyncio.sleep(0.5)  # Dar tiempo para que se procesen los eventos
 
     async def select_sector(self, page, sector):
         """Selecciona el sector con JavaScript robusto"""
@@ -209,7 +222,7 @@ class JuriscolSpider(scrapy.Spider):
         
         result = await page.evaluate(js_select_sector)
         if result and result.get('success'):
-            # await asyncio.sleep(0.2)  # Eliminado para mayor velocidad
+            await asyncio.sleep(0.2)
             return True
         else:
             self.logger.error(f"Error seleccionando sector {sector}: {result}")
@@ -296,9 +309,9 @@ class JuriscolSpider(scrapy.Spider):
         try:
             await page.wait_for_selector(
                 f"{SELECTORS['RESULTS_TABLE']}, .no-results, .sin-resultados",
-                timeout=3000
+                timeout=4000
             )
-            # await asyncio.sleep(1)  # Eliminado para mayor velocidad
+            await asyncio.sleep(1)  # Estabilización
         except Exception as e:
             self.logger.warning(f"Timeout esperando resultados: {e}")
             raise
@@ -362,7 +375,7 @@ class JuriscolSpider(scrapy.Spider):
                     break
                 
                 # Pausa más larga en caso de error
-                # await asyncio.sleep(1 + consecutive_errors)  # Eliminado para mayor velocidad
+                await asyncio.sleep(1 + consecutive_errors)
                 continue
 
     async def get_total_expected(self, page):
@@ -440,9 +453,6 @@ class JuriscolSpider(scrapy.Spider):
                         item['documento_url'] = link if link.startswith('http') else BASE_URL + link
                     else:
                         item['documento_url'] = None
-                    
-                    # Agregar metadatos de búsqueda
-                    item['search_vigencia'] = vigencia
                     
                     # Validar que el item tiene datos mínimos
                     if item['tipo'] or item['numero'] or item['epigrafe']:
