@@ -118,12 +118,46 @@ PLAYWRIGHT_BROWSER_TYPE = "chromium"
 PLAYWRIGHT_LAUNCH_OPTIONS = {
     "headless": True,
     "args": [
+        "--disable-gpu",
         "--no-sandbox",
-        "--disable-setuid-sandbox",
+        "--single-process",
         "--disable-dev-shm-usage",
-        "--disable-web-security",
-        "--disable-features=VizDisplayCompositor"
+        "--no-zygote",
+        "--disable-setuid-sandbox",
+        "--disable-accelerated-2d-canvas",
+        "--disable-dev-shm-usage",
+        "--no-first-run",
+        "--no-default-browser-check",
+        "--disable-background-networking",
+        "--disable-background-timer-throttling",
+        "--disable-client-side-phishing-detection",
+        "--disable-component-update",
+        "--disable-default-apps",
+        "--disable-domain-reliability",
+        "--disable-features=AudioServiceOutOfProcess",
+        "--disable-hang-monitor",
+        "--disable-ipc-flooding-protection",
+        "--disable-popup-blocking",
+        "--disable-prompt-on-repost",
+        "--disable-renderer-backgrounding",
+        "--disable-sync",
+        "--force-color-profile=srgb",
+        "--metrics-recording-only",
+        "--mute-audio",
+        "--no-pings",
+        "--use-gl=swiftshader",
+        "--window-size=1480,1696"
     ]
+}
+
+PLAYWRIGHT_CONTEXTS = {
+
+    "persistent": {
+
+        "user_data_dir": "./context",  # will be a persistent context
+
+    },
+
 }
 
 # Configuración de timeouts
@@ -153,6 +187,7 @@ LOGGING = {
 }
 
 LOG_LEVEL = 'INFO'
+
 
 if sys.platform == 'win32':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
