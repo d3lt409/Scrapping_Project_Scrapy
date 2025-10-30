@@ -49,17 +49,17 @@ class JuriscolSpider(scrapy.Spider):
             self.logger.info(f"Iniciando scraping secuencial de {len(self.tipos)} tipos x {len(self.sectores)} sectores x {len(self.vigencias)} vigencias = {len(self.tipos) * len(self.sectores) * len(self.vigencias)} combinaciones")
             
             for tipo_index, tipo in enumerate(self.tipos):
-                # Recargar página al cambiar de tipo de norma (excepto en el primero)
+                # Navegar a URL principal al cambiar de tipo de norma (excepto en el primero)
                 if tipo_index > 0:
-                    self.logger.info(f"Cambiando a tipo de norma: {tipo} - Recargando página")
-                    await page.reload(wait_until="networkidle")
-                    await asyncio.sleep(2)
+                    self.logger.info(f"Cambiando a tipo de norma: {tipo} - Navegando a URL principal")
+                    await page.goto(START_URL, wait_until="networkidle")
+                    await asyncio.sleep(1)
                 for sector_index, sector in enumerate(self.sectores):
                     for vigencia_index, vigencia in enumerate(self.vigencias):
-                        # Recargar página al cambiar de vigencia para resetear el formulario
+                        # Navegar a URL principal al cambiar de vigencia para resetear el formulario
                         if vigencia_index > 0:
-                            self.logger.info(f"Cambiando a vigencia: {vigencia} - Recargando página")
-                            await page.reload(wait_until="networkidle")
+                            self.logger.info(f"Cambiando a vigencia: {vigencia} - Navegando a URL principal")
+                            await page.goto(START_URL, wait_until="networkidle")
                             await asyncio.sleep(1)
                         
                         self.combinations_processed += 1
@@ -83,12 +83,10 @@ class JuriscolSpider(scrapy.Spider):
                 if attempt > 0:
                     self.logger.info(f"Reintento {attempt}/{max_retries} para {tipo}/{sector}/{vigencia}")
                     await asyncio.sleep(2 ** (attempt - 1))
-                # Recargar página si es un reintento >= 2 o al cambiar de categoría
-                if attempt >= 2:
-                    self.logger.info(f"Recargando página para {tipo}/{sector}/{vigencia} (intento {attempt})")
-                    await page.reload(wait_until="networkidle")
-                    await asyncio.sleep(2)
-                elif attempt > 0:
+                
+                # Navegar a URL principal si es un reintento
+                if attempt > 0:
+                    self.logger.info(f"Navegando a URL principal para reintentar {tipo}/{sector}/{vigencia} (intento {attempt})")
                     await page.goto(START_URL, wait_until="networkidle")
                     await asyncio.sleep(1)
                 
@@ -114,12 +112,6 @@ class JuriscolSpider(scrapy.Spider):
     async def process_single_combination(self, page, tipo, sector, vigencia):
         """Procesa una sola combinación tipo+sector+vigencia con manejo de errores detallado"""
         try:
-            # Verificar que estamos en la página correcta
-            current_url = page.url
-            if START_URL not in current_url:
-                self.logger.info(f"Navegando a página principal desde: {current_url}")
-                await page.goto(START_URL, wait_until="networkidle")
-            
             # 1. Desplegar formulario con reintentos
             form_deployed = await self.deploy_form_with_retries(page)
             if not form_deployed:
@@ -155,15 +147,30 @@ class JuriscolSpider(scrapy.Spider):
         """Despliega el formulario con múltiples intentos"""
         for attempt in range(max_attempts):
             try:
-                await page.wait_for_selector(SELECTORS['TOGGLE_FORM_BUTTON'], timeout=10000)
+                # Esperar a que la página esté lista
+                await page.wait_for_load_state("networkidle", timeout=10000)
+                
+                # Esperar que el botón esté disponible
+                await page.wait_for_selector(SELECTORS['TOGGLE_FORM_BUTTON'], timeout=5000)
+                
+                # Verificar si el formulario ya está desplegado
                 form_visible = await page.is_visible('select[name="tipo"]')
                 if form_visible:
+                    self.logger.debug(f"Formulario ya está visible en intento {attempt + 1}")
                     return True
+                
+                # Si no está visible, hacer clic en el botón para desplegarlo
                 await page.click(SELECTORS['TOGGLE_FORM_BUTTON'])
+                
+                # Esperar a que aparezca el selector de tipo
                 await page.wait_for_selector('select[name="tipo"]', timeout=3000)
-                await asyncio.sleep(0.2)  # Pequeña pausa para estabilidad
+                await asyncio.sleep(0.5)
+                
+                # Verificar que realmente esté visible
                 if await page.is_visible('select[name="tipo"]'):
+                    self.logger.debug(f"Formulario desplegado exitosamente en intento {attempt + 1}")
                     return True
+                    
             except Exception as e:
                 self.logger.warning(f"Intento {attempt + 1} de desplegar formulario falló: {e}")
                 if attempt < max_attempts - 1:
