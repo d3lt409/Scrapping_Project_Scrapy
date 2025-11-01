@@ -116,7 +116,7 @@ PLAYWRIGHT_LAUNCH_OPTIONS = {
     "headless": True,
     "args": [
         "--no-sandbox",
-        "--disable-setuid-sandbox", 
+        "--disable-setuid-sandbox",
         "--disable-dev-shm-usage",
         "--disable-web-security",
         "--disable-features=VizDisplayCompositor",
@@ -127,9 +127,19 @@ PLAYWRIGHT_LAUNCH_OPTIONS = {
     "slow_mo": 0  # Sin ralentización artificial
 }
 
+PLAYWRIGHT_CONTEXTS = {
+
+    "persistent": {
+
+        "user_data_dir": "./context",  # will be a persistent context
+
+    },
+
+}
+
 # Configuración de timeouts extendidos para estabilidad
-DOWNLOAD_TIMEOUT = 120  # 120 segundos 
-PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 150000  # 2.5 minutos  
+DOWNLOAD_TIMEOUT = 120  # 120 segundos
+PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 150000  # 2.5 minutos
 
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 
