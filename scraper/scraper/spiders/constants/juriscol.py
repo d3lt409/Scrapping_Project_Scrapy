@@ -66,10 +66,10 @@ ESTADOS_VIGENCIA_PRIORITARIOS = [
 
 # Sectores prioritarios para scraping
 SECTORES_PRIORITARIOS = [
+    #"Salud y Protección Social",
     "Tecnologías de la Información y de las Comunicaciones",
-    "Salud y Protección Social",
-    "Transporte",
-    "Hacienda y Crédito Público"
+    #"Transporte",
+    #"Hacienda y Crédito Público"
 ]
 
 # Configuraciones de tiempo
@@ -93,4 +93,14 @@ HEADERS = {
 FORM_PARAMS = {
     'action': 'Consultar',
     'ordenar': 'Fecha'
+}
+
+API_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "Accept": "application/json, text/javascript, */*; q=0.01",
+    "Accept-Language": "es-ES,es;q=0.9",
+    "Content-Type": "application/json",
+    "Origin": "https://www.suin-juriscol.gov.co",
+    "Referer": "https://www.suin-juriscol.gov.co/legislacion/normatividad.html",
+    "Connection": "keep-alive"
 }

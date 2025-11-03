@@ -8,7 +8,15 @@
 from itemadapter import ItemAdapter
 import psycopg2
 from scraper.items import ScraperItem, JuriscolItem
-from scraper.config import DB_HOST, DB_PORT, DB_SSL_PATH, DB_USER, DB_PASSWORD, DB_NAME
+from scraper.config import (
+    DB_HOST,
+    DB_PORT,
+    DB_SSL_PATH,
+    DB_USER,
+    DB_PASSWORD,
+    DB_NAME,
+    DB_SSL_MODE,
+)
 
 
 class JuriscolPipeline:
@@ -27,7 +35,14 @@ class JuriscolPipeline:
         password = DB_PASSWORD
         database = DB_NAME
         port = DB_PORT
-        ssl_mode = 'verify-ca'
+
+        # Preparar argumentos SSL según configuración
+        ssl_args = {}
+        if DB_SSL_MODE:
+            ssl_args['sslmode'] = DB_SSL_MODE
+        # Solo incluir sslrootcert si el modo requiere verificación
+        if DB_SSL_MODE in ('verify-ca', 'verify-full') and DB_SSL_PATH:
+            ssl_args['sslrootcert'] = DB_SSL_PATH
 
         self.connection = psycopg2.connect(
             host=hostname,
@@ -35,8 +50,7 @@ class JuriscolPipeline:
             password=password,
             dbname=database,
             port=port,
-            sslmode=ssl_mode,
-            sslrootcert=DB_SSL_PATH
+            **ssl_args
         )
 
         self.cur = self.connection.cursor()
@@ -96,7 +110,7 @@ class JuriscolPipeline:
                         tipo, numero, ano, sector, emisor, estado, epigrafe, documento_url,
                         result_datetime
                     ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-                    ON CONFLICT (tipo, numero, ano, sector) DO NOTHING;
+                    -- ON CONFLICT (tipo, numero, ano, sector) DO NOTHING;
                 """
                 
                 data_tuple = (
@@ -150,7 +164,13 @@ class PostgresPipeline:
         password = DB_PASSWORD
         database = DB_NAME
         port = DB_PORT
-        ssl_mode = 'verify-ca'
+
+        # Preparar argumentos SSL según configuración
+        ssl_args = {}
+        if DB_SSL_MODE:
+            ssl_args['sslmode'] = DB_SSL_MODE
+        if DB_SSL_MODE in ('verify-ca', 'verify-full') and DB_SSL_PATH:
+            ssl_args['sslrootcert'] = DB_SSL_PATH
 
         self.connection = psycopg2.connect(
             host=hostname,
@@ -158,8 +178,7 @@ class PostgresPipeline:
             password=password,
             dbname=database,
             port=port,
-            sslmode=ssl_mode,
-            sslrootcert=DB_SSL_PATH
+            **ssl_args
         )
 
         self.cur = self.connection.cursor()

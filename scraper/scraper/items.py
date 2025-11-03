@@ -1,8 +1,3 @@
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/items.html
-
 import datetime
 import scrapy
 
@@ -38,12 +33,12 @@ class JuriscolItem(scrapy.Item):
     estado = scrapy.Field()         # Estado del documento (Vigente, Derogado, etc.)
     epigrafe = scrapy.Field()       # Descripción/epígrafe del documento
     documento_url = scrapy.Field()  # URL del documento completo
-    
+
     # Metadata de scraping
     result_datetime = scrapy.Field()  # Fecha y hora de scraping
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         current_datetime = datetime.datetime.now()
         self['result_datetime'] = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
-    
+
