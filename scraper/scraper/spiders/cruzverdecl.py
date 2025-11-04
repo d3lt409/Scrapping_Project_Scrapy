@@ -176,7 +176,7 @@ class CruzverdeclSpider(scrapy.Spider):
                 for sub_cat in sub_category_links[1:]:
                     sub_category_name = await sub_cat.inner_text()
                     sub_category_name = sub_category_name.strip()
-                    if "Ver todo" in sub_category_name or 'Conoce más' in sub_category_name or 'Asesoría en vivo' in sub_category_name:
+                    if 'Conoce más' in sub_category_name or 'Asesoría en vivo' in sub_category_name:
                         continue
                     href = await sub_cat.get_attribute('href')
                     if href:
