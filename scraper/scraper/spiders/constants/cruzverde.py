@@ -4,7 +4,11 @@ NAME = 'Cruz Verde'
 REGULAR_EXPRESSION_UNITS = r'(\d+[\.,]?\d*)\s?((?:g|gr|ml|l|kg|unidades|unidad|un|cm|m|u|grs|und|unds|tabletas|tableta|mg|dosis|cápsulas|capsulas|sobres|ampolletas|cotonetes)\b)'
 REGULAR_EXPRESSION_UNITS_SIMPLE = r'(?:x|por)\s*(\d+[\.,]?\d*)\b'
 
-LIST_CATEGORIES = ["Medicamentos","Dermocosméticos","Bebé y Maternidad","Cuidado Personal","Salud Sexual","Belleza","Bienestar y Nutrición"]
+LIST_CATEGORIES = ["Medicamentos", "Dermocosméticos", "Bebé y Maternidad",
+                   "Cuidado Personal", "Salud Sexual", "Belleza", "Bienestar y Nutrición"]
+
+LIST_LINKS_MEDICAMENTOS = [
+    "https://www.cruzverde.com.co/medicamentos/formulados/"]
 
 # Selectores
 SELECTOR_CITY_ACEPTAR = "button[id='Aceptar'][class*='bg-prices hover:bg-prices']"

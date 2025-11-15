@@ -18,16 +18,16 @@ class CruzverdeSpider(scrapy.Spider):
         'pais': 'colombia'
     }
 
-    def start_requests(self):
+    async def start(self):
         for url in self.start_urls:
 
             yield scrapy.Request(
                 url,
                 meta=dict(playwright=True, playwright_include_page=True,
-                          playwright_page_methods=[
-                              PageMethod(
-                                  "wait_for_selector", cruzverde.SELECTOR_CITY_ACEPTAR, timeout='60000'),
-                          ],
+                          #   playwright_page_methods=[
+                          #       PageMethod(
+                          #           "wait_for_selector", cruzverde.SELECTOR_CITY_ACEPTAR, timeout='60000'),
+                          #   ],
                           playwright_page_goto_kwargs={
                               "wait_until": "domcontentloaded",
                               "timeout": 60000
@@ -42,17 +42,24 @@ class CruzverdeSpider(scrapy.Spider):
         page: Page = response.meta["playwright_page"]
 
         try:
+            self.logger.info("Click en aceptar ciudad")
             button_city = await page.wait_for_selector(cruzverde.SELECTOR_CITY_ACEPTAR, timeout=15000)
             await button_city.click()
             # Espera adicional para asegurarse de que la acción se complete
             await page.wait_for_timeout(2000)
-            list_category_button = await page.wait_for_selector(cruzverde.SELECTOR_CLICK_CATEGORIES, timeout=15000)
-            await list_category_button.click()
-            await page.wait_for_timeout(2000)
+
         except Exception as e:
             self.logger.warning(
                 f"No se pudo aceptar la ciudad para {response.url}. Procediendo con scrapeo directo. Error: {e}")
             await page.wait_for_timeout(2000)
+        try:
+            list_category_button = await page.wait_for_selector(cruzverde.SELECTOR_CLICK_CATEGORIES, timeout=15000)
+            await list_category_button.click()
+            await page.wait_for_timeout(2000)
+        except Exception as e:
+            self.logger.error(
+                f"No se pudo abrir el menú de categorías para {response.url}. Procediendo con scrapeo directo. Error: {e}")
+            raise e
         await page.wait_for_selector(cruzverde.SELECTOR_GET_ALL_CATEGORIES, timeout=20000)
         get_all_categories = await page.query_selector_all(cruzverde.SELECTOR_GET_ALL_CATEGORIES)
         for category in get_all_categories:
@@ -63,31 +70,58 @@ class CruzverdeSpider(scrapy.Spider):
                 await page.wait_for_timeout(2000)
                 await page.wait_for_selector(cruzverde.SELECTOR_SEARCH_SUBCATEGORY, timeout=20000)
                 subcategories = await page.query_selector_all(cruzverde.SELECTOR_SEARCH_SUBCATEGORY)
-                for subcategory in subcategories:
-                    category_link = await subcategory.get_attribute('href')
-                    if category_link and category_link.startswith('http'):
-                        category_link = category_link  # Asegurarse de que el enlace es absoluto
-                    elif category_link and not category_link.startswith('http'):
-                        category_link = response.urljoin(category_link)
-                    sub_category_name = await subcategory.inner_text()
-                    print(
-                        f"Navegando a la subcategoría: {sub_category_name} ({category_name})")
-                    yield scrapy.Request(
-                        url=category_link,
-                        meta=dict(playwright=True, playwright_include_page=True,
-                                  playwright_page_methods=[
-                                      PageMethod(
-                                          "wait_for_selector", cruzverde.SELECTOR_CONTAINER_PRODUCTS, timeout='60000'),
-                                  ],
-                                  playwright_page_goto_kwargs={
-                                      "wait_until": "domcontentloaded",
-                                      "timeout": 60000
-                                  }
-                                  ),
-                        callback=self.parse_category,
-                        cb_kwargs={'category_name': category_name,
-                                   'sub_category_name': sub_category_name}
-                    )
+                if (category_name == "Medicamentos"):
+                    self.logger.info(
+                        f"Navegando a la categoría: {category_name} y subcategoría Formulados")
+                    async for item in self.itter_others_pages(
+                            category_name, "Formulados", cruzverde.LIST_LINKS_MEDICAMENTOS):
+                        yield item
+                # for subcategory in subcategories:
+                #     category_link = await subcategory.get_attribute('href')
+                #     if category_link and category_link.startswith('http'):
+                #         category_link = category_link  # Asegurarse de que el enlace es absoluto
+                #     elif category_link and not category_link.startswith('http'):
+                #         category_link = response.urljoin(category_link)
+                #     sub_category_name = await subcategory.inner_text()
+                #     print(
+                #         f"Navegando a la subcategoría: {sub_category_name} ({category_name})")
+                #     yield scrapy.Request(
+                #         url=category_link,
+                #         meta=dict(playwright=True, playwright_include_page=True,
+                #                   playwright_page_methods=[
+                #                       PageMethod(
+                #                           "wait_for_selector", cruzverde.SELECTOR_CONTAINER_PRODUCTS, timeout='60000'),
+                #                   ],
+                #                   playwright_page_goto_kwargs={
+                #                       "wait_until": "domcontentloaded",
+                #                       "timeout": 60000
+                #                   }
+                #                   ),
+                #         callback=self.parse_category,
+                #         cb_kwargs={'category_name': category_name,
+                #                    'sub_category_name': sub_category_name}
+                #     )
+
+    async def itter_others_pages(self, category, subcategory, links):
+        self.logger.info(
+            f"Iterando en los links de {subcategory} de {category}")
+        for link in links:
+            yield scrapy.Request(
+                url=link,
+                meta=dict(playwright=True, playwright_include_page=True,
+                          playwright_page_methods=[
+                              PageMethod(
+                                  "wait_for_selector", cruzverde.SELECTOR_CONTAINER_PRODUCTS, timeout=60000),
+                          ],
+                          playwright_page_goto_kwargs={
+                              "wait_until": "domcontentloaded",
+                              "timeout": 60000
+                          }
+                          ),
+                callback=self.parse_category,
+                cb_kwargs={'category_name': category,
+                           'sub_category_name': subcategory}
+            )
 
     async def parse_category(self, response: Response, category_name, sub_category_name):
         page: Page = response.meta["playwright_page"]
