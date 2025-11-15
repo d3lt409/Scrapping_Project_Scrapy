@@ -148,6 +148,7 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 ITEM_PIPELINES = {
     'scraper.pipelines.PostgresPipeline': 300,
     'scraper.pipelines.JuriscolPipeline': 301,
+    'scraper.pipelines.JurisperPipeline': 302,
 }
 
 # País para la tabla de base de datos

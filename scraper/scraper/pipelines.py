@@ -7,6 +7,7 @@
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 import psycopg2
+from psycopg2.extras import RealDictCursor
 from scraper.items import ScraperItem, JuriscolItem
 from scraper.config import (
     DB_HOST,
@@ -23,12 +24,14 @@ class JuriscolPipeline:
     """Pipeline específico para items de Juriscol"""
 
     def __init__(self):
-        self._connect()
+
+        self.connection = None
+        self.cur = None
         self.items_processed = 0
         self.items_duplicated = 0
         self.items_inserted = 0
 
-    def _connect(self):
+    def _connect(self, spider=None):
         """Establecer conexión a la base de datos"""
         hostname = DB_HOST
         username = DB_USER
@@ -44,7 +47,7 @@ class JuriscolPipeline:
         if DB_SSL_MODE in ('verify-ca', 'verify-full') and DB_SSL_PATH:
             ssl_args['sslrootcert'] = DB_SSL_PATH
 
-        self.connection = psycopg2.connect(
+        self.connection: psycopg2.extensions.connection = psycopg2.connect(
             host=hostname,
             user=username,
             password=password,
@@ -53,16 +56,19 @@ class JuriscolPipeline:
             **ssl_args
         )
 
-        self.cur = self.connection.cursor()
+        self.cur = self.connection.cursor(cursor_factory=RealDictCursor)
         self.cur.execute("SET search_path TO public;")
+
+        spider.cur = self.cur
+        spider.connection = self.connection
 
         # Crear tabla si no existe
         self.create_table_if_not_exists()
 
     def create_table_if_not_exists(self):
-        """Crear la tabla de legislacion_col si no existe"""
+        """Crear la tabla de public.legislacion_col_temp si no existe"""
         create_table_sql = """
-        CREATE TABLE IF NOT EXISTS legislacion_col (
+        CREATE TABLE IF NOT EXISTS public.legislacion_col_temp (
             id SERIAL PRIMARY KEY,
             tipo VARCHAR(50) NOT NULL,
             numero VARCHAR(20) NOT NULL,
@@ -74,7 +80,7 @@ class JuriscolPipeline:
             documento_url VARCHAR(1000),
             result_datetime TIMESTAMP NOT NULL,
 
-            CONSTRAINT uk_legislacion_col_documento UNIQUE (tipo, numero, ano, sector)
+            CONSTRAINT uk_legislacion_col_temp_documento UNIQUE (tipo, numero, ano, sector)
         );
         """
 
@@ -86,6 +92,7 @@ class JuriscolPipeline:
             self.connection.rollback()
 
     def open_spider(self, spider):
+        self._connect(spider)
         spider.logger.info("Pipeline de Juriscol iniciado.")
 
     def close_spider(self, spider):
@@ -103,56 +110,250 @@ class JuriscolPipeline:
         if isinstance(item, JuriscolItem):
             adapter = ItemAdapter(item)
             self.items_processed += 1
-
-            try:
-                insert_sql = """
-                    INSERT INTO legislacion_col (
-                        tipo, numero, ano, sector, emisor, estado, epigrafe, documento_url,
-                        result_datetime
-                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-                    -- ON CONFLICT (tipo, numero, ano, sector) DO NOTHING;
-                """
-
-                data_tuple = (
-                    adapter.get('tipo'),
-                    adapter.get('numero'),
-                    adapter.get('ano'),
-                    adapter.get('sector'),
-                    adapter.get('emisor'),
-                    adapter.get('estado'),
-                    adapter.get('epigrafe'),
-                    adapter.get('documento_url'),
-                    adapter.get('result_datetime')
-                )
-
-                # Ejecutar inserción
-                self.cur.execute(insert_sql, data_tuple)
-
-                # Verificar si se insertó (rowcount > 0 significa inserción exitosa)
-                if self.cur.rowcount > 0:
-                    self.items_inserted += 1
-                    spider.logger.info(
-                        f"Documento insertado: {adapter.get('tipo')} {adapter.get('numero')}/{adapter.get('ano')}")
-                else:
-                    self.items_duplicated += 1
-                    spider.logger.debug(
-                        f"Documento duplicado ignorado: {adapter.get('tipo')} {adapter.get('numero')}/{adapter.get('ano')}")
-
-                self.connection.commit()
-
-            except Exception as e:
-                try:
-                    if hasattr(self, 'connection') and self.connection and self.connection.closed == 0:
-                        self.connection.rollback()
-                except Exception as rollback_error:
-                    spider.logger.warning(
-                        f"Error en rollback: {rollback_error}")
-
-                spider.logger.error(
-                    f"Error al guardar el item de Juriscol: {e}")
-                spider.logger.error(f"Datos del item: {dict(adapter)}")
+            action_type = adapter.get('action_type')
+            if action_type == 'insert':
+                self.create_item(adapter, spider)
+            elif action_type == 'update':
+                self.update_item(item, spider)
+            else:
+                spider.logger.warning(
+                    f"Item has no valid action_type: {action_type}")
 
         return item
+
+    def create_item(self, adapter, spider):
+        try:
+            insert_sql = """
+                INSERT INTO public.legislacion_col_temp (
+                    tipo, numero, ano, sector, emisor, estado, epigrafe, documento_url,
+                    result_datetime
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                -- ON CONFLICT (tipo, numero, ano, sector) DO NOTHING;
+            """
+
+            data_tuple = (
+                adapter.get('tipo'),
+                adapter.get('numero'),
+                adapter.get('ano'),
+                adapter.get('sector'),
+                adapter.get('emisor'),
+                adapter.get('estado'),
+                adapter.get('epigrafe'),
+                adapter.get('documento_url'),
+                adapter.get('result_datetime')
+            )
+
+            # Ejecutar inserción
+            self.cur.execute(insert_sql, data_tuple)
+
+            # Verificar si se insertó (rowcount > 0 significa inserción exitosa)
+            if self.cur.rowcount > 0:
+                self.items_inserted += 1
+                spider.logger.info(
+                    f"Documento insertado: {adapter.get('tipo')} {adapter.get('numero')}/{adapter.get('ano')}")
+            else:
+                self.items_duplicated += 1
+                spider.logger.debug(
+                    f"Documento duplicado ignorado: {adapter.get('tipo')} {adapter.get('numero')}/{adapter.get('ano')}")
+
+            self.connection.commit()
+
+        except Exception as e:
+            try:
+                if hasattr(self, 'connection') and self.connection and self.connection.closed == 0:
+                    self.connection.rollback()
+            except Exception as rollback_error:
+                spider.logger.warning(
+                    f"Error en rollback: {rollback_error}")
+
+            spider.logger.error(
+                f"Error al guardar el item de Juriscol: {e}")
+            spider.logger.error(f"Datos del item: {dict(adapter)}")
+
+    def update_item(self, item, spider):
+        try:
+            update_query = f"""
+                UPDATE public.legislacion_col_temp
+                SET norma_completa = %s, documento_url = %s
+                WHERE id = %s;
+            """
+            self.cur.execute(
+                update_query, (item['norma_completa'], item['documento_url'], item['id']))
+            self.connection.commit()
+            spider.logger.info(
+                f"Updated item ID {item['id']} with new url {item['documento_url']} in the database.")
+        except psycopg2.Error as e:
+            spider.logger.error(
+                f"Update error for item ID {item['id']}: {e}")
+            self.connection.rollback()
+
+
+class JurisperPipeline:
+    """Pipeline específico para items de Juriscol"""
+
+    def __init__(self):
+
+        self.connection = None
+        self.cur = None
+        self.items_processed = 0
+        self.items_duplicated = 0
+        self.items_inserted = 0
+
+    def _connect(self, spider=None):
+        """Establecer conexión a la base de datos"""
+        hostname = DB_HOST
+        username = DB_USER
+        password = DB_PASSWORD
+        database = DB_NAME
+        port = DB_PORT
+
+        # Preparar argumentos SSL según configuración
+        ssl_args = {}
+        if DB_SSL_MODE:
+            ssl_args['sslmode'] = DB_SSL_MODE
+        # Solo incluir sslrootcert si el modo requiere verificación
+        if DB_SSL_MODE in ('verify-ca', 'verify-full') and DB_SSL_PATH:
+            ssl_args['sslrootcert'] = DB_SSL_PATH
+
+        self.connection: psycopg2.extensions.connection = psycopg2.connect(
+            host=hostname,
+            user=username,
+            password=password,
+            dbname=database,
+            port=port,
+            **ssl_args
+        )
+
+        self.cur = self.connection.cursor(cursor_factory=RealDictCursor)
+        self.cur.execute("SET search_path TO public;")
+
+        spider.cur = self.cur
+        spider.connection = self.connection
+
+        # Crear tabla si no existe
+        self.create_table_if_not_exists()
+
+    def create_table_if_not_exists(self):
+        """Crear la tabla de public.legislacion_per si no existe"""
+        create_table_sql = """
+        CREATE TABLE IF NOT EXISTS public.legislacion_per (
+            id SERIAL PRIMARY KEY,
+            tipo VARCHAR(50) NOT NULL,
+            numero VARCHAR(20) NOT NULL,
+            ano INTEGER NOT NULL,
+            sector VARCHAR(200) NOT NULL,
+            emisor VARCHAR(500) NOT NULL,
+            estado VARCHAR(100),
+            epigrafe TEXT,
+            documento_url VARCHAR(1000),
+            result_datetime TIMESTAMP NOT NULL,
+
+            CONSTRAINT uk_legislacion_per_documento UNIQUE (tipo, numero, ano, sector)
+        );
+        """
+
+        try:
+            self.cur.execute(create_table_sql)
+            self.connection.commit()
+        except Exception as e:
+            print(f"Error creando tabla legislacion_per: {e}")
+            self.connection.rollback()
+
+    def open_spider(self, spider):
+        self._connect(spider)
+        spider.logger.info("Pipeline de Jurisper iniciado.")
+
+    def close_spider(self, spider):
+        if hasattr(self, 'cur') and self.cur:
+            self.cur.close()
+        if hasattr(self, 'connection') and self.connection:
+            self.connection.close()
+
+        spider.logger.info(f"Pipeline de Juriscol cerrado. Estadísticas:")
+        spider.logger.info(f"  - Items procesados: {self.items_processed}")
+        spider.logger.info(f"  - Items insertados: {self.items_inserted}")
+        spider.logger.info(f"  - Items duplicados: {self.items_duplicated}")
+
+    def process_item(self, item, spider):
+        if isinstance(item, JuriscolItem):
+            adapter = ItemAdapter(item)
+            self.items_processed += 1
+            action_type = adapter.get('action_type')
+            if action_type == 'insert':
+                self.create_item(adapter, spider)
+            elif action_type == 'update':
+                self.update_item(item, spider)
+            else:
+                spider.logger.warning(
+                    f"Item has no valid action_type: {action_type}")
+
+        return item
+
+    def create_item(self, adapter, spider):
+        try:
+            insert_sql = """
+                INSERT INTO public.legislacion_per (
+                    tipo, numero, ano, sector, emisor, estado, epigrafe, documento_url,
+                    result_datetime
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                -- ON CONFLICT (tipo, numero, ano, sector) DO NOTHING;
+            """
+
+            data_tuple = (
+                adapter.get('tipo'),
+                adapter.get('numero'),
+                adapter.get('ano'),
+                adapter.get('sector'),
+                adapter.get('emisor'),
+                adapter.get('estado'),
+                adapter.get('epigrafe'),
+                adapter.get('documento_url'),
+                adapter.get('result_datetime')
+            )
+
+            # Ejecutar inserción
+            self.cur.execute(insert_sql, data_tuple)
+
+            # Verificar si se insertó (rowcount > 0 significa inserción exitosa)
+            if self.cur.rowcount > 0:
+                self.items_inserted += 1
+                spider.logger.info(
+                    f"Documento insertado: {adapter.get('tipo')} {adapter.get('numero')}/{adapter.get('ano')}")
+            else:
+                self.items_duplicated += 1
+                spider.logger.debug(
+                    f"Documento duplicado ignorado: {adapter.get('tipo')} {adapter.get('numero')}/{adapter.get('ano')}")
+
+            self.connection.commit()
+
+        except Exception as e:
+            try:
+                if hasattr(self, 'connection') and self.connection and self.connection.closed == 0:
+                    self.connection.rollback()
+            except Exception as rollback_error:
+                spider.logger.warning(
+                    f"Error en rollback: {rollback_error}")
+
+            spider.logger.error(
+                f"Error al guardar el item de Jurisper: {e}")
+            spider.logger.error(f"Datos del item: {dict(adapter)}")
+
+    def update_item(self, item, spider):
+        try:
+            update_query = f"""
+                UPDATE public.legislacion_per
+                SET norma_completa = %s, documento_url = %s
+                WHERE id = %s;
+            """
+            self.cur.execute(
+                update_query, (item['norma_completa'], item['documento_url'], item['id']))
+            self.connection.commit()
+            spider.logger.info(
+                f"Updated item ID {item['id']} with new url {item['documento_url']} in the database.")
+        except psycopg2.Error as e:
+            spider.logger.error(
+                f"Update error for item ID {item['id']}: {e}")
+            self.connection.rollback()
 
 
 class PostgresPipeline:
@@ -210,7 +411,7 @@ class PostgresPipeline:
 
     def open_spider(self, spider):
         spider.logger.info(
-            "Pipeline de PostgreSQL iniciado. Para país: {self.pais}")
+            f"Pipeline de PostgreSQL iniciado. Para país: {self.pais}")
 
     def close_spider(self, spider):
         if hasattr(self, 'cur') and self.cur:

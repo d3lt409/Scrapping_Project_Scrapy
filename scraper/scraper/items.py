@@ -1,6 +1,7 @@
 import datetime
 import scrapy
 
+
 class ScraperItem(scrapy.Item):
     name = scrapy.Field()
     category = scrapy.Field()
@@ -25,6 +26,7 @@ class ScraperItem(scrapy.Item):
 
 class JuriscolItem(scrapy.Item):
     # Información básica del documento
+    id = scrapy.Field()              # ID del documento
     tipo = scrapy.Field()           # Tipo de norma (Decreto, Ley, Resolución)
     numero = scrapy.Field()         # Número del documento
     ano = scrapy.Field()            # Año de emisión
@@ -33,6 +35,9 @@ class JuriscolItem(scrapy.Item):
     estado = scrapy.Field()         # Estado del documento (Vigente, Derogado, etc.)
     epigrafe = scrapy.Field()       # Descripción/epígrafe del documento
     documento_url = scrapy.Field()  # URL del documento completo
+    norma_completa = scrapy.Field()   # Texto completo del documento
+
+    action_type = scrapy.Field()
 
     # Metadata de scraping
     result_datetime = scrapy.Field()  # Fecha y hora de scraping
@@ -40,5 +45,5 @@ class JuriscolItem(scrapy.Item):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         current_datetime = datetime.datetime.now()
-        self['result_datetime'] = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
-
+        self['result_datetime'] = current_datetime.strftime(
+            '%Y-%m-%d %H:%M:%S')
