@@ -40,25 +40,28 @@ class FalabellacolSpider(scrapy.Spider):
         for category, subcategories in categories_urls.items():
             for subcategory, urls in subcategories.items():
                 for url in urls:
-                    yield scrapy.Request(
-                        url,
-                        meta=dict(playwright=True, playwright_include_page=True,
-                                  playwright_page_methods=[
-                                      PageMethod(
-                                          "wait_for_selector", falabellacol.SELECTOR_LOAD_PRODUCTS, timeout=90000),
-                                  ],
-                                  playwright_page_goto_kwargs={
-                                      "wait_until": "domcontentloaded",
-                                      "timeout": 60000
-                                  }
-                                  ),
-                        cb_kwargs={
-                            "category": category,
-                            "sub_category": subcategory
-                        },
-                        callback=self.parse,
-                        errback=self.handle_error
-                    )
+                    try:
+                        yield scrapy.Request(
+                            url,
+                            meta=dict(playwright=True, playwright_include_page=True,
+                                      playwright_page_methods=[
+                                          PageMethod(
+                                              "wait_for_selector", falabellacol.SELECTOR_LOAD_PRODUCTS, timeout=90000),
+                                      ],
+                                      playwright_page_goto_kwargs={
+                                          "wait_until": "domcontentloaded",
+                                          "timeout": 60000
+                                      }
+                                      ),
+                            cb_kwargs={
+                                "category": category,
+                                "sub_category": subcategory
+                            },
+                            callback=self.parse,
+                            errback=self.handle_error
+                        )
+                    except Exception as e:
+                        self.logger.error(f"Error con la petición para {url}")
         self.logger.info("Todas las solicitudes generadas.")
 
     async def _get_categories(self, page: Page):
@@ -143,61 +146,68 @@ class FalabellacolSpider(scrapy.Spider):
 
         self.logger.info(
             f"Extrayendo productos de la categoría '{category}' y subcategoría '{sub_category}' en {response.url}")
-        while True:
-            await self._await_products_loaded(page)
-            await page.wait_for_load_state("domcontentloaded")
-            try:
-                await page.wait_for_timeout(2000)
-                await page.wait_for_selector(falabellacol.SELECTOR_PRODUCT_CARDS)
-                await page.wait_for_timeout(2000)
-            except TimeoutError as e:
-                self.logger.warning("No se encontraron productos")
-                break
-
-            try:
-                await page.wait_for_selector(falabellacol.SELECTOR_PRODUCT_NAME, timeout=60000)
-                await page.wait_for_timeout(2000)
-                html_content = await page.content()
-                scrapy_selector = scrapy.Selector(text=html_content)
-
-                products = scrapy_selector.xpath(
-                    falabellacol.XPATH_PRODUCT_CARDS)
-                for product_card in products:
-                    try:
-                        item = self.take_products_fields(
-                            product_card, category, sub_category)
-                    except Exception as e:
-                        self.logger.error(
-                            f"Saltando este producto. Error: {e} \n Produc card: {product_card}")
-                        continue
-
-                    item['comercial_name'] = falabellacol.NAME
-                    item['comercial_id'] = falabellacol.ID
-                    yield item
-
-            except Exception as e:
-                self.logger.error(
-                    f"Error encontrado para esta categoría {category} y sub {sub_category}:\n Error {e}")
-            await page.wait_for_timeout(2000)
-            try:
-                next_page_button: Locator = page.locator(
-                    falabellacol.XPATH_NEXT_PAGE_BUTTON)
-                if await next_page_button.count() > 0:
-                    await next_page_button.first.click()
-                    self.logger.info(
-                        "Cargando más productos haciendo clic en el botón 'Cargar más'...")
-                    # Esperar a que se carguen los nuevos productos
+        try:
+            while True:
+                await self._await_products_loaded(page)
+                await page.wait_for_load_state("domcontentloaded")
+                try:
                     await page.wait_for_timeout(2000)
-                else:
-                    self.logger.info(
-                        "No hay más productos para cargar en esta subcategoría.")
+                    await page.wait_for_selector(falabellacol.SELECTOR_PRODUCT_CARDS)
+                    await page.wait_for_timeout(2000)
+                except TimeoutError as e:
+                    self.logger.warning("No se encontraron productos")
                     break
-            except playwright._impl._errors.TimeoutError as e:
-                self.logger.error(f"Boton no encontrado, fin de la categoría")
-                break
-        await page.close()
-        self.logger.info(
-            f"Finalizada la extracción de productos para la categoría {category} y la subcategoría '{sub_category}'.")
+
+                try:
+                    await page.wait_for_selector(falabellacol.SELECTOR_PRODUCT_NAME, timeout=60000)
+                    await page.wait_for_timeout(2000)
+                    html_content = await page.content()
+                    scrapy_selector = scrapy.Selector(text=html_content)
+
+                    products = scrapy_selector.xpath(
+                        falabellacol.XPATH_PRODUCT_CARDS)
+                    for product_card in products:
+                        try:
+                            item = self.take_products_fields(
+                                product_card, category, sub_category)
+                        except Exception as e:
+                            self.logger.error(
+                                f"Saltando este producto. Error: {e} \n Produc card: {product_card}")
+                            continue
+
+                        item['comercial_name'] = falabellacol.NAME
+                        item['comercial_id'] = falabellacol.ID
+                        yield item
+
+                except Exception as e:
+                    self.logger.error(
+                        f"Error encontrado para esta categoría {category} y sub {sub_category}:\n Error {e}")
+                await page.wait_for_timeout(2000)
+                try:
+                    next_page_button: Locator = page.locator(
+                        falabellacol.XPATH_NEXT_PAGE_BUTTON)
+                    if await next_page_button.count() > 0:
+                        await next_page_button.first.click()
+                        self.logger.info(
+                            "Cargando más productos haciendo clic en el botón 'Cargar más'...")
+                        # Esperar a que se carguen los nuevos productos
+                        await page.wait_for_timeout(2000)
+                    else:
+                        self.logger.info(
+                            "No hay más productos para cargar en esta subcategoría.")
+                        break
+                except playwright._impl._errors.TimeoutError as e:
+                    self.logger.error(
+                        f"Boton no encontrado, fin de la categoría")
+                    break
+            self.logger.info(
+                f"Finalizada la extracción de productos para la categoría {category} y la subcategoría '{sub_category}'.")
+        except Exception as e:
+            self.logger.error(
+                f"Error con categoría {category} y la subcategoría '{sub_category}'.")
+        finally:
+            if page:
+                await page.close()
 
     def _get_price(self, product_card):
         price = product_card.xpath(falabellacol.XPATH_PRODUCT_PRICE)
