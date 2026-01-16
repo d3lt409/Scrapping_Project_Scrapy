@@ -4,6 +4,8 @@ from scrapy import signals
 from scraper.items import JuriscolItem
 from .constants import jurisper
 
+XPATH_GET_COMPLETE_LAW = "//div[@class='WordSection1']"
+XPATH_GET_COMPLETE_LAW_TEXT = "//*[text()!='']//text()"
 
 class JurispercompletedSpider(scrapy.Spider):
     name = "jurispercompleted"
@@ -119,14 +121,22 @@ class JurispercompletedSpider(scrapy.Spider):
             self.logger.info(f"Parsing law details para: {response.url}")
             item = JuriscolItem()
             page: Page = response.meta["playwright_page"]
-            await page.wait_for_selector(jurisper.SELECTOR_COMPLETE_LAW, timeout=30000)
+            await page.reload()
+            try:
+                await page.wait_for_selector("pre", timeout=4000)
+            except Exception:
+                pass
             # 4. Crear un NUEVO Selector con ese HTML
-            page_content = scrapy.Selector(text=await page.content())
+            data = await page.wait_for_selector("pre")
+            content = await data.text_content()
+            page_content = scrapy.Selector(text=content)
+            print(content)
+            return
             norma_completa = page_content.xpath(
                 jurisper.XPATH_GET_COMPLETE_LAW_TEXT).getall()
             norma_completa = ' '.join([text.strip()
                                        for text in norma_completa]).strip()
-            if "derogada" in norma_completa.lower():
+            if "derogad" in norma_completa.lower():
                 self.logger.warning("Norma derogada, continuando")
                 return
             date = page_content.xpath(jurisper.XPATH_GET_DATE_PUBLISHED).get()
